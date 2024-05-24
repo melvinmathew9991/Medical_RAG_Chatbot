@@ -22,3 +22,4 @@ def initialize_model(model_type):
     else:
         raise ValueError(f"Unsupported model type: {model_type}")
     return model
+

@@ -113,3 +113,4 @@ few_shot_template = FewShotPromptTemplate(
 # Example usage (if using few-shot prompting)
 def format_prompt(question):
   return few_shot_template.format(question=question)
+

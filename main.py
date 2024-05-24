@@ -1,7 +1,7 @@
 import streamlit as st
 from model_handler import initialize_model
 from data_processing import create_vector_database
-from query_handler import create_query_chain
+from query_handler import create_query_chain, search_external_sources
 from config import MODEL_TYPE
 from prompt import few_shot_template
 
@@ -24,6 +24,9 @@ def process_user_input(user_query):
     response = query_chain({"query": user_query})
     return response
 
+def process_external_queries(user_query):
+    return search_external_sources(user_query)
+
 # Display conversation history
 for msg in st.session_state.history:
     with st.chat_message(msg['role']):
@@ -42,6 +45,8 @@ if prompt:
 
     with st.spinner('Thinking'):
         response = process_user_input(prompt)
+        external_results = process_external_queries(prompt)
+        response_content = f"{response['result']}\n\nExternal Search Results:\n{external_results}"
 
     st.session_state.history.append({
         'role': 'Assistant',
@@ -50,3 +55,4 @@ if prompt:
 
     with st.chat_message("Assistant"):
         st.markdown(response['result'])
+

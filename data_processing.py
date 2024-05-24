@@ -41,3 +41,4 @@ def create_vector_database():
 
 # Export vectordb for use in other modules
 vectordb = create_vector_database()
+

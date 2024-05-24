@@ -37,3 +37,4 @@ def query(query_text):
 # query = "When to stop cancer treatment?"
 # result = query(query)
 # print(result)
+

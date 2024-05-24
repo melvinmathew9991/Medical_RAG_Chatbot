@@ -16,3 +16,4 @@ beautifulsoup4
 arxiv
 langchainhub
 serpapi
+wikipedia-api
