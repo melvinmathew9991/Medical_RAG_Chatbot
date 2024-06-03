@@ -13,7 +13,7 @@ loader = TextLoader("./speech.txt")
 documents = loader.load()
 
 # Split documents into sentences
-splitter = RecursiveCharacterTextSplitter(chunk_size=5000, chunk_overlap=200)
+splitter = RecursiveCharacterTextSplitter(chunk_size=3000, chunk_overlap=200)
 documents = splitter.split_documents(documents)
 
 # Create embeddings with OpenAI 
@@ -33,8 +33,5 @@ def query(query_text):
   processed_query = query_text.strip()
   return db.similarity_search(processed_query)
 
-# Example usage (uncomment if needed for testing)
-# query = "When to stop cancer treatment?"
-# result = query(query)
-# print(result)
+
 

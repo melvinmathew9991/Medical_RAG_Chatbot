@@ -5,6 +5,9 @@ from query_handler import create_query_chain, search_external_sources
 from config import MODEL_TYPE
 from prompt import few_shot_template
 
+# Add a header for your chatbot
+st.header("MEDBOT - Your Medical Chat Assistant")
+
 # Initialize session state for conversation history
 if "history" not in st.session_state:
     st.session_state.history = []
@@ -21,7 +24,7 @@ def format_prompt(question):
 
 def process_user_input(user_query):
     query_chain = create_query_chain(model, vectordb)
-    response = query_chain({"query": user_query})
+    response = query_chain.invoke({"query": user_query})
     return response
 
 def process_external_queries(user_query):

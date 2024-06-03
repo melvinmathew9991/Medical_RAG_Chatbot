@@ -1,5 +1,4 @@
 from langchain_community.document_loaders import PubMedLoader
-from langchain_community.document_loaders import ArxivLoader
 from langchain_community.document_loaders import WikipediaLoader
 from serpapi import GoogleSearch
 from config import SERPAPI_API_KEY

@@ -1,4 +1,13 @@
-# Example medical examples and prompt template (if needed)
+from langchain_core.example_selectors import SemanticSimilarityExampleSelector
+from langchain_chroma import Chroma
+from langchain_openai import OpenAIEmbeddings
+from langchain_core.prompts import FewShotPromptTemplate, PromptTemplate
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+os.environ["OPENAI_API_KEY"] = os.getenv("OPENAI_API_KEY")
+
 medical_examples = [
     {    
         "question": "What are the symptoms of a common cold?",
@@ -89,28 +98,34 @@ medical_examples = [
 # Starting prompt for your medical chatbot
 starting_prompt = "Welcome to our medical chatbot! How can I assist you today?"
 
-
-from langchain_core.prompts import FewShotPromptTemplate
-from langchain_core.prompts import PromptTemplate
-
+# Create a PromptTemplate for formatting questions and answers
 prompt_template = PromptTemplate(
-  input_variables=["question", "answer"],
-  template="""
-  Question : {question}
-  Answer : {answer}
-  """
+    input_variables = ["question", "answer"],
+    template="""
+    Question : {question}
+    Answer : {answer}
+    """
 )
 
+# Create the SemanticSimilarityExampleSelector
+example_selector = SemanticSimilarityExampleSelector.from_examples(
+    examples = medical_examples,
+    embeddings = OpenAIEmbeddings(openai_api_key=os.getenv("OPENAI_API_KEY")),  
+    vectorstore_cls = Chroma,  
+    k = 1,  
+)
+
+# Create a FewShotPromptTemplate using the ExampleSelector
 few_shot_template = FewShotPromptTemplate(
-  examples=medical_examples,
-  example_prompt=prompt_template,
-  prefix="Answer According to the question asked by the user",
-  suffix="Question : {question}\nAnswer:",
-  input_variables=["question"],
-  example_separator="\n"
+    example_selector = example_selector,
+    example_prompt = prompt_template,
+    prefix = "Answer according to the question asked by the user",
+    suffix = "Question : {question}\nAnswer:",
+    input_variables = ["question"],
+    example_separator = "\n"
 )
 
-# Example usage (if using few-shot prompting)
+# Example usage function
 def format_prompt(question):
-  return few_shot_template.format(question=question)
+    return few_shot_template.format(question = question)
 

@@ -1,5 +1,4 @@
-from langchain.chains import RetrievalQA
-from data_processing import vectordb, create_vector_database 
+from langchain.chains import RetrievalQA 
 from external_search import search_pubmed, search_wikipedia, search_serpapi
 
 def create_query_chain(model, vectordb):

@@ -2,9 +2,7 @@ from langchain_community.llms import Ollama
 from langchain_openai import ChatOpenAI
 from langchain.callbacks.streaming_stdout import StreamingStdOutCallbackHandler
 from langchain.callbacks.manager import CallbackManager
-from langchain_openai import OpenAI
 import os
-from config import MODEL_TYPE, OPENAI_API_KEY
 
 def initialize_model(model_type):
     """Initializes the language model based on the chosen type."""

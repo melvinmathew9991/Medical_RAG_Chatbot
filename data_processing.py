@@ -3,7 +3,7 @@ from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_community.vectorstores import Chroma
 from langchain_openai import OpenAIEmbeddings
 import os
-from config import PERSIST_DIR, OPENAI_EMBEDDING
+from config import PERSIST_DIR
 
 def create_vector_database():
     """Creates the vector database if it doesn't exist, otherwise loads it."""
