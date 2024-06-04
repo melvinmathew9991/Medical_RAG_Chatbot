@@ -4,14 +4,13 @@ load_dotenv()
 
 # Set up environment variables
 os.environ["OPENAI_API_KEY"] = os.getenv("OPENAI_API_KEY")
-os.environ["LANGCHAIN_TRACING_V2"] = "true"  # Enable Langsmith tracking
+os.environ["LANGCHAIN_TRACING_V2"] = "true"
 os.environ["LANGCHAIN_API_KEY"] = os.getenv("LANGCHAIN_API_KEY")
 
 # Model type selection
 MODEL_TYPE = os.environ.get("MODEL_TYPE", "ollama")
 
 # OLLAMA model name
-#OLLAMA_MODEL_NAME = "phi3"
 OLLAMA_MODEL_NAME = os.environ.get("OLLAMA_MODEL_NAME", "phi3")
 
 # OpenAI API key
