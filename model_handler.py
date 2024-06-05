@@ -3,7 +3,22 @@ from langchain_openai import ChatOpenAI
 from langchain.callbacks.streaming_stdout import StreamingStdOutCallbackHandler
 from langchain.callbacks.manager import CallbackManager
 import os
+import functools
 
+# Define a cache decorator to cache responses
+def cache(func):
+    cached_results = {}
+
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        key = str(args) + str(kwargs)
+        if key not in cached_results:
+            cached_results[key] = func(*args, **kwargs)
+        return cached_results[key]
+
+    return wrapper
+
+@cache
 def initialize_model(model_type):
     try:
         if model_type == "ollama":

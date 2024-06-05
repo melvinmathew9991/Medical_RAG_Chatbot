@@ -5,24 +5,34 @@ from langchain_community.vectorstores import FAISS
 import traceback
 import os
 from dotenv import load_dotenv
+import time
+
 load_dotenv()
 
 OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
 
-loader = TextLoader("./speech.txt")
-documents = loader.load()
+class DocumentRetriever:
+    def __init__(self):
+        self.loader = TextLoader("./speech.txt")
+        self.documents = self.loader.load()
 
-splitter = RecursiveCharacterTextSplitter(chunk_size=3000, chunk_overlap=200)
-documents = splitter.split_documents(documents)
+        splitter = RecursiveCharacterTextSplitter(chunk_size=3000, chunk_overlap=200)
+        self.documents = splitter.split_documents(self.documents)
 
-embeddings = OpenAIEmbeddings()
-db = FAISS.from_documents(documents, embeddings)
+        embeddings = OpenAIEmbeddings()
+        self.db = FAISS.from_documents(self.documents, embeddings)
 
-def query(query_text):
-    try:
-        processed_query = query_text.strip()
-        return db.similarity_search(processed_query)
-    except Exception as e:
-        print("Error occurred during document query:")
-        print(traceback.format_exc())
-        return []
+    def query(self, query_text):
+        try:
+            start_time = time.time()
+            processed_query = query_text.strip()
+            results = self.db.similarity_search(processed_query)
+            end_time = time.time()
+            print("Time taken for document query:", end_time - start_time, "seconds")
+            return results
+        except Exception as e:
+            print("Error occurred during document query:")
+            print(traceback.format_exc())
+            return []
+
+retriever = DocumentRetriever()
