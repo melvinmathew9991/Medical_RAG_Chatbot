@@ -1,9 +1,11 @@
+import os
+import functools
+import time
+
 from langchain_community.llms import Ollama
 from langchain_openai import ChatOpenAI
 from langchain.callbacks.streaming_stdout import StreamingStdOutCallbackHandler
 from langchain.callbacks.manager import CallbackManager
-import os
-import functools
 
 # Define a cache decorator to cache responses
 def cache(func):
@@ -21,6 +23,8 @@ def cache(func):
 @cache
 def initialize_model(model_type):
     try:
+        start_time = time.time()  # Start timing model initialization
+
         if model_type == "ollama":
             model_name = os.environ.get("OLLAMA_MODEL_NAME", "phi3")
             model = Ollama(
@@ -34,6 +38,11 @@ def initialize_model(model_type):
             )
         else:
             raise ValueError(f"Unsupported model type: {model_type}")
+        
+        end_time = time.time()  # End timing model initialization
+        elapsed_time = end_time - start_time  # Calculate elapsed time
+        print(f"Time taken for {model_type} model initialization:", elapsed_time, "seconds")
+
         return model
     except ValueError as e:
         print("Error occurred during model initialization:", e)

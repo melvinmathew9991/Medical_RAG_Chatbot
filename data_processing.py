@@ -1,14 +1,43 @@
 import os
 import traceback
+import time
+import concurrent.futures
 from langchain_community.document_loaders import TextLoader, DirectoryLoader, PyPDFLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_community.vectorstores import Chroma
 from langchain_openai import OpenAIEmbeddings
 from config import PERSIST_DIR
-import time
-import concurrent.futures  # Import concurrent.futures for multi-threading
+
+def load_documents(loader, documents):
+    """
+    Load documents using the specified loader.
+    """
+    return loader.load(documents)
+
+def process_documents(pdf_documents, text_documents):
+    """
+    Process documents by splitting them into chunks.
+    """
+    # Create text splitter with recommended chunk size and overlap
+    splitter = RecursiveCharacterTextSplitter(chunk_size=2000, chunk_overlap=300)
+    
+    # Assuming pdf_documents and text_documents are lists of document contents
+    pdf_context = "\n\n".join(str(p.page_content) for p in pdf_documents)
+    text_context = "\n\n".join(str(p.page_content) for p in text_documents)
+
+    # Split the documents into chunks
+    pdf_chunks = splitter.split_text(pdf_context)
+    text_chunks = splitter.split_text(text_context)
+
+    # Combine pdfs and texts chunks
+    data = pdf_chunks + text_chunks
+    
+    return data
 
 def create_vector_database():
+    """
+    Create or load a vector database from the processed documents.
+    """
     try:
         start_time = time.time()
         
@@ -19,18 +48,15 @@ def create_vector_database():
             pdf_loader = DirectoryLoader("./docs/", glob="./*.pdf", loader_cls=PyPDFLoader)
             text_loader = DirectoryLoader("./docs/", glob="./*.txt", loader_cls=TextLoader)
 
-            pdf_documents = pdf_loader.load()
-            text_documents = text_loader.load()
+            # Load documents concurrently using threads
+            with concurrent.futures.ThreadPoolExecutor() as executor:
+                pdf_documents_future = executor.submit(load_documents, pdf_loader, None)
+                text_documents_future = executor.submit(load_documents, text_loader, None)
 
-            splitter = RecursiveCharacterTextSplitter(chunk_size=5000, chunk_overlap=200)
+                pdf_documents = pdf_documents_future.result()
+                text_documents = text_documents_future.result()
 
-            pdf_context = "\n\n".join(str(p.page_content) for p in pdf_documents)
-            text_context = "\n\n".join(str(p.page_content) for p in text_documents)
-
-            pdfs = splitter.split_text(pdf_context)
-            texts = splitter.split_text(text_context)
-
-            data = pdfs + texts
+            data = process_documents(pdf_documents, text_documents)
 
             print("Data Processing Complete")
 
@@ -55,4 +81,5 @@ def create_vector_database():
         print(traceback.format_exc())
         return None
 
+# Example usage
 vectordb = create_vector_database()

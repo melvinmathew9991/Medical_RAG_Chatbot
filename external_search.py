@@ -5,9 +5,11 @@ from config import SERPAPI_API_KEY
 import time
 import asyncio
 import aiohttp  
+import concurrent.futures
 from functools import lru_cache
 
-def search_pubmed(query):
+# Implement a threaded version of PubMed search
+def threaded_search_pubmed(query):
     try:
         start_time = time.time()
         loader = PubMedLoader(query=query)
@@ -18,6 +20,15 @@ def search_pubmed(query):
     except Exception as e:
         print("Error occurred during PubMed search:", e)
         return []
+
+# Utilize caching for PubMed search results
+@lru_cache(maxsize=32)
+def cached_search_pubmed(query):
+    return threaded_search_pubmed(query)
+
+# Update the function to use the cached version
+def search_pubmed(query):
+    return cached_search_pubmed(query)
 
 # Use a decorator for caching
 @lru_cache(maxsize=32)
