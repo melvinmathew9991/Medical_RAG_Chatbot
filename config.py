@@ -1,27 +1,32 @@
 import os
 from dotenv import load_dotenv 
+
+# Load environment variables from a .env file
 load_dotenv()
 
-# Set up environment variables
+# Set the OpenAI API key from the environment variable
 os.environ["OPENAI_API_KEY"] = os.getenv("OPENAI_API_KEY")
-os.environ["LANGCHAIN_TRACING_V2"] = "true"  
+
+# Set Langchain tracing to version 2
+os.environ["LANGCHAIN_TRACING_V2"] = "true"
+
+# Set the Langchain API key from the environment variable
 os.environ["LANGCHAIN_API_KEY"] = os.getenv("LANGCHAIN_API_KEY")
 
-# Model type selection
+# Get the model type from the environment variable or default to "ollama"
 MODEL_TYPE = os.environ.get("MODEL_TYPE", "ollama")
 
-# OLLAMA model name
+# Get the OLLAMA model name from the environment variable or default to "phi3"
 OLLAMA_MODEL_NAME = os.environ.get("OLLAMA_MODEL_NAME", "phi3")
 
-# OpenAI API key
+# Get the OpenAI API key from the environment variable
 OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
 
-
-# Persist directory path for the vector database
+# Set the directory path for persisting the vector database
 PERSIST_DIR = "E:/brototype/Langchain/Ollama/chatbot"
 
-# OpenAI embedding engine name (if using OpenAI)
+# Get the OpenAI embedding engine name from the environment variable or default to "text-embedding-ada-002"
 OPENAI_EMBEDDING = os.environ.get("OPENAI_EMBEDDING", "text-embedding-ada-002")
 
-#SerAPI key
+# Get the SERPAPI API key from the environment variable
 SERPAPI_API_KEY = os.environ.get("SERPAPI_API_KEY")
