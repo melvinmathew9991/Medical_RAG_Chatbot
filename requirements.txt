@@ -10,3 +10,5 @@ serpapi==0.1.5
 google-search-results==2.4.2
 streamlit==1.35.0
 xmltodict==0.13.0
+pysqlite3-binary==0.4.6
+sqlite3
