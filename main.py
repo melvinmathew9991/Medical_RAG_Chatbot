@@ -58,4 +58,3 @@ if prompt:
 
     with st.chat_message("Assistant"):
         st.markdown(response['result'])
-

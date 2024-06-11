@@ -1,3 +1,4 @@
+import sqlite3
 aiohttp==3.9.5
 langchain==0.2.3
 langsmith==0.1.75

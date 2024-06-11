@@ -4,15 +4,15 @@ import time
 import concurrent.futures
 from langchain_community.document_loaders import TextLoader, DirectoryLoader, PyPDFLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain_chroma import Chroma
+from langchain_community.vectorstores import FAISS
 from langchain_openai import OpenAIEmbeddings
 from config import PERSIST_DIR
 
-def load_documents(loader, documents):
+def load_documents(loader):
     """
     Load documents using the specified loader.
     """
-    return loader.load(documents)
+    return loader.load()
 
 def process_documents(pdf_documents, text_documents):
     """
@@ -43,37 +43,33 @@ def create_vector_database():
         
         model_kwargs = {}
         embeddings = OpenAIEmbeddings(**model_kwargs)
+        index_path = os.path.join(PERSIST_DIR, "index.faiss")
 
-        # Check if the persistence directory exists
-        if not os.path.exists(PERSIST_DIR):
-            # If it doesn't exist, load documents and process them
-            pdf_loader = DirectoryLoader("./docs/", glob="./*.pdf", loader_cls=PyPDFLoader)
-            text_loader = DirectoryLoader("./docs/", glob="./*.txt", loader_cls=TextLoader)
+        if not os.path.exists(index_path):
+            pdf_loader = DirectoryLoader("./docs/", glob="*.pdf", loader_cls=PyPDFLoader)
+            text_loader = DirectoryLoader("./docs/", glob="*.txt", loader_cls=TextLoader)
 
             # Load documents concurrently using threads
             with concurrent.futures.ThreadPoolExecutor() as executor:
-                pdf_documents_future = executor.submit(load_documents, pdf_loader, None)
-                text_documents_future = executor.submit(load_documents, text_loader, None)
+                pdf_documents_future = executor.submit(load_documents, pdf_loader)
+                text_documents_future = executor.submit(load_documents, text_loader)
 
                 pdf_documents = pdf_documents_future.result()
                 text_documents = text_documents_future.result()
 
-            # Process the documents into chunks
             data = process_documents(pdf_documents, text_documents)
 
             print("Data Processing Complete")
 
-            # Create a vector database and persist it
             with concurrent.futures.ThreadPoolExecutor() as executor:
                 vectordb = executor.submit(
-                    Chroma.from_texts, data, embeddings, persist_directory=PERSIST_DIR
+                    FAISS.from_texts, data, embeddings
                 ).result()
-                vectordb.persist()
+                vectordb.save_local(PERSIST_DIR)
 
             print("Vector DB Creating Complete\n")
         else:
-            # If the persistence directory exists, load the vector database
-            vectordb = Chroma(persist_directory=PERSIST_DIR, embedding_function=embeddings)
+            vectordb = FAISS.load_local(PERSIST_DIR, embeddings, allow_dangerous_deserialization=True)
 
         print("Vector DB Loaded\n")
         
@@ -82,10 +78,9 @@ def create_vector_database():
         
         return vectordb
     except Exception as e:
-        # Handle any exceptions that occur during vector database creation
         print("Error occurred during vector database creation:")
         print(traceback.format_exc())
         return None
 
-# Example usage
+
 vectordb = create_vector_database()

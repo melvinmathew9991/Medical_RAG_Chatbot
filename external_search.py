@@ -1,4 +1,4 @@
-from langchain_community.document_loaders import PubMedLoader, WikipediaLoader
+from langchain_community.document_loaders import PubMedLoader
 from serpapi import GoogleSearch
 from requests.exceptions import RequestException
 from config import SERPAPI_API_KEY

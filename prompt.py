@@ -1,5 +1,5 @@
 from langchain_core.example_selectors import SemanticSimilarityExampleSelector
-from langchain_chroma import Chroma
+from langchain_community.vectorstores import FAISS
 from langchain_openai import OpenAIEmbeddings
 from langchain_core.prompts import FewShotPromptTemplate, PromptTemplate
 import os
@@ -46,7 +46,7 @@ class LazyLoader:
             self.example_selector = SemanticSimilarityExampleSelector.from_examples(
                 examples=self.load_medical_examples(),
                 embeddings=OpenAIEmbeddings(openai_api_key=os.getenv("OPENAI_API_KEY")),
-                vectorstore_cls=Chroma,
+                vectorstore_cls=FAISS,
                 k=1,
             )
         return self.example_selector

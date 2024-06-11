@@ -50,12 +50,10 @@ def initialize_model(model_type):
         langchain_community.llms.Ollama or langchain_openai.ChatOpenAI: The initialized language model, or None if initialization fails.
     """
     try:
-        start_time = time.time()  # Start timing model initialization
-
-        # Initialize the appropriate model based on the specified type
+        start_time = time.time() 
         if model_type == "ollama":
-            model_name = os.environ.get("OLLAMA_MODEL_NAME", "phi3")  # Get OLLAMA model name from environment variables
-            model = Ollama(  # Initialize OLLAMA model with specified parameters
+            model_name = os.environ.get("OLLAMA_MODEL_NAME", "phi3")  
+            model = Ollama(  
                 model=model_name,
                 callback_manager=CallbackManager([StreamingStdOutCallbackHandler()])
             )
@@ -65,14 +63,13 @@ def initialize_model(model_type):
                 convert_system_message_to_human=True
             )
         else:
-            raise ValueError(f"Unsupported model type: {model_type}")  # Raise ValueError for unsupported model type
+            raise ValueError(f"Unsupported model type: {model_type}")  
         
-        end_time = time.time()  # End timing model initialization
-        elapsed_time = end_time - start_time  # Calculate elapsed time
-        print(f"Time taken for {model_type} model initialization:", elapsed_time, "seconds")  # Print the elapsed time
+        end_time = time.time()  
+        elapsed_time = end_time - start_time  
+        print(f"Time taken for {model_type} model initialization:", elapsed_time, "seconds")  
 
-        return model  # Return the initialized model
+        return model  
     except ValueError as e:
-        # Handle any ValueError exceptions that occur during model initialization
-        print("Error occurred during model initialization:", e)  # Print the error message
-        return None  # Return None if initialization fails
+        print("Error occurred during model initialization:", e)  
+        return None  
