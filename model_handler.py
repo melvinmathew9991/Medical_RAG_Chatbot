@@ -39,37 +39,19 @@ def cache(func):
     return wrapper  # Return the decorated function
 
 @cache  # Apply the cache decorator to the function
-def initialize_model(model_type):
-    """
-    Initialize the specified language model and cache the result.
-
-    Args:
-        model_type (str): The type of language model to initialize.
-
-    Returns:
-        langchain_community.llms.Ollama or langchain_openai.ChatOpenAI: The initialized language model, or None if initialization fails.
-    """
+def initialize_model():
     try:
-        start_time = time.time() 
-        if model_type == "ollama":
-            model_name = os.environ.get("OLLAMA_MODEL_NAME", "phi3")  
-            model = Ollama(  
-                model=model_name,
-                callback_manager=CallbackManager([StreamingStdOutCallbackHandler()])
-            )
-        elif model_type == "openai":
-            model = ChatOpenAI(  # Initialize ChatOpenAI model with specified parameters
-                temperature=0.1,
-                convert_system_message_to_human=True
-            )
-        else:
-            raise ValueError(f"Unsupported model type: {model_type}")  
+        start_time = time.time()
+        model = ChatOpenAI(
+            temperature=0.1,
+            #convert_system_message_to_human=True,
+            streaming=True
+        )
         
-        end_time = time.time()  
-        elapsed_time = end_time - start_time  
-        print(f"Time taken for {model_type} model initialization:", elapsed_time, "seconds")  
-
-        return model  
-    except ValueError as e:
-        print("Error occurred during model initialization:", e)  
-        return None  
+        end_time = time.time()
+        elapsed_time = end_time - start_time
+        print(f"Time taken for OpenAI model initialization:", elapsed_time, "seconds")
+        return model
+    except Exception as e:
+        print("Error occurred during model initialization:", e)
+        return None

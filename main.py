@@ -2,7 +2,6 @@ import streamlit as st
 from model_handler import initialize_model
 from data_processing import create_vector_database
 from query_handler import create_query_chain, search_external_sources
-from config import MODEL_TYPE
 from prompt import few_shot_template
 
 # Add a header for your chatbot
@@ -13,14 +12,14 @@ if "history" not in st.session_state:
     st.session_state.history = []
 
 # Load model based on configuration
-model = initialize_model(MODEL_TYPE)
+model = initialize_model()
 
 # Create or load the vector database
 vectordb = create_vector_database()
 
 # Use the format_prompt function to generate prompts based on user input
 def format_prompt(question):
-    return few_shot_template.format(question = question)
+    return few_shot_template.format(question=question)
 
 def process_user_input(user_query):
     query_chain = create_query_chain(model, vectordb)

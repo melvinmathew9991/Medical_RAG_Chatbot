@@ -19,7 +19,7 @@ def process_documents(pdf_documents, text_documents):
     Process documents by splitting them into chunks.
     """
     # Create text splitter with recommended chunk size and overlap
-    splitter = RecursiveCharacterTextSplitter(chunk_size=2000, chunk_overlap=300)
+    splitter = RecursiveCharacterTextSplitter(chunk_size=3000, chunk_overlap=300)
     
     # Assuming pdf_documents and text_documents are lists of document contents
     pdf_context = "\n\n".join(str(p.page_content) for p in pdf_documents)
