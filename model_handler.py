@@ -3,9 +3,7 @@ import functools
 import time  
 from langchain_community.llms import Ollama  
 from langchain_openai import ChatOpenAI  
-from langchain.callbacks.streaming_stdout import StreamingStdOutCallbackHandler  
-from langchain.callbacks.manager import CallbackManager  
-
+ 
 # Define a cache decorator to cache responses
 def cache(func):
     """
@@ -44,7 +42,6 @@ def initialize_model():
         start_time = time.time()
         model = ChatOpenAI(
             temperature=0.1,
-            #convert_system_message_to_human=True,
             streaming=True
         )
         

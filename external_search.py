@@ -10,19 +10,13 @@ from functools import lru_cache
 # Implement a threaded version of PubMed search
 def threaded_search_pubmed(query):
     try:
-        # Measure start time
         start_time = time.time()
-        # Initialize PubMedLoader with the query
         loader = PubMedLoader(query=query)
-        # Load documents
         documents = loader.load()
-        # Measure end time
         end_time = time.time()
-        # Print time taken for PubMed search
         print("Time taken for PubMed search:", end_time - start_time, "seconds")
         return documents
     except Exception as e:
-        # Print error if exception occurs
         print("Error occurred during PubMed search:", e)
         return []
 
@@ -54,22 +48,18 @@ def fetch_wikipedia_data(query):
     # Ensure the event loop runs in the correct context
     loop = asyncio.new_event_loop()
     asyncio.set_event_loop(loop)
-    # Run event loop and return data
     data = loop.run_until_complete(fetch_all_data())
     loop.close()
     return data
 
 def search_wikipedia(query):
     try:
-        # Measure start time
         start_time = time.time()
         # Fetch Wikipedia data
         data = fetch_wikipedia_data(query)
         # Extract snippets from data
         documents = [item['snippet'] for item in data['query']['search']]
-        # Measure end time
         end_time = time.time()
-        # Print time taken for Wikipedia search
         print("Time taken for Wikipedia search:", end_time - start_time, "seconds")
         return documents
     except Exception as e: 
