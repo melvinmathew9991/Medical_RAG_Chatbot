@@ -1,4 +1,10 @@
 .env
 venv
+.venv*
 .vscode
 .devcontainer
+__pycache__/
+*.pyc
+vectorstore-openai-backup/
+vectorstore-corrupted-backup/
+vectorstore-old-chunking-backup/
