@@ -1,0 +1,122 @@
+{
+  "What causes bedsores?": {
+    "temp_0.1": [
+      {
+        "refusal": false,
+        "text": "Based on the provided text, bedsores most often develop when constant pressure pinches tiny blood vessels that deliver oxygen and nutrients to the skin, depriving the skin of oxygen and nutrients for "
+      },
+      {
+        "refusal": false,
+        "text": "Based on the provided context, bedsores most often develop when constant pressure pinches tiny blood vessels that deliver oxygen and nutrients to the skin, causing areas of tissue to die when deprived"
+      },
+      {
+        "refusal": false,
+        "text": "Based on the provided context, bedsores most often develop when constant pressure pinches tiny blood vessels that deliver oxygen and nutrients to the skin, causing areas of tissue to die when deprived"
+      }
+    ],
+    "temp_0.0": [
+      {
+        "refusal": false,
+        "text": "Based on the provided context, bedsores most often develop when constant pressure pinches tiny blood vessels that deliver oxygen and nutrients to the skin, causing areas of tissue to die when deprived"
+      },
+      {
+        "refusal": false,
+        "text": "Based on the provided context, bedsores most often develop when constant pressure pinches tiny blood vessels that deliver oxygen and nutrients to the skin, causing areas of tissue to die when deprived"
+      },
+      {
+        "refusal": false,
+        "text": "Based on the provided context, bedsores most often develop when constant pressure pinches tiny blood vessels that deliver oxygen and nutrients to the skin, causing areas of tissue to die after being d"
+      }
+    ]
+  },
+  "What are the symptoms of breast cancer?": {
+    "temp_0.1": [
+      {
+        "refusal": true,
+        "text": "I don't know the answer to that question based on the provided context."
+      },
+      {
+        "refusal": true,
+        "text": "I don't know the answer to that question based on the provided context."
+      },
+      {
+        "refusal": true,
+        "text": "I don't know the answer based on the provided context."
+      }
+    ],
+    "temp_0.0": [
+      {
+        "refusal": true,
+        "text": "I don't know the answer to that based on the provided context."
+      },
+      {
+        "refusal": false,
+        "text": "Based on the provided context, signs and symptoms of breast disease (such as cancer) or trouble signs during a breast self-examination include:\n* The presence of a lump within the breast (or a new, ha"
+      },
+      {
+        "refusal": true,
+        "text": "I don't know the answer to that based on the provided context."
+      }
+    ]
+  },
+  "What is bursitis?": {
+    "temp_0.1": [
+      {
+        "refusal": true,
+        "text": "I don't know the answer based on the provided context."
+      },
+      {
+        "refusal": true,
+        "text": "I don't know the answer to that question based on the provided text."
+      },
+      {
+        "refusal": true,
+        "text": "I don't know the answer to your question based on the provided context, as the text does not define bursitis, though it does discuss its causes, symptoms, diagnosis, and treatments."
+      }
+    ],
+    "temp_0.0": [
+      {
+        "refusal": true,
+        "text": "I don't know the answer to your question based on the provided context."
+      },
+      {
+        "refusal": true,
+        "text": "I don't know the answer to your question based on the provided context."
+      },
+      {
+        "refusal": true,
+        "text": "I don't know the answer to that question based on the provided context."
+      }
+    ]
+  },
+  "What is an abscess?": {
+    "temp_0.1": [
+      {
+        "refusal": true,
+        "text": "I don't know the answer to your question based on the provided context."
+      },
+      {
+        "refusal": true,
+        "text": "I don't know the answer based on the provided context."
+      },
+      {
+        "refusal": false,
+        "text": "Based on the provided text, an abscess is the last stage of a tissue infection that begins with inflammation, where tissue turns to liquid as chemical digestion liquefies it, forming a pocket of pus. "
+      }
+    ],
+    "temp_0.0": [
+      {
+        "refusal": false,
+        "text": "Based on the provided text, an abscess is the last stage of a tissue infection that begins with inflammation, where tissue turns to liquid and a pocket of thick, yellow liquid (pus)\u2014containing digeste"
+      },
+      {
+        "refusal": false,
+        "text": "Based on the provided context, an abscess is the last stage of a tissue infection that begins with inflammation, where tissue turns to liquid and a pocket of pus forms. It is a pus-filled sore, usuall"
+      },
+      {
+        "refusal": false,
+        "text": "Based on the provided context, an abscess is the last stage of a tissue infection that begins with inflammation, where tissue turns to liquid and a pocket of pus forms. It is a pus-filled sore, usuall"
+      }
+    ]
+  }
+}
