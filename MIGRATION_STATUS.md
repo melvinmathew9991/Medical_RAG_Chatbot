@@ -1,142 +1,99 @@
-# Gemini Migration — Status & Resume Guide
+# MEDBOT — Where We Started, Where We Are, Where We're Going
 
-**Why:** the user has no OpenAI key and can't run local LLMs (laptop can't handle it), so chat/generation
-is being swapped from OpenAI to Google Gemini's free tier (Google AI Studio key, no credit card).
-Embeddings ended up pivoting to a **local** model instead (see below) — the laptop handles that fine,
-it's only full LLM inference that's out of reach. This file is the single place to check "where did we
-leave off."
+Single source of truth for project status. Supersedes earlier drafts of this file, which contained
+claims later disproved by actually running the app (noted inline below where relevant).
 
-Last updated: 2026-07-23 (index rebuild completed).
+---
 
-## Current state: DONE — index rebuilt successfully with local embeddings, no quota involved
+## 1. Where we started
 
-The Gemini embedding free-tier quota (1000 requests/day, consumed per individual text — see historical
-note below) could never fit this corpus. Rather than keep shrinking chunk size to squeeze under the cap,
-the fix that stuck was **dropping Gemini for embeddings entirely** and switching to local `fastembed`
-(CPU, ONNX, `BAAI/bge-small-en-v1.5`, via `langchain_community.embeddings.FastEmbedEmbeddings`) — no API
-key, no quota, no rate limit. Gemini (`gemini-flash-lite-latest`) is still used for chat/generation.
+**Original prototype (2024-05-23 → 2024-06-15, 26 commits):** a bootcamp/learning-style build —
+loose root-level scripts, OpenAI (`ChatOpenAI` + `text-embedding-ada-002`), a Chroma vector store
+migrated to FAISS mid-development after repeated SQLite version conflicts (8 commits fighting it),
+and a hardcoded personal path (`E:/brototype/Langchain/Ollama/test_chatbot`) left in `config.py`.
+Few-shot prompting and external search (PubMed/Wikipedia/SerpAPI) were built but, per that era's
+code, not connected to the answer the user actually saw. No tests, no CI, no medical disclaimer.
 
-Separately, the on-disk index also got **corrupted** at one point: `core.autocrlf=true` with no
-`.gitattributes` mangled the binary `vectorstore/index.faiss` during a git rename/checkout (`faiss.read_index`
-failed with "Index type not recognized"). Fixed by adding a repo-root `.gitattributes` marking `*.faiss`,
-`*.pkl`, `*.pdf` as binary. The corrupted copy is preserved at `vectorstore-corrupted-backup/` — safe to
-delete once the app has been used successfully a few times.
+**2026-07-06 restructure:** scripts reorganized into a proper `medbot/` package, the hardcoded path
+replaced with a portable repo-relative config, dead code isolated into `medbot/legacy/`. Still
+running on OpenAI at this point — needed a paid key the user doesn't have.
 
-**Rebuild result (2026-07-23, ~12:20 local):** all **1223/1223 chunks** embedded locally in ~887 seconds
-(~15 min, one-time CPU cost, no quota wall hit). Verified with `similarity_search("what is diabetes", k=2)`
-— returned correct, relevant passages. `chunk_size` is back to the original `3000`/`300` overlap (no longer
-needs to be inflated to dodge a quota, since local embeddings have none).
+**This session's starting point (2026-07-23):** the user has no paid OpenAI access and no
+local-LLM-capable hardware (see laptop spec in memory), so the chat backend had to move to a free
+tier. On opening the repo, the actual state was:
+- A large restructure + partial Gemini migration sitting **entirely uncommitted**.
+- The on-disk FAISS index **corrupted** (`core.autocrlf=true` with no `.gitattributes` had mangled
+  the binary file on a git rename/checkout).
+- Docs (this file, in an earlier draft) claiming the index rebuild was complete at 1223/1223 chunks —
+  actually only **900/1225** were embedded on disk.
+- External search (PubMed/Wikipedia/SerpAPI) and few-shot prompting *looked* disconnected per an
+  earlier project report — this turned out to be stale; see §2.
 
-**Root cause, now understood (was mis-diagnosed earlier):** Google's free-tier daily quota
-(`EmbedContentRequestsPerDayPerProjectPerModel-FreeTier`, limit 1000/day) counts **one unit per
-individual text embedded**, not one unit per `batch_embed_contents` API call. Confirmed by reading
-`langchain_google_genai/embeddings.py::embed_documents` — it groups texts into `BatchEmbedContentsRequest`
-calls, but each text inside still consumes one quota unit server-side. This means the *original*
-`chunk_size=3000` setup (1223 chunks) could **never** complete in one day — it needed more requests than
-the entire daily allowance, regardless of retries or batching. That's why every previous attempt stalled
-partway through.
+---
 
-Confirmed via the AI Studio dashboard (2026-07-23, ~11:24 local / ~05:54 Pacific): `Gemini Embedding 1` —
-RPM 102/100, TPM 51.82K/30K, **RPD 1K/1K (fully capped)**. All three limits were exceeded, not just RPD.
-**Do not attempt any more embedding calls until this resets** — check the same dashboard
-(https://aistudio.google.com/apikey → rate limits) before retrying. Reset timing is unconfirmed — may not
-be a simple Pacific-midnight calendar reset (it was still capped this many hours after that point), possibly
-a rolling 24h window instead. Wait and re-check the dashboard rather than guessing.
+## 2. What we have now (Sprint 0 — verified, not just claimed)
 
-## Fix applied today: chunk_size 3000 → 6000 (medbot/data_processing.py)
+Everything below was confirmed by reading the actual current code and by running the app
+end-to-end via `streamlit.testing.v1.AppTest` (a real question, a real Gemini call, real retrieval,
+all three external sources returning) — not carried over from older docs.
 
-`chunk_overlap` scaled proportionally (300 → 600). This roughly halves total chunks to ~600-650, which
-**does** fit under the 1000/day cap in a single sitting (unlike the old 1223), assuming no leftover quota
-usage that day. Trade-off accepted: coarser retrieved context per chunk (user decision, 2026-07-23).
+- **Chat**: Google Gemini, `gemini-flash-lite-latest` (500 RPD free tier vs. 20 RPD for full Flash).
+- **Embeddings**: local `fastembed` (`BAAI/bge-small-en-v1.5`, CPU/ONNX) — no API key, no quota.
+  Gemini's free embedding quota (1000/day, charged per chunk) could never cover this corpus.
+- **Vector index**: genuinely complete now — **1225/1225 chunks**, rebuilt this session (the
+  remaining 325 were embedded live during testing), verified loading from disk on repeat runs.
+- **Few-shot prompting + medical disclaimer** — confirmed wired into the live `RetrievalQA` chain
+  (`medbot/prompt.py`'s `build_context_prompt`, called from `medbot/query_handler.py`). An earlier
+  project report claimed this was unused; that was wrong as of the current code.
+- **External source corroboration** — PubMed, Wikipedia, and Google (via SerpAPI) all confirmed
+  wired into the visible answer (`format_external_results` in `app.py`), not discarded.
+- **Bugs found and fixed this session**:
+  - PubMed: TLS interception on this network was rejecting requests — fixed with `pip-system-certs`.
+  - Wikipedia: 403 (missing `User-Agent`, per Wikimedia's robot policy) and a strict Content-Type
+    check on the JSON response — both fixed in `medbot/external_search.py`.
+  - `.env` / `.env.example` reconciled to the vars `medbot/config.py` actually reads (dropped a dead
+    `OPENAI_API_KEY` entry, fixed a misnamed `GEMINI_EMBEDDING_MODEL` → `LOCAL_EMBEDDING_MODEL`).
+  - Stale vectorstore files re-staged (they were committed mid-rebuild, before completion).
+- **Git**: the whole migration + restructure + fixes committed as `9f28cb2`, pushed on branch
+  `openai-to-gemini-migration`, PR open now.
 
-Because chunk boundaries shifted, the old partial index (20/1223 chunks under the old scheme) was
-**deleted** (`vectorstore/index.faiss`, `vectorstore/index.pkl`) rather than resumed — old and new chunk
-lists don't line up, so keeping it would have silently corrupted the resume-by-count logic in
-`create_vector_database()`. Loss was trivial (20 chunks). Next rebuild starts clean at 0/~600-650.
+---
 
-The code is still checkpointed (saves after every batch), so once quota clears, a rebuild attempt that
-gets partway through and hits the wall again will not lose progress — reruns resume from
-`vectordb.index.ntotal`.
+## 3. What we're going to do (Sprints 1–7)
 
-### Remaining steps (index rebuild itself is done):
+Full backlog with effort/priority tags lives in the delivery-plan artifact from this session; summary:
 
-1. ~~Rebuild the index~~ — done, 1223/1223 chunks, retrieval spot-checked and working.
-2. Run the actual app end-to-end: `.venv-gemini/Scripts/python.exe -m streamlit run app.py` (or activate
-   `.venv-gemini` first) and try a real question through the UI, not just direct `similarity_search`.
-3. Decide on cleanup: delete `vectorstore-corrupted-backup/` and `vectorstore-openai-backup/` once the
-   app has been confirmed working a few times.
-4. Commit the (currently entirely uncommitted) restructure + migration — see "What's NOT done yet" below.
+| Sprint | Focus | Why it's next |
+|---|---|---|
+| **1** | Environment & repo hygiene | Close loose ends: decide `.venv-gemini`'s fate, delete confirmed-safe backup folders, reconcile this file and `PROJECT_REPORT.md` with reality, pin exact dependency versions. |
+| **2** | Automated testing foundation | Zero tests exist today — every check this session was manual. Add `pytest`, unit tests for config/external-search, formalize the `AppTest` smoke script. |
+| **3** | CI/CD pipeline | Tests nobody runs automatically aren't a safety net — GitHub Actions on push/PR, lint + pre-commit. |
+| **4** | Retrieval quality & evaluation | Chain returns top-k chunks unconditionally, no citations. Add chunk metadata, a relevance threshold, source citations, and a real eval harness (RAGAS/LLM-judge). |
+| **5** | Observability & UX polish | Replace `print()` logging with structured logging, finish wiring the now-live LangSmith key, implement real token streaming. |
+| **6** | Safety & hardening | Add refuse/redirect logic for diagnosis/dosing/emergency questions beyond the general disclaimer. |
+| **7** (stretch) | Persistence & scale | Only if scope grows past a single-user local tool: persistent chat history, wider corpus, optional auth. |
 
-## What's done
+**Working agreement:** sprints are scope units, not calendar locks — pace is whatever availability
+allows. Order matters: 1–3 exist so 4–6 aren't built on an unverifiable foundation.
 
-- **Provider swap** — `medbot/model_handler.py`, `medbot/data_processing.py`, `medbot/prompt.py` all
-  now use `langchain_google_genai` (`ChatGoogleGenerativeAI`, `GoogleGenerativeAIEmbeddings`) instead
-  of OpenAI equivalents.
-- **Config fixes** (`medbot/config.py`):
-  - Switched `OPENAI_API_KEY` → `GOOGLE_API_KEY`.
-  - Fixed a crash: `os.environ["X"] = os.getenv("X")` used to raise `TypeError` if a var was fully unset.
-  - Fixed a second, related bug: `.env` declares optional vars as blank lines, which `python-dotenv` sets
-    to `""` — and `os.getenv(key, default)`'s default only applies when the var is *absent*, not empty.
-    Every optional override (`DATA_DIR`, `PERSIST_DIR`, `GEMINI_CHAT_MODEL`, `GEMINI_EMBEDDING_MODEL`)
-    was silently resolving to `""` until this was changed to `os.getenv(key) or default`.
-- **Model choice** (also in `config.py`, both overridable via `.env`):
-  - `GEMINI_CHAT_MODEL` = `gemini-flash-lite-latest` — chosen over `gemini-flash-latest` because, per
-    the AI Studio quota dashboard, "Flash Lite" models get **15 RPM / 500 RPD** vs. full "Flash" models'
-    **5 RPM / 20 RPD**. Much more usable for actual day-to-day chatting.
-  - `GEMINI_EMBEDDING_MODEL` = `models/gemini-embedding-001` — `text-embedding-004` (the old obvious
-    choice) no longer exists on this account; confirmed via `genai.list_models()`.
-  - Both accounts are **new-user-restricted** from older models — `gemini-2.0-flash` and
-    `gemini-2.5-flash` both returned errors (`limit: 0` / "no longer available to new users") when tested.
-- **Resumable index rebuild** (`medbot/data_processing.py`) — rewritten to save the FAISS index to disk
-  after *every* batch (not just at the end), and to resume from `vectordb.index.ntotal` on the next run
-  instead of restarting from scratch. Retry logic distinguishes per-minute throttling (worth a short
-  backoff) from daily-quota errors (bail immediately, no point backing off).
-- **Environment fix (unrelated to Gemini, blocking regardless)** — `requirements.txt`'s pinned
-  `langchain==0.2.3` requires `numpy<2`, which has no prebuilt wheel for Python 3.13 (the only Python on
-  this machine) and no C compiler is installed to build from source. Fixed by installing **Python 3.11**
-  via `winget install --id Python.Python.3.11 --scope user`, and creating a fresh venv at
-  **`.venv-gemini`** (repo root) using that interpreter. Also had to relax `langchain_core==0.2.5` →
-  `langchain_core==0.2.43` and `langsmith==0.1.75` → `langsmith>=0.1.112,<0.2.0` to satisfy
-  `langchain-google-genai==1.0.10`'s dependency range. All of `requirements.txt` now installs cleanly
-  in that venv.
-- **`.env`** created locally (gitignored, not committed) with the user's real `GOOGLE_API_KEY`.
-- **`.gitignore`** updated: `.venv-gemini` wasn't covered by the old `venv` entry (different name) — now
-  covered by a `.venv*` pattern; also added `vectorstore-openai-backup/`.
-- **Old OpenAI-embedded FAISS index** moved (not deleted) to `vectorstore-openai-backup/` — safe fallback,
-  not committed, not needed once the Gemini index is complete.
-- Separately from the Gemini migration, earlier in this session: wired the few-shot prompt and external
-  search results into the live `app.py` path, added a medical disclaimer, fixed silent-failure UI
-  handling, and cleaned up `requirements.txt` (dropped unused Chroma packages, unused `Ollama` import).
+---
 
-## What's NOT done yet
+*Historical detail on the Gemini/embeddings pivot itself (quota math, exact error messages, the
+autocrlf corruption incident) is preserved below for anyone debugging a recurrence.*
 
-- **Full end-to-end app test** — index rebuild is done and retrieval spot-checked directly, but
-  `streamlit run app.py` itself hasn't been run yet.
-- **`.venv-gemini`'s long-term status** — currently a throwaway test env. Needs a decision: keep it as
-  the project's permanent environment (maybe rename it), or the user manages Python environments
-  differently.
-- **Backup cleanup** — `vectorstore-openai-backup/` and `vectorstore-corrupted-backup/` (new, from the
-  autocrlf corruption incident) can both be deleted once the app is confirmed working, or kept as
-  fallbacks — undecided.
-- **Git** — a large restructure from earlier in the session (loose scripts → `medbot/` package, plus all
-  the fixes and this whole migration) is sitting **entirely uncommitted**. Needs a decision on how to
-  split it into commits now that everything is verified working. Also uncommitted: the new
-  `.gitattributes` (binary markers for `*.faiss`/`*.pkl`/`*.pdf`).
-- **Streaming** — `ChatGoogleGenerativeAI` doesn't take the old `streaming=True` constructor kwarg the
-  way `ChatOpenAI` did; it was dropped rather than guessed at. Not consumed by the UI anyway (pre-existing
-  gap). Would need an LCEL-style chain to actually stream tokens into Streamlit.
-- **Tests / CI / eval harness** — never existed, not addressed.
+## Appendix: Gemini embedding quota — root cause
 
-## Key facts to remember
+Google's free-tier daily quota (`EmbedContentRequestsPerDayPerProjectPerModel-FreeTier`, limit
+1000/day) counts **one unit per individual text embedded**, not one unit per `batch_embed_contents`
+API call — confirmed by reading `langchain_google_genai/embeddings.py::embed_documents`. This
+corpus (1225 chunks) could never finish in a single day via Gemini embeddings no matter how it was
+batched or retried, which is why every earlier attempt stalled partway through. The fix that stuck
+was dropping Gemini embeddings entirely in favor of local `fastembed` — no daily cap at all.
 
-- Total chunks: **1223** (from `data/71763-gale-encyclopedia-of-medicine.-vol.-1.-2nd-ed.pdf`,
-  `RecursiveCharacterTextSplitter(chunk_size=3000, chunk_overlap=300)`), all embedded and persisted.
-- Embeddings run **locally** via `fastembed` (`BAAI/bge-small-en-v1.5`, CPU/ONNX) — no API key, no quota,
-  no rate limit. Took ~887 seconds (~15 min) one-time to embed all 1223 chunks on this machine.
-- Chat quota: `gemini-flash-lite-latest` → 15 RPM / **500 RPD** — this is the only remaining Gemini quota
-  concern in the app (embeddings no longer touch Gemini at all).
-- Python 3.11 is required for this project on this machine — Python 3.13 cannot install the pinned
-  LangChain 0.2.x stack. Use `.venv-gemini\Scripts\python.exe` (or activate it) for everything.
-- `core.autocrlf=true` + missing `.gitattributes` previously corrupted the binary FAISS index on a git
-  rename/checkout — now fixed with a repo-root `.gitattributes`. Keep binary vectorstore/PDF files
-  covered by it going forward.
+## Appendix: environment notes
+
+- Python 3.11 is required on this machine — 3.13 has no `numpy<2` wheel needed by the pinned
+  LangChain 0.2.x stack. Venv lives at `.venv-gemini` (repo root) — see Sprint 1 re: renaming.
+- `core.autocrlf=true` with no `.gitattributes` previously corrupted the binary FAISS index on a git
+  rename/checkout. Fixed by adding a repo-root `.gitattributes` marking `*.faiss`, `*.pkl`, `*.pdf`
+  as binary — keep any future binary file types covered by it too.
