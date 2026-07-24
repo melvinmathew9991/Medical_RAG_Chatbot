@@ -1,7 +1,16 @@
 # MEDBOT — Medical Retrieval-Augmented Generation Chatbot: Project Report
 
+> **Historical snapshot — as of 2026-07-06, pre-Gemini migration.** This report predates the
+> 2026-07-23 OpenAI → Gemini + local-embeddings migration: every mention of OpenAI/`ChatOpenAI`/
+> `text-embedding-ada-002` below describes the stack *at the time this was written*, not the
+> current one. The "few-shot prompting disconnected from the live query path" finding (§8/§10)
+> was also true only as of this snapshot — it was fixed and reconfirmed wired-in during the
+> migration session. For current architecture and status, see `MIGRATION_STATUS.md`. Everything
+> else here (business rationale, the Chroma→FAISS migration history, restructure notes) is still
+> accurate and kept as-is.
+
 **Repository:** https://github.com/melvinmathew9991/Medical_RAG_Chatbot
-**Stack:** Python · LangChain · OpenAI · FAISS · Streamlit
+**Stack (as of this snapshot):** Python · LangChain · OpenAI · FAISS · Streamlit
 **Status:** Working prototype (restructured into standard layout)
 **Original active development:** 2024-05-23 → 2024-06-15 (26 commits)
 **Structural refactor:** 2026-07-06
