@@ -57,24 +57,37 @@ all three external sources returning) — not carried over from older docs.
 - **Git**: the whole migration + restructure + fixes committed as `9f28cb2`, pushed on branch
   `openai-to-gemini-migration`, PR open now.
 
+**Sprint 1 (environment & repo hygiene) — also done (2026-07-25, commit `50363f4`):** exact
+dependency pins in `requirements.txt`, README reconciled to the Gemini/fastembed setup,
+`PROJECT_REPORT.md` marked with a historical-snapshot banner, three stale backup vectorstore
+folders deleted, `.venv-gemini` kept as-is.
+
 ---
 
-## 3. What we're going to do (Sprints 1–7)
+## 3. What we're going to do (Sprints 2–9)
 
-Full backlog with effort/priority tags lives in the delivery-plan artifact from this session; summary:
+Reordered 2026-07-25 to pull evaluation forward: you can't judge whether the CoT prompting
+change (new Sprint 3) actually helps without a groundedness/retrieval metric (new Sprint 2)
+existing first, and the eval harness doubles as a safety-relevant baseline that Sprint 8
+(refuse/redirect logic) should be validated against rather than built on an unmeasured RAG
+pipeline. Reordering ahead of pytest/CI (now Sprints 4–5) is judged low-risk for a solo project
+where one person holds full context — those sprints existed to protect a team's shared state,
+which doesn't apply the same way here, and nothing about doing eval/CoT first makes Sprints 4–5
+harder later.
 
-| Sprint | Focus | Why it's next |
+| Sprint | Focus | Why it's here |
 |---|---|---|
-| **1** | Environment & repo hygiene | Close loose ends: decide `.venv-gemini`'s fate, delete confirmed-safe backup folders, reconcile this file and `PROJECT_REPORT.md` with reality, pin exact dependency versions. |
-| **2** | Automated testing foundation | Zero tests exist today — every check this session was manual. Add `pytest`, unit tests for config/external-search, formalize the `AppTest` smoke script. |
-| **3** | CI/CD pipeline | Tests nobody runs automatically aren't a safety net — GitHub Actions on push/PR, lint + pre-commit. |
-| **4** | Retrieval quality & evaluation | Chain returns top-k chunks unconditionally, no citations. Add chunk metadata, a relevance threshold, source citations, and a real eval harness (RAGAS/LLM-judge). |
-| **5** | Observability & UX polish | Replace `print()` logging with structured logging, finish wiring the now-live LangSmith key, implement real token streaming. |
-| **6** | Safety & hardening | Add refuse/redirect logic for diagnosis/dosing/emergency questions beyond the general disclaimer. |
-| **7** (stretch) | Persistence & scale | Only if scope grows past a single-user local tool: persistent chat history, wider corpus, optional auth. |
+| **2** | Evaluation harness | Build the measurement tool everything after this depends on: Precision@K retrieval metric (reused from the AML fraud project) against a 20–30 question test set with known-correct source passages, plus a faithfulness/groundedness check (NLI-based or documented manual rubric) on generated answers. Report numbers honestly, weak spots included. |
+| **3** | Chain-of-thought few-shot upgrade | Rewrite 5–8 of the 27 few-shot examples as Question → Reasoning (what does the question ask, what does retrieved context say, does it actually support an answer) → Answer. Strip the reasoning trace before it reaches the user-facing answer. A/B against the original few-shot-only prompt using Sprint 2's harness — don't ship on vibes. |
+| **4** | Automated testing foundation | Zero tests exist today. Add `pytest`, unit tests for config/external-search, formalize the `AppTest` smoke script, and a regression test that fails if Sprint 2/3's eval numbers drop. |
+| **5** | CI/CD pipeline | Tests nobody runs automatically aren't a safety net — GitHub Actions on push/PR, lint + pre-commit. |
+| **6** | Retrieval quality improvements | Use Sprint 2's findings to act on them: chunk metadata, a relevance threshold, source citations. (Building the harness itself moved to Sprint 2 — this is now about using it.) |
+| **7** | Observability & UX polish | Replace `print()` logging with structured logging, finish wiring the now-live LangSmith key, implement real token streaming. |
+| **8** | Safety & hardening | Add refuse/redirect logic for diagnosis/dosing/emergency questions beyond the general disclaimer — validated against Sprint 2's groundedness baseline, not an unmeasured one. |
+| **9** (stretch) | Persistence & scale | Only if scope grows past a single-user local tool: persistent chat history, wider corpus, optional auth. |
 
 **Working agreement:** sprints are scope units, not calendar locks — pace is whatever availability
-allows. Order matters: 1–3 exist so 4–6 aren't built on an unverifiable foundation.
+allows.
 
 ---
 
