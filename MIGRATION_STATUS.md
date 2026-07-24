@@ -62,6 +62,30 @@ dependency pins in `requirements.txt`, README reconciled to the Gemini/fastembed
 `PROJECT_REPORT.md` marked with a historical-snapshot banner, three stale backup vectorstore
 folders deleted, `.venv-gemini` kept as-is.
 
+**Sprint 2 (evaluation harness) — also done (2026-07-25):** `medbot/eval/` — a 24-question test
+set grounded in the real corpus (`dataset.py`; every question was chosen because a dedicated
+encyclopedia entry for it actually exists — see the coverage note below), a Precision@K
+retrieval metric (keyword-containment against manually verified phrases), and an LLM-judge
+groundedness score (same Gemini model grading its own answer, disclosed self-grading bias).
+Run via `python -m medbot.eval.run_eval`; full numbers and per-question results in
+`medbot/eval/results.md`.
+- **Mean Precision@4: 0.83, mean groundedness: 0.83** across 24 questions.
+- **Corpus coverage fact discovered while building the test set:** the indexed PDF (Gale
+  Encyclopedia of Medicine, Vol. 1, 2nd ed.) covers entries alphabetically from roughly
+  "Abdominal ultrasound" to "Byssinosis" — **A-B only**. Asking about any C-Z condition (diabetes,
+  psoriasis, stroke, etc.) will retrieve weak or irrelevant chunks not because retrieval is
+  broken, but because the corpus doesn't have a dedicated entry for it. Worth knowing before
+  trusting any future retrieval-quality complaint about a non-A/B topic.
+- **Real bug-shaped finding, audited end-to-end:** 4 of the 24 questions scored 0 groundedness
+  because the model falsely refused to answer ("I don't know based on the provided context")
+  even though the retrieved context clearly contained the answer. A follow-up audit confirmed
+  this is real, not a harness artifact: reproduced live through the actual Streamlit app via
+  `AppTest`; a temperature=0 vs 0.1 experiment (24 calls) showed the refusal rate drops from
+  67% to 42% at temperature=0 but doesn't go away — one question ("bursitis") refused in all 6
+  trials at both temperatures, so this isn't pure sampling noise. Direct motivation for Sprint
+  3's CoT rewrite (temperature=0 alone won't fix it). Full writeup, including a precision audit
+  of the two weakest retrieval cases, in `medbot/eval/results.md`.
+
 ---
 
 ## 3. What we're going to do (Sprints 2–9)
