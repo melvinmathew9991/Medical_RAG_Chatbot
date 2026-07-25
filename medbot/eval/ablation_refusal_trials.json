@@ -1,0 +1,186 @@
+{
+  "What causes bedsores?": {
+    "instruction-only": [
+      {
+        "refusal": false,
+        "text": "Based on the provided context, bedsores are most often caused when constant pressure pinches tiny blood vessels that deliver oxygen and nutrients to the skin, causing areas of tissue to die when deprived of oxygen and nutrients for as little as an hour. \n\nAdditionally, the context states that bedsores can be caused by:\n* Slight rubbing or friction against the skin\n* A patient stretching or bending blood vessels by slipping into a different position in a bed or chair\n\nThe context does not provide information to answer what causes acne."
+      },
+      {
+        "refusal": false,
+        "text": "Based on the provided context, bedsores most often develop when constant pressure pinches tiny blood vessels that deliver oxygen and nutrients to the skin, causing areas of tissue to die after being deprived for as little as an hour. \n\nAdditionally, the context notes that bedsores can be caused by:\n* Slight rubbing or friction against the skin\n* Stretching or bending blood vessels by slipping into a different position in a bed or chair"
+      },
+      {
+        "refusal": false,
+        "text": "Based on the provided context, bedsores most often develop when constant pressure pinches tiny blood vessels that deliver oxygen and nutrients to the skin, causing areas of tissue to die when deprived of oxygen and nutrients for as little as an hour. \n\nAdditionally, minor pressure ulcers can be caused by slight rubbing or friction against the skin, or when a patient stretches or bends blood vessels by slipping into a different position in a bed or chair. Urine, feces, or other moisture also increases the risk of skin infection related to bedsores."
+      },
+      {
+        "refusal": false,
+        "text": "Based on the provided context, bedsores most often develop when constant pressure pinches tiny blood vessels that deliver oxygen and nutrients to the skin, causing areas of tissue to die after being deprived of oxygen and nutrients for as little as an hour. \n\nAdditional causes and factors that can lead to bedsores include:\n* Slight rubbing or friction against the skin\n* Stretching or bending blood vessels by slipping into a different position in a bed or chair\n* Skin infection risks increased by urine, feces, or other moisture\n* Being unable to move or recognize internal cues to shift position"
+      },
+      {
+        "refusal": false,
+        "text": "Based on the provided context, bedsores most often develop when constant pressure pinches tiny blood vessels that deliver oxygen and nutrients to the skin, causing areas of tissue to die when deprived of oxygen and nutrients for as little as an hour. \n\nAdditionally, the context notes that bedsores can be caused or made more likely by:\n* Slight rubbing or friction against the skin\n* Stretching or bending blood vessels by slipping into a different position in a bed or chair\n* Exposure to urine, feces, or other moisture (which increases the risk of skin infection)\n* Being unable to move or recognize internal cues to shift position\n* Risk factors such as malnutrition, anemia, disuse atrophy, and infection"
+      }
+    ],
+    "examples-only": [
+      {
+        "refusal": false,
+        "text": "Bedsores most often develop when constant pressure pinches the tiny blood vessels that deliver oxygen and nutrients to the skin, causing areas of tissue to die if they are deprived of oxygen and nutrients for as little as an hour. They can also be caused by slight rubbing or friction against the skin, or when a patient slips into a different position in a bed or chair, which stretches or bends blood vessels. Additionally, moisture from urine or feces increases the risk of skin infection. \n\nSeveral risk factors also increase the likelihood of developing bedsores, including:\n\u2022 paralysis or immobility and prolonged bed rest (especially in unsanitary conditions or with wet/wrinkled sheets)\n\u2022 diminished sensation or lack of feeling\n\u2022 incontinence (inability to control bladder or bowel movements)\n\u2022 malnutrition and anemia\n\u2022 obesity\n\u2022 atherosclerosis, heart problems, diabetes, or other conditions making skin susceptible to infection\n\u2022 infection, diuse atrophy (muscle loss/weakness), and spinal cord injury\n\u2022 being over the age of 60, or being unable to move or recognize internal cues to shift positions"
+      },
+      {
+        "refusal": false,
+        "text": "Bedsores most often develop when constant pressure pinches tiny blood vessels that deliver oxygen and nutrients to the skin, causing areas of tissue to die if they are deprived of oxygen and nutrients for as little as an hour. Slight rubbing or friction against the skin can cause minor pressure ulcers, and they can also develop when a patient slips into a different position in a bed or chair, stretching or bending blood vessels. \n\nAdditionally, various risk factors and conditions increase the likelihood of developing bedsores, including:\n* Prolonged bed rest (especially in unsanitary conditions or with wet or wrinkled sheets) or using wheelchairs\n* Being over the age of 60\n* Paralysis or immobility\n* Atherosclerosis (hardening of the arteries)\n* Diabetes or other conditions that make skin more susceptible to infection\n* Diminished sensation or lack of feeling\n* Heart problems\n* Incontinence (inability to control bladder or bowel movements)\n* Malnutrition or anemia (lack of red blood cells)\n* Obesity\n* Poor circulation\n* Spinal cord injury\n* Infection or disuse atrophy (muscle loss or weakness from lack of use)\n* Urine, feces, or other moisture, which increases the risk of skin infection"
+      },
+      {
+        "refusal": false,
+        "text": "Bedsores most often develop when constant pressure pinches tiny blood vessels that supply oxygen and nutrients to the skin, causing tissue in the area to die if deprived for as little as an hour. They can also be caused by slight rubbing or friction against the skin, or when a patient slips into a different position in a bed or chair, which stretches or bends blood vessels. Additionally, moisture from urine or feces increases the risk of skin infection. \n\nSeveral risk factors also contribute to the development of bedsores by affecting mobility, circulation, or skin health, including:\n\u2022 Being confined to a bed or wheelchair, or suffering from paralysis or immobility\n\u2022 Prolonged bed rest, especially in unsanitary conditions or with wet or wrinkled sheets\n\u2022 Diminished sensation or lack of feeling\n\u2022 Atherosclerosis (hardening of the arteries)\n\u2022 Diabetes, heart problems, or other conditions making the skin more susceptible to infection\n\u2022 Incontinence (inability to control bladder or bowel movements)\n\u2022 Malnutrition, anemia, or obesity\n\u2022 Poor circulation, spinal cord injury, or muscle loss/weakness from lack of use (disuse atrophy)\n\u2022 Being over the age of 60"
+      },
+      {
+        "refusal": false,
+        "text": "Bedsores most often develop when constant pressure pinches tiny blood vessels that deliver oxygen and nutrients to the skin, causing areas of tissue to die if they are deprived of oxygen and nutrients for as little as an hour. Slight rubbing or friction against the skin can cause minor pressure ulcers, and they can also develop when a patient stretches or bends blood vessels by slipping into a different position in a bed or chair. \n\nAdditionally, a variety of risk factors increase the likelihood of developing bedsores, including:\n\u2022 Atherosclerosis (hardening of the arteries)\n\u2022 Diabetes or other conditions that make skin more susceptible to infection\n\u2022 Diminished sensation or lack of feeling\n\u2022 Heart problems\n\u2022 Incontinence (inability to control bladder or bowel movements)\n\u2022 Malnutrition\n\u2022 Obesity\n\u2022 Paralysis or immobility\n\u2022 Poor circulation\n\u2022 Prolonged bed rest, especially in unsanitary conditions or with wet or wrinkled sheets\n\u2022 Spinal cord injury\n\u2022 Anemia (lack of red blood cells)\n\u2022 Disuse atrophy (muscle loss or weakness from lack of use)\n\u2022 Infection\n\u2022 Urine, feces, or other moisture that increases the risk of skin infection"
+      },
+      {
+        "refusal": false,
+        "text": "The question asks what causes bedsores. The provided context explains that bedsores most often develop when constant pressure pinches tiny blood vessels that deliver oxygen and nutrients to the skin, depriving the tissue of oxygen and nutrients for as little as an hour so that areas of tissue can die. Slight rubbing or friction against the skin can cause minor pressure ulcers, and they can also develop when a patient stretches or bends blood vessels by slipping into a different position in a bed or chair. In addition, urine, feces, or other moisture increases the risk of skin infection, and people who are unable to move or recognize internal cues to shift position have a greater than average risk. \n\nThe context also lists several other specific risk factors that increase the likelihood of developing bedsores:\n\u2022 Atherosclerosis (hardening of the arteries)\n\u2022 Diabetes or other conditions making the skin more susceptible to infection\n\u2022 Diminished sensation or lack of feeling\n\u2022 Heart problems\n\u2022 Incontinence (inability to control bladder or bowel movements)\n\u2022 Malnutrition\n\u2022 Obesity\n\u2022 Paralysis or immobility\n\u2022 Poor circulation\n\u2022 Prolonged bed rest, especially in unsanitary conditions or with wet or wrinkled sheets\n\u2022 Spinal cord injury\n\u2022 Anemia (lack of red blood cells)\n\u2022 Disuse atrophy (muscle loss or weakness from lack of use)\n\u2022 Infection\n\u2022 Being over the age of 60"
+      }
+    ]
+  },
+  "What are the symptoms of breast cancer?": {
+    "instruction-only": [
+      {
+        "refusal": false,
+        "text": "Based on the provided context, the symptoms and signs of breast cancer (or trouble signs to check for) include:\n* The presence of a lump within the breast (or a new, hard lump in the breast or underarms)\n* Skin dimpling, puckering, or retraction\n* Discharge from the nipple (including bloody nipple discharge, or nipple discharge that begins suddenly and appears only in one breast)\n* Actual skin involvement, with edema, ulceration of the skin, redness, swelling, or warmth that does not go away\n* Changes in the shape, contour, or look of the breasts (or a change in breast size)\n* Pain in one area that does not vary with a woman\u2019s monthly cycle\n* A nipple that pulls in (retraction)\n* One nipple that has an itchy, sore, or scaling area\n\nThe provided context does not mention symptoms of a heart attack."
+      },
+      {
+        "refusal": false,
+        "text": "Based on the provided context, the signs or symptoms associated with breast conditions and breast cancer include:\n* The presence of a lump within the breast (or a new, hard lump in the breast or underarms)\n* Skin dimpling, puckering, or skin involvement with edema or ulceration\n* Nipple retraction or a nipple that pulls in\n* Discharge from the nipple (including bloody nipple discharge, or discharge that begins suddenly and appears only in one breast)\n* Changes in breast size or shape, or changes in the look/contour of the breasts\n* Redness, swelling, or warmth that does not go away\n* Pain in one area that does not vary with a woman\u2019s monthly cycle\n* One nipple having an itchy, sore, or scaling area"
+      },
+      {
+        "refusal": false,
+        "text": "Based on the provided context, the symptoms and signs of breast disease/cancer include:\n* The presence of a lump within the breast (or a new, hard lump in the breast or underarms)\n* Skin dimpling, skin puckering, or skin involvement with edema or ulceration\n* Nipple retraction (a nipple that pulls in) or discharge from the nipple\n* Changes in the shape or look of the breasts (change in breast size or shape)\n* Redness, swelling, or warmth that does not go away\n* Pain in one area that does not vary with a woman\u2019s monthly cycle\n* One nipple that has an itchy, sore, or scaling area\n\nThe provided context does not mention symptoms of a heart attack."
+      },
+      {
+        "refusal": false,
+        "text": "Based on the provided context, the symptoms and signs of breast cancer (or trouble signs to check for) include:\n\n* The presence of a lump within the breast (or a new, hard lump in the breast or underarms)\n* Skin dimpling, puckering, or skin involvement with edema or ulceration\n* Nipple retraction (a nipple that pulls in) or discharge from the nipple\n* Changes in the shape, look, or size of the breasts\n* Redness, swelling, or warmth that does not go away\n* Pain in one area that does not vary with a woman's monthly cycle\n* One nipple having an itchy, sore, or scaling area\n\nThe provided context does not address the symptoms of a heart attack."
+      },
+      {
+        "refusal": false,
+        "text": "Based on the provided context, the symptoms and signs of breast cancer (and breast problems requiring evaluation) include:\n\n* The presence of a lump within the breast (or a new, hard lump in the breast or underarms)\n* Skin dimpling, skin puckering, or skin retraction\n* Discharge from the nipple (including bloody nipple discharge, or nipple discharge that begins suddenly and appears only in one breast)\n* Actual skin involvement, such as edema or ulceration of the skin\n* Changes in the shape or look/contour of the breasts (or change in breast size)\n* Redness, swelling, or warmth that does not go away\n* Pain in one area that does not vary with a woman\u2019s monthly cycle\n* A nipple that pulls in (nipple retraction)\n* One nipple that has an itchy, sore, or scaling area\n\nThe provided context does not address the symptoms of any other condition."
+      }
+    ],
+    "examples-only": [
+      {
+        "refusal": false,
+        "text": "The context mentions several signs and findings related to breast cancer. A very common finding that leads to diagnosis is a lump within the breast, and a new, hard lump in the breast or underarms is noted as a change to look for. Other signs and trouble signs mentioned include:\n- Skin dimpling, puckering, or retraction\n- Nipple discharge (though bloody discharge is most often caused by benign disease, and sudden discharge appearing only in one breast is highlighted as a trouble sign)\n- Skin involvement with edema or ulceration (described as late findings)\n- Changes in breast size or shape\n- Redness, swelling, or warmth that does not go away\n- Pain in one area that does not vary with a woman's monthly cycle\n- A nipple that pulls in (retraction)\n- One nipple having an itchy, sore, or scaling area"
+      },
+      {
+        "refusal": false,
+        "text": "The context mentions several signs and findings related to breast cancer. A very common finding is the presence of a lump within the breast. Other initial physical findings prompting biopsy include skin dimpling, nipple retraction, or discharge from the nipple (though bloody nipple discharge is most often caused by benign disease). Skin dimpling or nipple retraction in the presence of an underlying breast mass is noted as a more advanced finding, and actual skin involvement with edema or ulceration represents late findings. Additionally, signs of widespread metastasis may also be present."
+      },
+      {
+        "refusal": false,
+        "text": "Based on the provided context, signs and symptoms that can lead to the diagnosis or prompt a biopsy of breast disease (such as cancer) include:\n- The presence of a lump within the breast (a very common finding)\n- Skin dimpling or puckering\n- Nipple retraction (a nipple that pulls in)\n- Discharge from the nipple, which may be bloody (though bloody discharge is most often caused by benign disease)\n- Actual skin involvement, including edema or ulceration of the skin (which are late findings)\n- Changes in breast size or shape\n- Redness, swelling, or warmth that does not go away\n- Pain in one area that does not vary with a woman's monthly cycle\n- One nipple having an itchy, sore, or scaling area\n- A new, hard lump in the breast or underarms"
+      },
+      {
+        "refusal": false,
+        "text": "The symptoms and physical signs of breast cancer discussed in the context include:\n- The presence of a lump within the breast, including new or hard lumps in the breast or underarms\n- Skin dimpling, puckering, or skin involvement with edema or ulceration\n- Nipple retraction (a nipple pulling in) or discharge from the nipple, such as a sudden discharge appearing only in one breast\n- Changes in breast size or shape\n- Redness, swelling, or warmth that does not go away\n- Pain in one area that does not vary with the woman's monthly cycle\n- One nipple having an itchy, sore, or scaling area"
+      },
+      {
+        "refusal": false,
+        "text": "Based on the provided context, the signs and symptoms that can prompt a diagnosis or examination for breast disease include:\n* The presence of a lump within the breast (a very common finding)\n* Skin dimpling or puckering\n* Nipple retraction (a nipple that pulls in)\n* Nipple discharge, which may be bloody (though bloody discharge is most often caused by benign disease)\n* Actual skin involvement, including edema or ulceration of the skin (noted as late findings)\n* Changes in breast size or shape\n* Redness, swelling, or warmth that does not go away\n* Pain in one area that does not vary with a woman's monthly cycle\n* Nipple discharge that begins suddenly and appears only in one breast\n* One nipple having an itchy, sore, or scaling area\n* A new, hard lump in the breast or underarms\n\nPlease consult a qualified healthcare provider for professional medical advice, diagnosis, or treatment."
+      }
+    ]
+  },
+  "What is bursitis?": {
+    "instruction-only": [
+      {
+        "refusal": true,
+        "text": "Based on the provided context, the text does not contain information about why people get nosebleeds. \n\nRegarding what bursitis is, the context notes that it is a condition that can flare up for no known reason or be caused by repeated physical activity, trauma, rheumatoid arthritis, gout, and acute or chronic infection. Its common symptoms include pain and tenderness, as well as swelling, redness, and warmth if the affected joint is close to the skin (such as the shoulder, knee, elbow, or Achilles tendon). Movement may be limited and painful. It can be acute (appearing suddenly) or chronic (where pain, tenderness, and limited movement reappear after exercise or strain). The text also defines arthritis (an inflammation of a joint that may lead to changes in its structure and causes pain and swelling) in its key terms, but it does not provide a direct definition sentence for bursitis itself."
+      },
+      {
+        "refusal": true,
+        "text": "Based on the provided context, the text does not contain any information about nosebleeds or why people get them. Therefore, the provided context does not support an answer to your question. \n\n*(Note: The provided context does, however, contain information on bursitis, which is an inflammation of a bursa caused most commonly by repeated physical activity, trauma, rheumatoid arthritis, gout, or acute/chronic infection.)*"
+      },
+      {
+        "refusal": true,
+        "text": "Based on the provided context, the text does not contain information to answer why people get nosebleeds. \n\nRegarding the question \"What is bursitis?\" (which is the condition covered in the provided text): The context states that bursitis involves pain and tenderness (with symptoms appearing suddenly in acute bursitis, or reappearing after exercise or strain in chronic bursitis). When the affected joint is close to the skin, swelling and redness are seen and the area may feel warm to the touch, while deeper bursa (such as around the hip joint) have less obvious swelling. Movement may be limited and painful. It can also be related to inflammatory conditions like arthritis or gout, or caused by an infection (septic bursitis)."
+      },
+      {
+        "refusal": true,
+        "text": "Based on the provided context, the text does not contain any information explaining why people get nosebleeds. \n\nRegarding what bursitis is, the context states that it is a condition that causes pain and tenderness, and notes that it is related to an inflammatory condition like arthritis or gout. (Note: The provided text does not contain a formal direct definition of bursitis, such as \"bursitis is...\", but it discusses its causes, symptoms, and diagnosis.)"
+      },
+      {
+        "refusal": true,
+        "text": "Based on the provided context, the text does not contain information about why people get nosebleeds. However, regarding the question \"What is bursitis?\" (which is covered in the context), bursitis is a condition that involves inflammation of a bursa (often caused by repeated physical activity, trauma, rheumatoid arthritis, gout, or infection), with common symptoms including pain, tenderness, swelling, and redness around the affected joint, as well as limited and painful movement."
+      }
+    ],
+    "examples-only": [
+      {
+        "refusal": true,
+        "text": "I don't know based on the provided context. The text discusses the causes, symptoms, diagnosis, treatment, and prevention of bursitis, but it does not explicitly define what bursitis is. Please consult a qualified healthcare professional for a definition and more information."
+      },
+      {
+        "refusal": false,
+        "text": "The provided context does not explicitly give a concise definition sentence for what bursitis is, but it describes its causes, symptoms, diagnosis, treatment, and prevention. According to the text, bursitis most commonly arises from repeated physical activity, but it can also be triggered by trauma, rheumatoid arthritis, gout, acute or chronic infection, or occur for no known reason. Its common symptoms include pain and tenderness; if the affected joint is near the skin (such as the shoulder, knee, elbow, or Achilles tendon), symptoms also include swelling, redness, and warmth to the touch, whereas deeper bursae (like the one around the hip) do not cause obvious swelling. Movement may be limited and painful. In acute bursitis, symptoms appear suddenly, while in chronic bursitis, pain, tenderness, and limited movement reappear after exercise or strain. Please consult a qualified healthcare provider for a professional diagnosis and understanding of the condition."
+      },
+      {
+        "refusal": false,
+        "text": "The provided context does not explicitly define what bursitis is in a single sentence, but it outlines its causes, symptoms, diagnosis, treatment, prevention, and prognosis. Bursitis is a condition that causes pain and tenderness in joints (such as the shoulder, knee, elbow, hip, or Achilles tendon) along with possible swelling, redness, warmth, and limited or painful movement. It is most commonly caused by repeated physical activity, but can also flare up for no known reason, or be caused by trauma, rheumatoid arthritis, gout, or acute/chronic infection. Conservative treatments include heat, rest, immobilization, NSAIDs, and physical therapy, while more advanced cases may involve corticosteroid injections, management of underlying conditions like arthritis or gout, antibiotics for infection (septic bursitis), or surgery in extreme cases."
+      },
+      {
+        "refusal": false,
+        "text": "The provided context does not explicitly define bursitis in a single sentence, but it describes its causes, symptoms, diagnosis, and treatment. Bursitis is a condition characterized by pain and tenderness in a joint, with symptoms that can include swelling, redness, and warmth if the affected joint is close to the skin (such as the shoulder, knee, elbow, or Achilles tendon), though swelling may not be obvious if the bursa is deeper (like around the hip). Movement may be limited and painful. \n\nThe most common cause of bursitis is repeated physical activity, but it can also flare up for no known reason, or be caused by trauma, rheumatoid arthritis, gout, and acute or chronic infection. In acute bursitis, symptoms appear suddenly, while in chronic bursitis, pain, tenderness, and limited movement reappear after exercise or strain."
+      },
+      {
+        "refusal": false,
+        "text": "The provided context does not explicitly define what bursitis is in a single sentence, but it outlines its causes, symptoms, diagnosis, and treatment. According to the text, the most common cause of bursitis is repeated physical activity, though it can also flare up for no known reason, or be caused by trauma, rheumatoid arthritis, gout, and acute or chronic infection. \n\nCommon symptoms include pain and tenderness. For joints close to the skin (like the shoulder, knee, elbow, or Achilles tendon), swelling and redness occur and the area may feel warm, whereas hips have deeper bursa where swelling is not obvious. Movement may be limited and painful (such as difficulty raising the arm out from the side in shoulder bursitis). Symptoms appear suddenly in acute bursitis, while in chronic bursitis, pain, tenderness, and limited movement reappear after exercise or strain."
+      }
+    ]
+  },
+  "What is an abscess?": {
+    "instruction-only": [
+      {
+        "refusal": false,
+        "text": "Based on the provided context, an abscess is the last stage of a tissue infection that begins with inflammation. It is a pus-filled sore (or pocket of pus) that forms as tissue turns to liquid, containing digested germs, digested tissue, white blood cells, and enzymes. Abscesses can be septic (resulting from an infection) or sterile (a milder form caused by non-living irritants such as drugs, rather than germs)."
+      },
+      {
+        "refusal": false,
+        "text": "Based on the provided context, an abscess is the last stage of a tissue infection that begins with inflammation. It is a pus-filled sore, which can be either septic (caused by an infection where white blood cells and enzymes digest the germ and surrounding tissue, resulting in a thick, yellow liquid called pus) or sterile (a milder form caused by non-living irritants like drugs rather than germs). Abscesses often form in soft tissue under the skin, but may develop in any organ."
+      },
+      {
+        "refusal": false,
+        "text": "Based on the provided context, an abscess is the last stage of a tissue infection that begins with inflammation. It is a pus-filled sore\u2014or a localized pocket of pus containing digested germs, digested tissue, white blood cells, and enzymes\u2014that forms as tissue turns to liquid. There are two main types: septic abscesses, which are the result of an infection (germs), and sterile abscesses, which are a milder form caused by non-living irritants such as drugs rather than germs."
+      },
+      {
+        "refusal": false,
+        "text": "Based on the provided context, an abscess is the last stage of a tissue infection that begins with inflammation. It is a pus-filled sore or pocket containing a thick, yellow liquid made up of digested germs, digested tissue, white blood cells, and enzymes. Abscesses can be septic (resulting from an infection caused by a germ) or sterile (caused by non-living irritants such as drugs without an infection involved). They can develop in the soft tissue under the skin or in any organ of the body. \n\nThe provided context does not address urinary tract infections (UTIs) or their symptoms; therefore, it cannot answer that part of the question."
+      },
+      {
+        "refusal": false,
+        "text": "Based on the provided context, an abscess is the last stage of a tissue infection that begins with inflammation. It is a pocket or localized collection of pus\u2014a thick, yellow liquid containing digested germs, digested tissue, white blood cells, and enzymes\u2014formed as chemical digestion liquefies tissue. Abscesses can be septic (resulting from an infection) or sterile (caused by non-living irritants such as unabsorbed injected drugs)."
+      }
+    ],
+    "examples-only": [
+      {
+        "refusal": false,
+        "text": "The question asks for a definition and explanation of an abscess. Based on the provided context, an abscess is a pus-filled sore or localized infection that represents the last stage of a tissue infection beginning with inflammation. There are two main types: septic and sterile. \n\nMost abscesses are septic, meaning they are the result of an infection. When invading germs activate the immune system, white blood cells gather and produce enzymes that attack the germs by digesting them, which also digests body tissues. This creates a thick, yellow liquid called pus containing digested germs, digested tissue, white blood cells, and enzymes. Septic abscesses can occur anywhere in the body, such as soft tissues under the skin, organs like the breast, gums, lungs, liver, or brain, and in areas like the throat, deep back of the abdomen (psoas muscle), or hand. They are commonly caused by pus-forming bacteria like *Staphylococcus aureus*. \n\nSterile abscesses are a milder form caused not by germs, but by non-living irritants such as unabsorbed injected drugs (like penicillin) where no infection is involved. Unlike pockets of pus, sterile abscesses are quite likely to turn into hard, solid lumps as they scar."
+      },
+      {
+        "refusal": false,
+        "text": "An abscess is a pus-filled sore and the last stage of a tissue infection that begins with inflammation. There are two types: septic and sterile. Most abscesses are septic, caused by an infection where the body's white blood cells gather and produce enzymes that kill germs by digesting them, which unfortunately also digests body tissues. This process creates pus, a thick yellow liquid made up of digested germs, digested tissue, white blood cells, and enzymes. \n\nSterile abscesses are a milder form caused by non-living irritants, such as an injected drug like penicillin that is not absorbed and causes irritation without any infection involved; these are quite likely to turn into hard, solid lumps as they scar rather than remaining pockets of pus. While abscesses are often found in soft tissue under the skin (such as the armpit or groin), they can develop in any organ and are commonly found in the breast, gums, lung, liver, or brain."
+      },
+      {
+        "refusal": false,
+        "text": "The question asks for a definition and description of an abscess based on the provided context. The context defines an abscess as the last stage of a tissue infection that begins with inflammation and forms a pus-filled sore containing digested germs, digested tissue, white blood cells, and enzymes. It notes that there are two main types: septic and sterile. Most abscesses are septic, meaning they result from an infection anywhere in the body where white blood cells gather to attack invading germs with enzymes, producing a thick, yellow liquid called pus. Sterile abscesses are a milder form caused by non-living irritants, such as unabsorbed drugs rather than germs, and are likely to turn into hard, solid lumps as they scar rather than remaining pockets of pus. Abscesses can develop in soft tissue under the skin (such as the armpit or groin), in any organ (commonly found in the breast and gums), or in deep organs like the lung, liver, or brain."
+      },
+      {
+        "refusal": false,
+        "text": "An abscess is a pus-filled sore, usually caused by a bacterial infection. There are two main types: septic and sterile. Most abscesses are septic, occurring when an invading germ triggers the body's immune response; white blood cells produce enzymes to digest the germ, which unfortunately also digest body tissues, resulting in a thick, yellow liquid called pus (containing digested germs, digested tissue, white blood cells, and enzymes) as the tissue turns to liquid during the later stages of an infection that begins with inflammation. Sterile abscesses are a milder form caused by non-living irritants\u2014such as an unabsorbed injected drug\u2014rather than germs, and they are quite likely to turn into hard, solid lumps as they scar rather than remaining pockets of pus."
+      },
+      {
+        "refusal": false,
+        "text": "An abscess is the final stage of a tissue infection that begins with inflammation, described as a pus-filled sore usually caused by a bacterial infection. There are two main types:\n\n* **Septic abscesses:** Most abscesses are septic and result from an infection. When a germ invades, white blood cells gather and produce enzymes to digest the germ; however, these chemicals also digest body tissues, creating pus\u2014a thick, yellow liquid made of digested germs, digested tissue, white blood cells, and enzymes.\n* **Sterile abscesses:** These are a milder form caused by non-living irritants (such as unabsorbed injected drugs like penicillin) rather than germs. Because no infection is involved, they are quite likely to turn into hard, solid lumps as they scar rather than remaining pockets of pus.\n\nAbscesses are often found in soft tissues under the skin (such as the armpit or groin), can develop in any organ (commonly in the breast and gums), and may also occur in deep or specific areas such as the lungs, liver, brain, throat, and psoas muscles."
+      }
+    ]
+  }
+}

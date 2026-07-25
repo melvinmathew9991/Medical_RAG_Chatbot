@@ -1,0 +1,92 @@
+{
+  "What are the symptoms of diabetes?": {
+    "baseline": [
+      {
+        "refusal": true,
+        "text": "I don't know the answer to your question based on the provided context."
+      },
+      {
+        "refusal": true,
+        "text": "I don't know the answer to that question based on the provided text."
+      },
+      {
+        "refusal": true,
+        "text": "I don't know the answer to that question based on the provided text."
+      }
+    ],
+    "cot": [
+      {
+        "refusal": true,
+        "text": "I don't know based on the provided context. The context discusses what causes diabetes (insulin issues and hyperglycemia) and the complications of untreated diabetes, but it does not list the symptoms of the condition. Please consult a qualified healthcare provider for information regarding the symptoms of diabetes."
+      },
+      {
+        "refusal": true,
+        "text": "I don't know based on the provided context. The text discusses what causes diabetes and how it is diagnosed and tested, but it does not list the symptoms of the condition. Please consult a qualified healthcare provider for information regarding the symptoms of diabetes."
+      },
+      {
+        "refusal": true,
+        "text": "I don't know based on the provided context. While the context discusses diabetes, high blood sugar, and the complications of untreated diabetes, it does not list or describe the specific symptoms of the condition. Please consult a qualified healthcare provider for information regarding the symptoms of diabetes."
+      }
+    ]
+  },
+  "How is psoriasis treated?": {
+    "baseline": [
+      {
+        "refusal": true,
+        "text": "I don't know the answer to that question based on the provided context."
+      },
+      {
+        "refusal": true,
+        "text": "I don't know."
+      },
+      {
+        "refusal": true,
+        "text": "I don't know."
+      }
+    ],
+    "cot": [
+      {
+        "refusal": true,
+        "text": "I don't know based on the provided context. The context contains information on treating acne, bedsores, and atopic dermatitis, but it does not mention treatments for psoriasis. Please consult a qualified healthcare provider for information on treating psoriasis."
+      },
+      {
+        "refusal": true,
+        "text": "I don't know based on the provided context. The context includes information on treatments for acne, bedsores, and atopic dermatitis, but it does not mention treatments for psoriasis. Please consult a qualified healthcare provider for information on how psoriasis is treated."
+      },
+      {
+        "refusal": true,
+        "text": "I don't know based on the provided context. The context discusses the treatment of acne, bedsores, and atopic dermatitis, but it does not contain any information about how psoriasis is treated. Please consult a qualified healthcare provider for information on psoriasis treatments."
+      }
+    ]
+  },
+  "What causes a stroke?": {
+    "baseline": [
+      {
+        "refusal": true,
+        "text": "I don't know the answer based on the provided context."
+      },
+      {
+        "refusal": false,
+        "text": "Based on the provided context, when the brain is affected by an embolus (a blood clot or other blockage that breaks away and lodges in an artery), it is called a stroke. Additionally, atherosclerosis can cause a stroke if it completely blocks the brain (carotid) arteries."
+      },
+      {
+        "refusal": false,
+        "text": "Based on the provided context, when the brain is affected by an embolus (a blood clot or blockage of an artery), it is called a stroke. Additionally, atherosclerosis can cause a stroke if it completely blocks the brain (carotid) arteries."
+      }
+    ],
+    "cot": [
+      {
+        "refusal": false,
+        "text": "A stroke can be caused when an embolus\u2014such as a blood clot, fat cells, or an air bubble\u2014blocks the flow of blood in an artery affecting the brain. It can also be caused when atherosclerosis completely blocks the brain (carotid) arteries."
+      },
+      {
+        "refusal": false,
+        "text": "A stroke can be caused when an embolus\u2014such as a blood clot, fat cells, or an air bubble\u2014blocks the flow of blood in an artery leading to the brain. It can also be caused when atherosclerosis completely blocks the brain (carotid) arteries."
+      },
+      {
+        "refusal": false,
+        "text": "A stroke can be caused when an embolus\u2014which may be a blood clot, fat cells, or an air bubble\u2014blocks the flow of blood in an artery affecting the brain. Additionally, atherosclerosis can cause a stroke if it completely blocks the brain (carotid) arteries."
+      }
+    ]
+  }
+}

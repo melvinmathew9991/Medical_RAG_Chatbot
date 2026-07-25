@@ -1,0 +1,50 @@
+{
+  "What are the symptoms of diabetes?": {
+    "cot": [
+      {
+        "refusal": true,
+        "text": "I do not know based on the provided context. The context discusses the causes and blood sugar tests for diabetes, as well as complications that can occur if it is left untreated, but it does not list the specific symptoms of the condition. Please consult a qualified healthcare provider to learn about the symptoms of diabetes."
+      },
+      {
+        "refusal": true,
+        "text": "I do not know based on the provided context, as it does not list the symptoms of diabetes. Please consult a qualified healthcare provider for information regarding the symptoms of diabetes."
+      },
+      {
+        "refusal": true,
+        "text": "I don't know based on the provided context. The context discusses how diabetes is diagnosed, blood sugar testing methods, complications that can occur if untreated, and blood sugar levels related to the condition, but it does not list the symptoms of diabetes. Please consult a qualified healthcare provider for information regarding the symptoms of diabetes."
+      },
+      {
+        "refusal": true,
+        "text": "I don't know based on the provided context. The context explains what happens in diabetes (not enough insulin or insulin that doesn't work properly, leading to high blood sugar or hyperglycemia) and notes organs that can be damaged if it is left untreated, but it does not list the specific symptoms of the condition. Please consult a qualified healthcare provider for information regarding the symptoms of diabetes."
+      },
+      {
+        "refusal": true,
+        "text": "I don't know based on the provided context. The context mentions that diabetes can cause damage or failure of organs such as the eyes, kidneys, nerves, heart, and blood vessels if left untreated, and notes that a diagnostic test can be used for people with symptoms and high blood sugar, but it does not list what the specific symptoms of diabetes are. Please consult a qualified healthcare provider for information regarding the symptoms of diabetes."
+      }
+    ]
+  },
+  "How is psoriasis treated?": {
+    "cot": [
+      {
+        "refusal": true,
+        "text": "I am sorry, but the provided context does not contain information about how psoriasis is treated; it discusses treatments for acne, bedsores, and atopic dermatitis instead. Please consult a qualified healthcare provider for information on treating psoriasis."
+      },
+      {
+        "refusal": true,
+        "text": "I don't know based on the provided context. The context discusses treatments for acne, bedsores, and atopic dermatitis, but it contains no information about psoriasis or how it is treated. Please consult a qualified healthcare provider for information on psoriasis treatments."
+      },
+      {
+        "refusal": true,
+        "text": "I do not know based on the provided context, as it contains information regarding acne, bedsores, and atopic dermatitis, but does not mention psoriasis or its treatments. Please consult a qualified healthcare professional for information on treating psoriasis."
+      },
+      {
+        "refusal": true,
+        "text": "I don't know based on the provided context. The context contains information about treating acne, bedsores, and atopic dermatitis, but it does not mention psoriasis or how it is treated. Please consult a qualified healthcare provider for information on the treatment of psoriasis."
+      },
+      {
+        "refusal": true,
+        "text": "I don't know based on the provided context. The context includes information on treatments for acne, bedsores, and atopic dermatitis, but it does not mention psoriasis or how it is treated. Please consult a qualified healthcare provider for information on the treatment of psoriasis."
+      }
+    ]
+  }
+}
