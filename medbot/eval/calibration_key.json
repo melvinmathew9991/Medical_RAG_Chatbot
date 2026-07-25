@@ -1,0 +1,227 @@
+[
+  {
+    "item": 1,
+    "question": "What are the symptoms of a brain tumor?",
+    "variant": "baseline",
+    "judge_score": 1.0,
+    "judge_claims": 12,
+    "judge_supported": 12,
+    "judge_rationale": "All 12 factual claims regarding brain tumor symptoms are directly supported by the text."
+  },
+  {
+    "item": 2,
+    "question": "What are the symptoms of angina?",
+    "variant": "baseline",
+    "judge_score": 0.75,
+    "judge_claims": 4,
+    "judge_supported": 3,
+    "judge_rationale": "The claim that the context does not contain the answer about signs of a heart attack is unsupported, as the text discusses angina (chest pain of insufficient duration to cause a heart attack) and mentions symptoms associated with related conditions."
+  },
+  {
+    "item": 3,
+    "question": "What are the symptoms of breast cancer?",
+    "variant": "baseline",
+    "judge_score": 0.0,
+    "judge_claims": 1,
+    "judge_supported": 0,
+    "judge_rationale": "The claim that the context does not contain the answer is unsupported because the text explicitly lists physical signs and symptoms of breast problems/cancer (such as a lump, skin dimpling, nipple retraction, discharge, redness, swelling, etc.)."
+  },
+  {
+    "item": 4,
+    "question": "What causes acne?",
+    "variant": "baseline",
+    "judge_score": 1.0,
+    "judge_claims": 11,
+    "judge_supported": 11,
+    "judge_rationale": "All claims made in the generated answer are directly supported by the provided text."
+  },
+  {
+    "item": 5,
+    "question": "What are the symptoms of bipolar disorder?",
+    "variant": "baseline",
+    "judge_score": 1.0,
+    "judge_claims": 4,
+    "judge_supported": 4,
+    "judge_rationale": "All claims made in the generated answer are directly supported by the provided text about the symptoms and characteristics of bipolar depressive and manic episodes."
+  },
+  {
+    "item": 6,
+    "question": "What are the side effects of acetaminophen?",
+    "variant": "baseline",
+    "judge_score": 1.0,
+    "judge_claims": 12,
+    "judge_supported": 12,
+    "judge_rationale": "All of the claims regarding the side effects and overdose effects of acetaminophen are directly supported by the text in the first section of the context."
+  },
+  {
+    "item": 7,
+    "question": "What are the symptoms of autism?",
+    "variant": "baseline",
+    "judge_score": 0.9411764705882353,
+    "judge_claims": 17,
+    "judge_supported": 16,
+    "judge_rationale": "The claim using the specific term \"echolalia\" is unsupported because the text mentions repeating words or phrases but does not use that term."
+  },
+  {
+    "item": 8,
+    "question": "What causes bedsores?",
+    "variant": "baseline",
+    "judge_score": 1.0,
+    "judge_claims": 4,
+    "judge_supported": 4,
+    "judge_rationale": "All factual claims regarding the causes of bedsores are directly supported by the text."
+  },
+  {
+    "item": 9,
+    "question": "How should burns be treated?",
+    "variant": "cot",
+    "judge_score": 1.0,
+    "judge_claims": 31,
+    "judge_supported": 31,
+    "judge_rationale": "All factual claims in the generated answer are directly supported by the provided context."
+  },
+  {
+    "item": 10,
+    "question": "What causes bedsores?",
+    "variant": "cot",
+    "judge_score": 1.0,
+    "judge_claims": 18,
+    "judge_supported": 18,
+    "judge_rationale": "All claims made in the generated answer are directly supported by the provided source context."
+  },
+  {
+    "item": 11,
+    "question": "What are the symptoms of a brain tumor?",
+    "variant": "cot",
+    "judge_score": 0.9375,
+    "judge_claims": 16,
+    "judge_supported": 15,
+    "judge_rationale": "The claim that seizures are spelled \"seizers\" is unsupported because the context spells it correctly as \"se seizures\"."
+  },
+  {
+    "item": 12,
+    "question": "What are the symptoms of alcoholism?",
+    "variant": "cot",
+    "judge_score": 1.0,
+    "judge_claims": 4,
+    "judge_supported": 4,
+    "judge_rationale": "All claims made in the generated answer regarding physical signs, health effects, withdrawal symptoms, and behavioral impacts of alcoholism are directly supported by the text."
+  },
+  {
+    "item": 13,
+    "question": "What is bursitis?",
+    "variant": "baseline",
+    "judge_score": 0.0,
+    "judge_claims": 1,
+    "judge_supported": 0,
+    "judge_rationale": "The claim that the context does not contain the answer is unsupported because the context discusses the causes, symptoms, and diagnosis of bursitis."
+  },
+  {
+    "item": 14,
+    "question": "What causes bladder cancer?",
+    "variant": "baseline",
+    "judge_score": 0.0,
+    "judge_claims": 1,
+    "judge_supported": 0,
+    "judge_rationale": "The claim that the context does not state the exact cause of bladder cancer is unsupported, because the context explicitly states that \"Although the exact cause of bladder cancer is not known...\"."
+  },
+  {
+    "item": 15,
+    "question": "What causes allergic rhinitis?",
+    "variant": "baseline",
+    "judge_score": 1.0,
+    "judge_claims": 4,
+    "judge_supported": 4,
+    "judge_rationale": "All claims in the generated answer regarding the definition, types, triggers, and immunological mechanism of allergic rhinitis are directly supported by the text."
+  },
+  {
+    "item": 16,
+    "question": "What are the symptoms of autism?",
+    "variant": "cot",
+    "judge_score": 1.0,
+    "judge_claims": 22,
+    "judge_supported": 22,
+    "judge_rationale": "All claims made in the generated answer are directly and fully supported by the provided text."
+  },
+  {
+    "item": 17,
+    "question": "What is atherosclerosis?",
+    "variant": "baseline",
+    "judge_score": 0.5,
+    "judge_claims": 2,
+    "judge_supported": 1,
+    "judge_rationale": "The first claim about not knowing how osteoporosis is diagnosed is unsupported because the context does not discuss osteoporosis, making that statement an irrelevant tangent rather than a factual answer to the prompt."
+  },
+  {
+    "item": 18,
+    "question": "What causes amnesia?",
+    "variant": "baseline",
+    "judge_score": 1.0,
+    "judge_claims": 7,
+    "judge_supported": 7,
+    "judge_rationale": "All of the listed causes of amnesia are directly supported by the text in the \"Causes and symptoms\" section."
+  },
+  {
+    "item": 19,
+    "question": "What causes a bunion?",
+    "variant": "baseline",
+    "judge_score": 1.0,
+    "judge_claims": 8,
+    "judge_supported": 8,
+    "judge_rationale": "All of the listed claims regarding the causes of bunions are directly supported by the text under the \"Definition\" and \"Causes and symptoms\" sections of the bunion article."
+  },
+  {
+    "item": 20,
+    "question": "What are the side effects of acetaminophen?",
+    "variant": "cot",
+    "judge_score": 1.0,
+    "judge_claims": 12,
+    "judge_supported": 12,
+    "judge_rationale": "All factual claims made in the generated answer are directly and fully supported by the provided source context."
+  },
+  {
+    "item": 21,
+    "question": "What is atherosclerosis?",
+    "variant": "cot",
+    "judge_score": 1.0,
+    "judge_claims": 7,
+    "judge_supported": 7,
+    "judge_rationale": "All factual claims in the generated answer are directly supported by the provided context."
+  },
+  {
+    "item": 22,
+    "question": "What is bulimia nervosa?",
+    "variant": "cot",
+    "judge_score": 1.0,
+    "judge_claims": 2,
+    "judge_supported": 2,
+    "judge_rationale": "All claims in the generated answer are directly supported by the provided text."
+  },
+  {
+    "item": 23,
+    "question": "What are the symptoms of angina?",
+    "variant": "cot",
+    "judge_score": 1.0,
+    "judge_claims": 2,
+    "judge_supported": 2,
+    "judge_rationale": "All claims in the generated answer regarding the symptoms of angina are directly supported by the provided text."
+  },
+  {
+    "item": 24,
+    "question": "What are the symptoms of appendicitis?",
+    "variant": "baseline",
+    "judge_score": 1.0,
+    "judge_claims": 7,
+    "judge_supported": 7,
+    "judge_rationale": "All claims made in the generated answer are directly supported by the provided context."
+  },
+  {
+    "item": 25,
+    "question": "What are the symptoms of botulism?",
+    "variant": "cot",
+    "judge_score": 1.0,
+    "judge_claims": 12,
+    "judge_supported": 12,
+    "judge_rationale": "All claims made in the generated answer regarding the symptoms of food-borne, infant, and wound botulism are directly supported by the provided text."
+  }
+]

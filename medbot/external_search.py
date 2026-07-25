@@ -1,6 +1,5 @@
 from langchain_community.document_loaders import PubMedLoader
 from serpapi import GoogleSearch
-from requests.exceptions import RequestException
 from medbot.config import SERPAPI_API_KEY
 import time
 import asyncio
@@ -85,7 +84,12 @@ def search_serpapi(query):
         if 'organic_results' in results:
             return results['organic_results']
         else:
-            return []  
-    except RequestException as e:
+            return []
+    # Deliberately broad, matching search_pubmed/search_wikipedia. This caught
+    # only RequestException until Sprint 4: the serpapi client raises its own
+    # exception types for auth/quota errors, and those escaped into
+    # search_external_sources, whose blanket `except` then discarded *all three*
+    # sources. A bad SerpAPI key silently cost the user PubMed and Wikipedia too.
+    except Exception as e:
         print("Error occurred during SERPAPI request:", e)
         return []

@@ -97,4 +97,13 @@ def create_vector_database():
         return None
 
 
-vectordb = create_vector_database()
+# NOTE: there was a module-level `vectordb = create_vector_database()` here.
+# Nothing consumed it -- app.py and all five eval scripts import the *function*
+# and call it themselves -- so every one of them paid the index load twice, and
+# the whole test suite paid it just for importing a module.
+#
+# Worse than slow: the call builds the index when it is absent or incomplete, so
+# importing this module on a machine without `vectorstore/` would start embedding
+# 1225 chunks. `pytest --collect-only`, `--help`, or any unit test that touches
+# something two imports away would trigger a multi-minute build as a side effect.
+# Import should not do work. Call `create_vector_database()` explicitly.

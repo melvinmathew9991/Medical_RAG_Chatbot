@@ -1,0 +1,722 @@
+{
+  "What causes acne?": {
+    "baseline": [
+      {
+        "refusal": false,
+        "text": "Based on the provided context, the exact cause of acne is unknown, but several risk factors and contributing elements have been identified:\n\n* It occurs when pores of the skin become clogged with oil (excess sebum), dead skin cells, and bacteria. \n* At puberty, increased levels of androgens (male hormones) cause the sebaceous glands to produce too much sebum.\n* Plugged follicles can be invaded by *Propacterium acnes*, a bacteria that normally lives on the skin.\n* Identified risk factors include age, gender, hormonal disorders (disease), heredity, and hormonal changes (such as before menstruation, during pregnancy, and menopause)."
+      },
+      {
+        "refusal": false,
+        "text": "Based on the provided context, the exact cause of acne is unknown, but several risk factors and contributing elements have been identified:\n\n* It occurs when pores of the skin become clogged with oil, dead skin cells, and bacteria.\n* At puberty, increased levels of androgens (male hormones) cause the sebaceous glands to produce too much sebum (oil).\n* Moderate and severe inflammatory acne occurs after the plugged follicle is invaded by *Propionibacterium acnes* (a bacteria that normally lives on the skin).\n* Identified risk factors include age (such as teenagers experiencing hormonal changes), gender, diseases (like hormonal disorders in girls), heredity (family history), and hormonal changes (such as before menstruation, during pregnancy, and menopause). \n\n*(Note: Other factors mentioned that can trigger flare-ups, worsen, or contribute to acne include certain drugs, oil-based makeup and hair sprays, abrasive soaps or hard scrubbing, environmental exposure to oils/greases and polluted air, sweating in hot weather, and emotional stress.)*"
+      },
+      {
+        "refusal": false,
+        "text": "Based on the provided context, the exact cause of acne is unknown, but several risk factors and contributors have been identified:\n\n* **Pores becoming clogged:** Acne occurs when the pores of the skin become clogged with oil (sebum), dead skin cells, and bacteria. At puberty, increased levels of androgens (male hormones) cause sebaceous glands to produce too much sebum, which combines with dead, sticky skin cells to form a hard plug (comedo) that blocks the pore. \n* **Bacteria:** Moderate and severe inflammatory types of acne result after the plugged follicle is invaded by *Propionibacterium acnes*, a bacteria that normally lives on the skin.\n* **Risk factors and contributors include:**\n  * **Age:** Teenagers are more likely to develop acne due to hormonal changes.\n  * **Gender:** Boys have more severe acne and develop it more often than girls.\n  * **Disease:** Hormonal disorders can complicate acne in girls.\n  * **Heredity:** A family history of acne increases susceptibility.\n  * **Hormonal changes:** Acne can flare up before menstruation, during pregnancy, and during menopause.\n  * **Drugs:** Acne can be a side effect of drugs including tranquilizers, antidepressants, antibiotics, oral contraceptives, and anabolic steroids.\n  * **Cosmetics and Environment:** Oil-based makeup, hair sprays, exposure to oils and greases, polluted air, and sweating in hot weather can worsen or aggravate acne.\n  * **Stress:** Emotional stress may contribute to acne."
+      }
+    ],
+    "cot": [
+      {
+        "refusal": false,
+        "text": "The exact cause of acne is unknown, but several risk factors and contributors have been identified:\n- Age: Teenagers are more likely to develop acne due to hormonal changes.\n- Gender: Boys develop acne more often and have more severe cases than girls.\n- Disease: Hormonal disorders can complicate acne in girls.\n- Heredity: A family history of acne increases susceptibility.\n- Hormonal changes: Acne can flare up during pregnancy, menopause, and before menstruation.\n- Drugs: Acne can be a side effect of medications including tranquilizers, antidepressants, antibiotics, oral contraceptives, and anabolic steroids.\n- Personal hygiene: Abrasive soaps, hard scrubbing, or picking at pimples make them worse.\n- Cosmetics: Oil-based makeup and hair sprays worsen acne.\n- Environment: Exposure to oils, greases, polluted air, and sweating in hot weather aggravate acne.\n- Stress: Emotional stress may contribute to acne.\n- Diet: While no foods cause acne, certain foods may cause flare-ups."
+      },
+      {
+        "refusal": false,
+        "text": "The exact cause of acne is unknown, but several risk factors and contributing mechanisms have been identified:\n\n* **Underlying process:** At puberty, increased levels of androgens (male hormones) cause the skin's sebaceous glands to produce too much sebum. When this excess sebum combines with dead, sticky skin cells, it forms a hard plug (comedo) that blocks the pore. Moderate and severe inflammatory types of acne occur when the plugged follicle is invaded by *Propionibacterium acnes* (bacteria normally living on the skin), and pimples form when the damaged follicle weakens and bursts open, releasing sebum, bacteria, and cells into surrounding tissues.\n* **Age:** Teenagers are more likely to develop acne due to hormonal changes.\n* **Gender:** Boys have more severe acne and develop it more often than girls.\n* **Disease:** Hormonal disorders can complicate acne in girls.\n* **Heredity:** Individuals with a family history of acne have a greater susceptibility to the disease.\n* **Hormonal changes:** Acne can flare up before menstruation, during pregnancy, and during menopause.\n* **Diet:** While no foods cause acne, certain foods may cause flare-ups.\n* **Drugs:** Acne can be a side effect of tranquilizers, antidepressants, antibiotics, oral contraceptives, and anabolic steroids.\n* **Personal hygiene:** Abrasive soaps, hard scrubbing, or picking at pimples will make them worse.\n* **Cosmetics:** Oil-based makeup and hair sprays worsen acne.\n* **Environment:** Exposure to oils and greases, polluted air, and sweating in hot weather aggravate acne.\n* **Stress:** Emotional stress may contribute to acne."
+      },
+      {
+        "refusal": false,
+        "text": "The exact cause of acne is unknown, but several risk factors and contributors have been identified:\n- Age: Teenagers are more likely to develop acne due to hormonal changes, though it can arise at any age and begins at puberty.\n- Gender: Boys have more severe acne and develop it more often than girls.\n- Disease: Hormonal disorders can complicate acne in girls.\n- Heredity: A family history of acne increases susceptibility.\n- Hormonal changes: Acne can flare up before menstruation, during pregnancy, and during menopause.\n- Diet: While no foods cause acne, certain foods may cause flare-ups.\n- Drugs: Acne can be a side effect of tranquilizers, antidepressants, antibiotics, oral contraceptives, and anabolic steroids.\n- Personal hygiene: Abrasive soaps, hard scrubbing, and picking at pimples make them worse.\n- Cosmetics: Oil-based makeup and hair sprays worsen acne.\n- Environment: Exposure to oils, greases, polluted air, and sweating in hot weather aggravate acne.\n- Stress: Emotional stress may contribute to acne."
+      }
+    ]
+  },
+  "What are the symptoms of alcoholism?": {
+    "baseline": [
+      {
+        "refusal": false,
+        "text": "Based on the provided text, the symptoms and signs of alcoholism and its related conditions include:\n\n* **Mild withdrawal symptoms:** Nausea, achiness, diarrhea, difficulty sleeping, sweatiness, anxiety, and trembling.\n* **Severe withdrawal effects:** Hallucinations (seeing, hearing, or feeling things that are not real), seizures, an unbearable craving for more alcohol, confusion, fever, fast heart rate, high blood pressure, and delirium (a fluctuating level of consciousness).\n* **Physical signs of alcoholism:** Evidence of old injuries; a visible network of enlarged veins just under the skin around the navel (caput medusae); fluid in the abdomen (ascites); yellowish-tone to the skin; decreased testicular size in men; and poor nutritional status.\n* **Acute alcoholic myopathy symptoms:** Sudden onset of muscle pain, swelling, and weakness; a reddish tinge in the urine; and a rapid rise in muscle enzymes in the blood.\n* **Chronic alcoholic myopathy symptoms:** Painless weakness of the limb muscles closest to the trunk and the girdle muscles (including the thighs, hips, shoulders, and upper arms), along with muscle atrophy (decreased bulk).\n* **Alcoholic peripheral neuropathy symptoms:** Tingling or burning pain in the feet (which may interfere with walking), followed by increasing numbness as the condition worsens.\n* **Psychological and personal symptoms associated with co-alcohol dependence/alcoholism:** Psychological distress such as anxiety, aggression, anorexia nervosa, bulimia, depression, insomnia, hyperactivity, and suicidal tendencies."
+      },
+      {
+        "refusal": false,
+        "text": "Based on the provided context, the symptoms and signs of alcoholism and alcohol withdrawal include:\n\n* **Mild withdrawal symptoms:** Nausea, achiness, diarrhea, difficulty sleeping, sweatiness, anxiety, and trembling.\n* **Severe withdrawal symptoms:** Hallucinations, seizures, an unbearable craving for more alcohol, confusion, fever, fast heart rate, high blood pressure, and delirium.\n* **Signs of alcohol abuse/dependence criteria:** Repeatedly failing to live up to important responsibilities, physically endangering oneself or others, getting into trouble with the law, experiencing difficulties in relationships or jobs, having large blocks of time taken up by alcohol use, choosing to drink at the expense of important tasks/activities, and drinking despite negative effects on health, relationships, education, or job. \n* **Physical signs:** Evidence of old injuries, a visible network of enlarged veins just under the skin around the navel (caput medusae), fluid in the abdomen (ascites), yellowish-tone to the skin, decreased testicular size in men, and poor nutritional status."
+      },
+      {
+        "refusal": false,
+        "text": "Based on the provided context, the symptoms associated with alcoholism, alcohol abuse, alcohol dependence, and alcohol withdrawal include:\n\n* **Symptoms of alcohol withdrawal (ranging from mild to severe):** \n  * Mild symptoms (usually over in 3 to 5 days): nausea, achiness, diarrhea, difficulty sleeping, sweatiness, anxiety, and trembling.\n  * More severe effects: hallucinations, seizures, an unbearable craving for more alcohol, confusion, fever, fast heart rate, high blood pressure, and delirium.\n* **Psychological and personal symptoms/manifestations related to co-alcohol dependence:** Psychological distress including anxiety, aggression, anorexia nervosa, bulimia, depression, insomnia, hyperactivity, and suicidal tendency.\n* **Physical signs of alcoholism (revealed during physical examination):** Evidence of old injuries, a visible network of enlarged veins just under the skin around the navel (caput medusae), fluid in the abdomen (ascites), yellowish-tone to the skin, decreased testicular size in men, and poor nutritional status.\n* **Symptoms of acute alcoholic myopathy:** Sudden onset of muscle pain, swelling, and weakness; a reddish tinge in the urine (caused by myoglobin); and a rapid rise in muscle enzymes in the blood. \n* **Symptoms of chronic alcoholic myopathy:** Painless weakness of the limb muscles closest to the trunk and the girdle muscles (including the thighs, hips, shoulders, and upper arms), along with muscle atrophy (decreased bulk).\n* **Symptoms of alcoholic peripheral neuropathy:** Tingling or burning pain in the feet (which may interfere with walking), which transitions to increased numbness as the condition worsens."
+      }
+    ],
+    "cot": [
+      {
+        "refusal": false,
+        "text": "The symptoms, signs, and hallmarks of alcoholism\u2014which encompasses alcohol abuse and alcohol dependence\u2014include repeated life problems and behavioral indicators directly attributed to drinking. These include:\n- Having large blocks of time taken up by alcohol use\n- Choosing to drink instead of attending to other important tasks or activities\n- Continuing to drink despite evidence of negative effects on health, relationships, education, or a job\n- Repeatedly failing to live up to major responsibilities, physically endangering oneself or others (such as drinking and driving), getting into trouble with the law, or experiencing difficulties in relationships and jobs\n\nAlcoholism also affects every body system, producing wide-ranging health and personal problems such as poor nutrition, memory disorders, difficulty with balance and walking, liver disease, high blood pressure, heart and muscle weakness, heart rhythm disturbances, anemia, clotting disorders, decreased immunity to infections, gastrointestinal inflammation, pancreatic problems, low blood sugar, high blood fat, fertility interference, weakened bones, marital and relationship difficulties, depression, unemployment, child abuse, and general family dysfunction. \n\nPhysical examinations and lab work may reveal signs such as old injuries, enlarged veins under the skin around the navel (caput medusae), fluid in the abdomen (ascites), a yellowish skin tone, decreased testicular size in men, poor nutritional status, enlarged red blood cells, abnormal white blood cells and platelets, and elevated liver enzymes. Additionally, when attempting to stop drinking, individuals may experience withdrawal symptoms ranging from mild (nausea, achiness, diarrhea, sleeping difficulty, sweatiness, anxiety, trembling) to severe (hallucinations, seizures, unbearable alcohol cravings, confusion, fever, fast heart rate, high blood pressure, and delirium tremens)."
+      },
+      {
+        "refusal": false,
+        "text": "The effects of alcoholism span multiple categories, including health problems, personal difficulties, and withdrawal symptoms:\n\n* **Health Problems:** Alcoholism affects every body system, causing issues such as poor nutrition, memory disorders, difficulty with balance and walking, liver disease (including cirrhosis and hepatitis), high blood pressure, muscle weakness (including the heart), heart rhythm disturbances, anemia, clotting disorders, decreased immunity to infections, gastrointestinal inflammation and irritation, acute and chronic problems with the pancreas, low blood sugar, high blood fat content, interference with reproductive fertility, and weakened bones.\n* **Personal and Social Difficulties:** On a personal level, it can result in marital and other relationship difficulties, depression, unemployment, child abuse, and general family dysfunction. It also causes or contributes to social problems like homelessness, murder, suicide, injury, and violent crime.\n* **Withdrawal Symptoms:** When stopping alcohol use, patients experience withdrawal. Mild symptoms (lasting about three to five days) include nausea, achiness, diarrhea, difficulty sleeping, sweatiness, anxiety, and trembling. More severe withdrawal effects (such as delirium tremens) can include hallucinations, seizures, an unbearable craving for alcohol, confusion, fever, a fast heart rate, high blood pressure, and delirium."
+      },
+      {
+        "refusal": false,
+        "text": "Alcoholism affects every body system and produces a wide range of health, psychological, and withdrawal symptoms. \n\nPhysical and health problems caused by alcoholism include poor nutrition, memory disorders, difficulty with balance and walking, liver disease (including cirrhosis and hepatitis), high blood pressure, muscle weakness (including the heart), heart rhythm disturbances, anemia, clotting disorders, decreased immunity to infections, gastrointestinal inflammation and irritation, acute and chronic problems with the pancreas, low blood sugar, high blood fat content, interference with reproductive fertility, and weakened bones. \n\nOn a personal level, it can result in marital and other relationship difficulties, depression, unemployment, child abuse, and general family dysfunction. \n\nWhen a person stops drinking, withdrawal symptoms can range from mild to severe. Mild withdrawal symptoms include nausea, achiness, diarrhea, difficulty sleeping, sweatiness, anxiety, and trembling. More severe withdrawal effects can include hallucinations, seizures, an unbearable craving for more alcohol, confusion, fever, fast heart rate, high blood pressure, and delirium."
+      }
+    ]
+  },
+  "What causes allergic rhinitis?": {
+    "baseline": [
+      {
+        "refusal": false,
+        "text": "Based on the provided context, allergic rhinitis is an inflammation of the nasal passages caused by an allergic reaction to airborne substances (such as airborne plant pollens, house dust, house mite body parts, animal dander, and mold spores) or other potential triggers like cigarette smoke, perfume, cosmetics, cleansers, copier chemicals, industrial chemicals, and construction material gases. It is a type of immune reaction triggered by harmless, everyday substances (allergens)."
+      },
+      {
+        "refusal": false,
+        "text": "Based on the provided context, allergic rhinitis is an inflammation of the nasal passages caused by an allergic reaction to airborne substances (such as airborne plant pollens, house dust, house mite body parts, animal dander, and mold spores) or other potential triggers like cigarette smoke, perfume, cosmetics, cleansers, copier chemicals, industrial chemicals, and construction material gases. It is a type of immune reaction triggered by harmless, everyday substances (allergens)."
+      },
+      {
+        "refusal": false,
+        "text": "Based on the provided context, allergic rhinitis is an inflammation of the nasal passages caused by an allergic reaction to airborne substances (such as airborne plant pollens, house dust, house mite body parts, animal dander, mold spores, cigarette smoke, perfume, cosmetics, cleansers, copier chemicals, industrial chemicals, and construction material gases). It is a type of immune reaction triggered when harmless, everyday substances (allergens) trigger a series of reactions in the body."
+      }
+    ],
+    "cot": [
+      {
+        "refusal": false,
+        "text": "Allergic rhinitis, commonly referred to as hay fever, is caused by an immune system reaction to airborne substances known as allergens. There are two types, with different specific causes:\n\n* **Seasonal allergic rhinitis** is caused by airborne plant pollens, most commonly from trees and grasses (such as grass pollen), as well as certain weeds including ragweed, sagebrush, lamb's-quarters, plantain, pigweed, and dock/sorrel. \n* **Perennial allergic rhinitis** occurs year-round and is usually caused by home or workplace airborne pollutants. These include house dust (which contains house mite body parts, animal dander, and mold spores), cigarette smoke, perfume, cosmetics, cleansers, copier chemicals, industrial chemicals, and construction material gases."
+      },
+      {
+        "refusal": false,
+        "text": "Allergic rhinitis is caused by an allergic reaction to airborne substances, triggered when harmless everyday substances prompt an immune response in the body. \n\nThe specific causes vary by type:\n* **Seasonal allergic rhinitis** is caused by airborne plant pollens, most commonly from grasses and trees, as well as certain weeds such as ragweed, sagebrush, lamb\u2019s-quarters, plantain, pigweed, and dock/sorrel. \n* **Perennial allergic rhinitis** is often triggered by house dust (which contains house mite body parts, animal dander, and mold spores), cigarette smoke, perfume, cosmetics, cleansers, copier chemicals, industrial chemicals, and construction material gases."
+      },
+      {
+        "refusal": false,
+        "text": "Allergic rhinitis, commonly known as hay fever, is caused by an allergic reaction to airborne substances and represents a type of immune reaction triggered by harmless everyday particles. \n\nSpecific causes and triggers depend on the type of allergic rhinitis:\n- **Seasonal allergic rhinitis** is most commonly caused by airborne plant pollens, particularly from grasses, trees, and weeds such as ragweed, sagebrush, lamb's-quarters, plantain, pigweed, and dock/sorrel.\n- **Perennial allergic rhinitis** is often triggered by house dust (which can contain house mite body parts, animal dander from fur, skin flakes, and dried saliva, and mold spores), as well as cigarette smoke, perfume, cosmetics, cleansers, copier chemicals, industrial chemicals, and construction material gases."
+      }
+    ]
+  },
+  "What are the symptoms of anaphylaxis?": {
+    "baseline": [
+      {
+        "refusal": false,
+        "text": "Based on the provided context, the symptoms of anaphylaxis may include:\n* Urticaria (hives)\n* Swelling and irritation of the tongue or mouth\n* Swelling of the sinuses\n* Difficulty breathing\n* Wheezing\n* Cramping, vomiting, or diarrhea\n* Anxiety or confusion\n* Strong, very rapid heartbeat (palpitations)\n* Loss of consciousness\n* Airway constriction\n* Blood pressure drop\n* Widespread tissue swelling\n* Heart rhythm abnormalities\n* Dizziness\n* Weakness\n* Seizures\n* Coughing\n* Flushing\n\nPlease note that not all symptoms may be present."
+      },
+      {
+        "refusal": false,
+        "text": "Based on the provided context, the symptoms of anaphylaxis may include:\n\n* Urticaria (hives)\n* Swelling and irritation of the tongue or mouth\n* Swelling of the sinuses\n* Difficulty breathing\n* Wheezing\n* Cramping, vomiting, or diarrhea\n* Anxiety or confusion\n* Strong, very rapid heartbeat (palpitations)\n* Loss of consciousness\n* Airway constriction\n* Blood pressure drop\n* Widespread tissue swelling\n* Heart rhythm abnormalities\n* Dizziness\n* Weakness\n* Seizures\n* Coughing\n* Flushing\n\nPlease note that not all symptoms may be present. This information is educational only and is not a substitute for professional medical advice, diagnosis, or treatment."
+      },
+      {
+        "refusal": false,
+        "text": "Based on the provided context, the symptoms of anaphylaxis may include:\n* Urticaria (hives)\n* Swelling and irritation of the tongue or mouth\n* Swelling of the sinuses\n* Difficulty breathing\n* Wheezing\n* Cramping, vomiting, or diarrhea\n* Anxiety or confusion\n* Strong, very rapid heartbeat (palpitations)\n* Loss of consciousness\n* Airway constriction\n* Blood pressure drop\n* Widespread tissue swelling\n* Heart rhythm abnormalities\n* Dizziness\n* Weakness\n* Seizures\n* Coughing\n* Flushing\n\nPlease note that not all symptoms may be present, and this information is educational only and not a substitute for professional medical advice, diagnosis, or treatment."
+      }
+    ],
+    "cot": [
+      {
+        "refusal": false,
+        "text": "Symptoms of anaphylaxis can include:\n- Urticaria (hives), which are raised, reddened, and itchy patches on the skin\n- Angioedema, a deeper and more extensive skin reaction involving fluid collection and pain, usually occurring on the extremities, fingers, toes, head, neck, and face\n- Swelling and irritation of the tongue or mouth\n- Swelling of the sinuses\n- Difficulty breathing\n- Coughing\n- Wheezing\n- Cramping, vomiting, or diarrhea\n- Anxiety or confusion\n- Strong, very rapid heartbeat (palpitations)\n- Dizziness\n- Weakness\n- Seizures\n- Flushing\n- Loss of consciousness\n\nNot all symptoms may be present during a reaction. The symptoms can begin anywhere from within minutes or seconds of exposure up to an hour or more later."
+      },
+      {
+        "refusal": false,
+        "text": "Symptoms of anaphylaxis can begin within minutes or even seconds of exposure to an allergen, or up to an hour or more later. Not all symptoms may be present in every case. Reported symptoms include:\n\n* Urticaria (hives)\u2014raised, reddened, and itchy patches on the skin\n* Angioedema\u2014a deeper, more extensive skin reaction involving fluid collection and pain, usually occurring on the extremities, fingers, toes, and parts of the head, neck, and face\n* Swelling and irritation of the tongue or mouth\n* Swelling of the sinuses\n* Difficulty breathing and wheezing\n* Coughing\n* Cramping, vomiting, or diarrhea\n* Anxiety or confusion\n* A strong, very rapid heartbeat (palpitations)\n* Loss of consciousness\n* Dizziness and weakness\n* Seizures\n* Flushing"
+      },
+      {
+        "refusal": false,
+        "text": "Symptoms of anaphylaxis can begin within minutes or even seconds of exposure (or up to an hour or more later) and may include:\n\u2022 Urticaria (hives) and angioedema (a deeper, more extensive skin reaction involving fluid collection and pain)\n\u2022 Itching, redness, and widespread tissue swelling\n\u2022 Swelling and irritation of the tongue, mouth, or sinuses\n\u2022 Difficulty breathing, wheezing, coughing, or complete airway obstruction\n\u2022 Cramping, vomiting, or diarrhea\n\u2022 Anxiety, confusion, dizziness, weakness, or seizures\n\u2022 Strong, very rapid heartbeat (palpitations), altered heart rhythms, or a drop in blood pressure\n\u2022 Shock, loss of consciousness, and in severe cases, death\n\nNot all symptoms may be present during a reaction."
+      }
+    ]
+  },
+  "What are the symptoms of appendicitis?": {
+    "baseline": [
+      {
+        "refusal": false,
+        "text": "Based on the provided context, the symptoms of appendicitis may include:\n\n* Pain beginning around or above the navel, which may be severe or only achy and uncomfortable, and eventually moves into the right lower corner of the abdomen where it becomes more steady, severe, and often increases with movement and coughing.\n* An abdomen that often becomes rigid and tender to the touch.\n* Loss of appetite.\n* Nausea and vomiting (which may occur in about half of the cases).\n* Constipation or diarrhea (occasionally).\n* A temperature that may be normal or slightly elevated (a fever may indicate a ruptured appendix).\n* In infants and young children, diarrhea, vomiting, and fever in addition to pain.\n* Signs of a ruptured appendix include the presence of symptoms for more than 24 hours, a fever, a high white blood cell count, and a fast heart rate."
+      },
+      {
+        "refusal": false,
+        "text": "Based on the provided context, the distinguishing and hallmark symptom of appendicitis is pain beginning around or above the navel, which eventually moves into the right lower corner of the abdomen where it becomes more steady, severe, and often increases with movement and coughing. \n\nOther symptoms mentioned include:\n* The abdomen often becoming rigid and tender to the touch\n* Loss of appetite\n* Nausea and vomiting (which may occur in about half of the cases)\n* Constipation or diarrhea (occasionally)\n* A temperature that may be normal or slightly elevated (the presence of a fever may indicate a ruptured appendix)\n* In infants and young children, diarrhea, vomiting, and fever in addition to pain\n* Signs of a ruptured appendix include the presence of symptoms for more than 24 hours, a fever, a high white blood cell count, and a fast heart rate"
+      },
+      {
+        "refusal": false,
+        "text": "Based on the provided context, the distinguishing symptom of appendicitis is pain beginning around or above the navel, which eventually moves into the right lower corner of the abdomen where it becomes more steady and severe. This pain often increases with movement and coughing. Additionally, the abdomen often becomes rigid and tender to the touch. \n\nOther common symptoms include:\n* Loss of appetite\n* Nausea and vomiting (occurring in about half of the cases)\n* Constipation or diarrhea\n* Temperature that may be normal or slightly elevated (though a fever may indicate that the appendix has ruptured)\n* Infants and young children often have diarrhea, vomiting, and fever in addition to pain"
+      }
+    ],
+    "cot": [
+      {
+        "refusal": false,
+        "text": "The distinguishing symptom of appendicitis is pain that begins around or above the navel and eventually moves into the right lower corner of the abdomen, where it becomes more steady and severe, often increasing with movement and coughing. The abdomen also frequently becomes rigid and tender to the touch. \n\nAdditional common symptoms include:\n* Loss of appetite\n* Nausea and vomiting (occurring in about half of cases)\n* Constipation or diarrhea\n* Temperature that may be normal or slightly elevated\n\nSymptoms can sometimes present differently depending on the patient:\n* Infants and young children often experience diarrhea, vomiting, and fever along with pain.\n* Elderly patients may feel less pain and tenderness than most patients.\n* The inflammation and symptoms may disappear and then recur later.\n\nSigns that the appendix may have ruptured include the presence of a fever, symptoms lasting for more than 24 hours, increasing abdominal rigidity and tenderness, a high white blood cell count, and a fast heart rate."
+      },
+      {
+        "refusal": false,
+        "text": "The distinguishing symptom of appendicitis is pain that begins around or above the navel and eventually moves to the right lower corner of the abdomen. There, the pain becomes steadier and more severe, often increasing with movement and coughing. Accompanying physical signs include an abdomen that is rigid and tender to the touch. \n\nLoss of appetite is very common, and nausea and vomiting occur in about half of cases. Patients may also experience constipation or diarrhea, and the temperature may be normal or slightly elevated, with a fever potentially indicating that the appendix has ruptured. While about 50% of patients show this typical sequence of symptoms, variations occur; for example, infants and young children often experience diarrhea, vomiting, and fever along with pain, while elderly patients may feel less pain and tenderness."
+      },
+      {
+        "refusal": false,
+        "text": "The distinguishing symptom of appendicitis is pain that begins around or above the navel and eventually moves into the lower right corner of the abdomen. There, the pain becomes steadier and more severe, often increasing with movement, coughing, and similar actions. The abdomen frequently becomes rigid and tender to the touch. \n\nAdditional common symptoms include a loss of appetite. Nausea and vomiting occur in about half of the cases, and occasionally there may be constipation or diarrhea. Body temperature may be normal or slightly elevated, and the presence of a fever can indicate that the appendix has ruptured. Symptoms can vary by age: infants and young children often experience diarrhea, vomiting, and fever along with pain, while elderly patients may feel less pain and tenderness."
+      }
+    ]
+  },
+  "What triggers an asthma attack?": {
+    "baseline": [
+      {
+        "refusal": false,
+        "text": "Based on the provided context, asthma attacks can be triggered by:\n\n* Allergies to pollen, dust (or house dust mites), pets (animal dander), animal proteins, fungi (molds), cockroach allergens, and other things (though people without known allergies may also have asthma)\n* Exercise\n* Stress, high levels of anxiety, and intense emotions\n* Exposure to cold (or inhaling cold air)\n* Certain medicines (such as aspirin and beta-blockers)\n* Some medical conditions, such as viral respiratory tract infections, rhinitis, sinusitis, and acid reflux\n* Occupational exposure to chemicals, fumes, wood dust, plastics, metals, or particles of industrial materials in the air\n* Inhaling tobacco smoke (smoking or being near smokers) and air pollutants\n* Crying or laughing"
+      },
+      {
+        "refusal": false,
+        "text": "Based on the provided context, asthma attacks can be triggered by:\n\n* Allergies to pollen, dust (or house dust mites), pets (animal dander), animal proteins, fungi (molds), cockroach allergens, and other things (though people without known allergies may also have asthma)\n* Exercise\n* Stress, high levels of anxiety, and intense emotions\n* Exposure to cold (including inhaling cold air)\n* Certain medicines (such as aspirin and beta-blockers)\n* Some medical conditions (such as viral respiratory tract infections, rhinitis, sinusitis, and acid reflux)\n* Occupational exposure to chemicals, fumes, or particles of industrial materials (such as animal products, certain forms of plastic, wood dust, or metals)\n* Inhaling tobacco smoke (smoking or being near smokers) and air pollutants"
+      },
+      {
+        "refusal": false,
+        "text": "Based on the provided context, asthma attacks can be triggered or brought on by:\n* Allergies to pollen, dust (including house dust mites), pets (animal dander or proteins), fungi (molds), cockroach allergens, and other things (though people without known allergies may also have asthma)\n* Exercise (or exercise-induced asthma)\n* Stress, intense emotions, and a high level of anxiety\n* Exposure to cold (including inhaling cold air, or cold-induced asthma)\n* Certain medicines (such as aspirin and beta-blockers used to treat high blood pressure)\n* Certain medical conditions (such as viral respiratory tract infections, rhinitis, sinusitis, and acid reflux)\n* Occupational exposure to chemicals, fumes, or particles of industrial materials in the air (such as animal products, certain forms of plastic, wood dust, or metals)\n* Inhaling tobacco smoke (smoking or being near people smoking) and air pollutants\n* Heavy loads of an allergen or irritant\n* Crying or even laughing"
+      }
+    ],
+    "cot": [
+      {
+        "refusal": false,
+        "text": "Asthma attacks can be triggered by a wide variety of substances, environments, and conditions. Major inhaled allergens include:\n\u2022 Pollen\n\u2022 House dust mites\n\u2022 Animal dander\n\u2022 Fungi or molds that grow indoors\n\u2022 Cockroach allergens\n\nOther triggers and factors that can bring on or worsen asthma attacks include:\n\u2022 Exercise (including exercise-induced asthma in some children)\n\u2022 Stress, intense emotions, and anxiety\n\u2022 Exposure to cold or inhaling cold air\n\u2022 Tobacco smoke, whether from smoking directly or from being near others who are smoking\n\u2022 Air pollutants\n\u2022 Occupational exposures to chemicals, fumes, wood dust, plastics, metals, or industrial particles\n\u2022 Certain medical conditions, such as viral respiratory tract infections, rhinitis, sinusitis, and acid reflux (when stomach acid passes back up the esophagus)\n\u2022 Certain medicines, including aspirin and beta-blockers used to treat high blood pressure"
+      },
+      {
+        "refusal": false,
+        "text": "Asthma attacks can be triggered by a wide variety of substances, conditions, and situations. Common triggers include:\n\n* **Allergens:** Pollen, house dust mites, animal dander (or animal proteins), fungi (molds), and cockroach allergens.\n* **Environmental and Occupational Exposures:** Tobacco smoke (from smoking or secondhand exposure), air pollutants, and occupational exposure to chemicals, fumes, industrial particles, animal products, certain plastics, wood dust, or metals.\n* **Physical and Emotional Factors:** Exercise, stress, intense emotions, crying, laughing, and exposure to cold (including inhaling cold air).\n* **Medicines:** Aspirin and related drugs, and beta-blockers (often used to treat high blood pressure).\n* **Medical Conditions:** Viral respiratory tract infections, rhinitis, sinusitis, and acid reflux (when stomach acid passes back up the esophagus)."
+      },
+      {
+        "refusal": false,
+        "text": "Asthma attacks can be triggered by a wide variety of factors:\n* **Allergens:** Inhaled allergens such as pollen, house dust mites, animal dander, indoor fungi (molds), and cockroach allergens.\n* **Environmental and Workplace Irritants:** Inhaling tobacco smoke (from smoking or secondhand smoke), air pollutants, and occupational exposures to chemicals, fumes, or industrial materials like certain forms of plastic, wood dust, or metals.\n* **Physical Factors and Activities:** Exercise (which can cause exercise-induced asthma), inhaling cold air, stress, intense emotions, crying, or laughing.\n* **Medications:** Certain drugs, including aspirin and related medications as well as beta-blockers (often used for high blood pressure).\n* **Medical Conditions and Other Factors:** Viral respiratory tract infections, rhinitis (inflammation of the nasal lining), sinusitis, nasal polyps, and acid reflux (when stomach acid passes back up the esophagus)."
+      }
+    ]
+  },
+  "What is atherosclerosis?": {
+    "baseline": [
+      {
+        "refusal": true,
+        "text": "I don't know the answer to how osteoporosis is diagnosed based on the provided text. \n\nHowever, regarding atherosclerosis, the context describes it as a type of arteriosclerosis (hardening of the arteries) that affects only the inner lining of an artery, characterized by plaque deposits\u2014made of fatty substances, cholesterol, waste products from cells, calcium, and fibrin\u2014that block the flow of blood."
+      },
+      {
+        "refusal": true,
+        "text": "I don't know the answer to how osteoporosis is diagnosed based on the provided text. \n\nHowever, regarding **atherosclerosis**, the text defines it as a type of arteriosclerosis (hardening of the arteries) that affects only the inner lining of an artery and is characterized by plaque deposits that block the flow of blood. Plaque is made of fatty substances, cholesterol, waste products from cells, calcium, and fibrin."
+      },
+      {
+        "refusal": true,
+        "text": "I don't know the answer to how osteoporosis is diagnosed based on the provided context. \n\nRegarding atherosclerosis, the context defines it as a type of arteriosclerosis (or hardening of the arteries) that affects only the inner lining of an artery, characterized by plaque deposits made of fatty substances, cholesterol, waste products, calcium, and fibrin that block the flow of blood."
+      }
+    ],
+    "cot": [
+      {
+        "refusal": false,
+        "text": "Atherosclerosis is a type of arteriosclerosis\u2014a hardening of the arteries\u2014that affects only the inner lining of an artery. It is characterized by plaque deposits that block the flow of blood. This plaque is composed of fatty substances, cholesterol, waste products from cells, calcium, and fibrin (a stringy material that helps clot blood). The plaque formation process stimulates the cells of the artery wall to produce substances that accumulate in the inner layer, where fat builds up and they form connective tissue and calcium. As a result, the inner layer of the artery wall thickens, the artery's diameter is reduced, and blood flow and oxygen delivery are decreased."
+      },
+      {
+        "refusal": false,
+        "text": "Atherosclerosis is a type of arteriosclerosis, or hardening of the arteries, that affects only the inner lining of an artery and is characterized by plaque deposits that block the flow of blood. This plaque is made of fatty substances, cholesterol, cell waste products, calcium, and fibrin. \n\nThe plaque formation process stimulates cells in the artery wall to produce substances that accumulate in the inner layer. Fat builds up within and around these cells, forming connective tissue and calcium. As a result, the inner layer of the artery wall thickens, the artery's diameter is reduced, and blood flow and oxygen delivery are decreased. Plagues can also rupture or crack open, causing a sudden blood clot (thrombosis). While atherosclerosis can begin in the late teens, it typically takes decades to cause symptoms. Its exact cause is still unknown, but it is thought to be a response to damage to the artery's inner lining (endothelium) caused by high cholesterol, high blood pressure, and cigarette smoking, along with other risk factors like physical inactivity, diabetes, obesity, and high levels of homocysteine or lipoproteins."
+      },
+      {
+        "refusal": false,
+        "text": "Atherosclerosis is a type of arteriosclerosis, or hardening of the arteries, that specifically affects the inner lining of an artery. It is a progressive process responsible for most heart disease and is characterized by the buildup of plaque deposits that block blood flow. Plaque is made up of fatty substances, cholesterol, cell waste products, calcium, and fibrin. During its development, cells of the artery wall produce accumulating substances in the inner layer where fat builds up, forming connective tissue and calcium. This causes the inner layer to thicken, reduces the artery's diameter, and decreases blood flow and oxygen delivery. Plaques can also rupture or crack open, leading to sudden blood clots (thrombosis). Atherosclerosis can occur in the coronary arteries of the heart, the carotid arteries of the brain, as well as the arteries of the neck, kidneys, thighs, and arms, potentially causing heart attacks, strokes, kidney failure, or gangrene and amputation."
+      }
+    ]
+  },
+  "What are the symptoms of autism?": {
+    "baseline": [
+      {
+        "refusal": false,
+        "text": "Based on the provided context, symptoms of autism can range from mild to severe and may include:\n\n* **Social interaction problems:** Profound problems with social interaction, such as avoiding eye contact, not cuddling, showing little interest in human contact, failing to form attachments to parents, showing no normal anxiety toward strangers, and not learning typical games like peek-a-boo.\n* **Language problems:** Not speaking at all, or speaking only in single words; endlessly repeating words or phrases addressed to them (echolalia); and reversing pronouns (e.g., saying \"You go sleep\" instead of \"I want to go to sleep\").\n* **Restricted interests and activity:** Problems playing normally (not acting out adult roles or enjoying fantasy play, instead repeatedly mimicking others); bizarre behavior patterns such as complex rituals, screaming fits, rhythmic rocking, arm flapping, finger twiddling, and crying without tears; playing with own saliva, feces, or urine; and self-destructive behaviors like biting their own hands, gouging at their eyes, pulling their hair, or banging their head.\n* **Sensory problems:** Being overwhelmed by their own senses, ignoring objects, becoming obsessed with objects or finger movements, reacting to sounds by banging their head or flapping fingers, and finding sounds excruciatingly painful.\n* **Intellectual and other problems:** Moderate mental retardation; giggling or crying for no reason; having no fear of real danger while exhibiting terror of harmless objects; endlessly repeated words or strings of words; difficulty carrying on a conversation; obsessions with rituals or restricted patterns; and a preoccupation with parts of objects."
+      },
+      {
+        "refusal": false,
+        "text": "Based on the provided context, symptoms of autism include:\n\n* Profound problems with social interaction, such as not cuddling, avoiding eye contact, showing little interest in human contact, becoming rigid or flaccid when held, not smiling or lifting arms to be picked up, and forming no attachment to parents or normal anxiety toward strangers.\n* Language problems, such as not speaking at all, speaking only in single words, endlessly repeating words or phrases addressed to them (echolalia), and reversing pronouns.\n* Restricted interests and activity, including problems playing normally, mimicking actions instead of fantasy play, and bizarre behavior patterns such as complex rituals, screaming fits, rhythmic rocking, arm flapping, finger twiddling, crying without tears, playing with saliva/feces/urine, and self-destructive behavior (biting hands, gouging eyes, pulling hair, banging head).\n* Sensory problems, such as being overwhelmed by senses, ignoring objects, continually watching an object or finger movements, banging the head, and flapping fingers in reaction to sounds.\n* Intellectual problems, such as moderate mental retardation, giggling or crying for no reason, having no fear of real danger, and exhibiting terror of harmless objects.\n* Other behaviors such as problems with developing friendships, problems with make-believe or social play, endlessly repeated words or strings of words, difficulty in carrying on a conversation, obsessions with rituals or restricted patterns, and preoccupation with parts of objects."
+      },
+      {
+        "refusal": false,
+        "text": "Based on the provided context, symptoms and behaviors associated with autism include:\n\n* **Profound problems with social interaction:** Infants won't cuddle; they avoid eye contact, show little interest in human contact, do not smile or lift arms in anticipation of being picked up, form no attachment to parents, and show no normal anxiety toward strangers.\n* **Language problems:** The child may not speak at all, or may only speak in single words; may endlessly repeat words or phrases addressed to them (echolalia); and may reverse pronouns (e.g., \"You go sleep\" instead of \"I want to go to sleep\").\n* **Restricted interests and activity / Bizarre behavior patterns:** Problems playing normally (does not act out adult roles or enjoy fantasy play, instead repeatedly mimicking actions); complex rituals, screaming fits, rhythmic rocking, arm flapping, finger twiddling, crying without tears, playing with own saliva/feces/urine, and self-destructive behaviors (biting hands, gouging eyes, pulling hair, banging head).\n* **Sensory problems:** Overwhelmed by senses; may ignore objects or become obsessed with them (continually watching an object or movement of fingers); reacting to sounds by banging head or flapping fingers; and some experiencing sounds as excruciatingly painful.\n* **Intellectual and other behavioral signs:** Most appear moderately mentally retarded; may giggle or cry for no reason; have no fear of real danger while exhibiting terror of harmless objects; problems developing friendships; problems with make-believe or social play; endlessly repeated words or strings of words; difficulty carrying on a conversation; obsessions with rituals or restricted patterns; and preoccupation with parts of objects. \n* **Severity variations:** The severity ranges from severe (extremely unusual, repetitive, self-injurious, and aggressive behavior) to very mild (resembling a personality disorder with some learning disability)."
+      }
+    ],
+    "cot": [
+      {
+        "refusal": false,
+        "text": "The symptoms of autism vary in severity from mild to severe and affect social interaction, communication, behavior, and sensory processing. \n\nKey symptoms include:\n* **Social interaction problems:** Infants and children often avoid eye contact, will not cuddle, and show little interest in human contact or affection, sometimes becoming rigid or flaccid when held. They may not smile or anticipate being picked up, form no attachment to parents, show no normal anxiety toward strangers, and fail to learn typical childhood games like peek-a-boo. Profound problems with social interaction are the most common symptoms.\n* **Language problems:** A child may not speak at all, or may speak only in single words. They may endlessly repeat words or phrases addressed to them and reverse pronouns (such as saying \"You go sleep\" instead of \"I want to go to sleep\").\n* **Restricted interests and activities:** Children often have trouble playing normally, such as not acting out adult roles or substituting repetitive mimicking for fantasy play. Bizarre behavior patterns are very common and include complex rituals, screaming fits, rhythmic rocking, arm flapping, finger twiddling, crying without tears, and playing with saliva, feces, or urine. Some children are self-destructive, biting their hands, gouging at their eyes, pulling their hair, or banging their heads.\n* **Sensory problems:** Autistic children often seem overwhelmed by their senses. They may become obsessed with objects or finger movements, react to sounds by banging their head or flapping their fingers, or experience sounds as excruciatingly painful, causing them to withdraw.\n* **Intellectual and emotional responses:** Most autistic children appear to be moderately mentally retarded. They may giggle or cry for no reason, have no fear of real danger, and yet exhibit terror of harmless objects."
+      },
+      {
+        "refusal": false,
+        "text": "The symptoms of autism vary widely in severity, ranging from mild learning disabilities and personality-disorder-like traits to severe, unusual, repetitive, self-injurious, and aggressive behaviors. About 10% of individuals with autism are \"autistic savants\" who possess extraordinary ability in an area such as mathematics, memory, music, or art. \n\nSpecific symptoms fall into several categories:\n- **Social interaction problems:** Profound difficulties relating to others are the most common symptoms. Infants with autism may not cuddle, will avoid eye contact, and show little interest in physical contact or affection. They may become rigid or flaccid when held, cry when picked up, show no smile or anticipation when about to be picked up, form no attachment to parents, show no normal anxiety toward strangers, and fail to learn typical childhood games like peek-a-boo.\n- **Intellectual problems:** Most autistic children appear to be moderately mentally retarded. They may giggle or cry for no reason, lack fear of real danger, and exhibit terror toward harmless objects.\n- **Language problems:** A child with autism may not speak at all, or may speak only in single words. They may endlessly repeat words or phrases spoken to them and may reverse pronouns (such as saying \"You go sleep\" instead of \"I want to go to sleep\").\n- **Restricted interests and activity:** Children with autism often have trouble playing normally, avoiding adult roles in play and instead repeatedly mimicking others rather than engaging in fantasy play. Bizarre behavior patterns are common, including complex rituals, screaming fits, rhythmic rocking, arm flapping, finger twiddling, crying without tears, and playing with saliva, feces, or urine. Self-destructive behaviors such as biting their hands, gouging their eyes, pulling their hair, or banging their heads may also occur.\n- **Sensory problems:** Autistic children often seem overwhelmed by their senses. They may ignore objects or become obsessed with watching an object or the movement of their own fingers. They may react to sounds by banging their head, flapping their fingers, or withdrawing into their own world because sounds can be excruciatingly painful."
+      },
+      {
+        "refusal": false,
+        "text": "The symptoms of autism vary widely in severity and span several areas:\n\n* **Social interaction problems:** Profound difficulties relating to others are the most common symptoms. Infants may not cuddle, avoid eye contact, show no desire for physical contact or affection, become rigid or flaccid when held, cry when picked up, and show little interest in human contact. They do not smile or lift their arms to be picked up, form no attachment to parents, show no normal anxiety toward strangers, and do not learn typical childhood games like peek-a-boo.\n* **Language problems:** A child with autism may not speak at all, or may speak only in single words. They may endlessly repeat words or phrases addressed to them and reverse pronouns (such as saying \"You go sleep\" instead of \"I want to go to sleep\").\n* **Restricted interests and activities:** Children typically have trouble playing normally, often mimicking others' actions instead of enjoying fantasy play or acting out adult roles. Bizarre behavior patterns are very common, including complex rituals, screaming fits, rhythmic rocking, arm flapping, finger twiddling, crying without tears, and playing with saliva, feces, or urine. Some behaviors are self-destructive, such as biting hands, gouging eyes, pulling hair, or banging the head.\n* **Sensory problems:** Autistic children often seem overwhelmed by their own senses. They may become obsessed with objects, continually watching them or their fingers moving over them. Some react to sounds by banging their head or flapping their fingers, and some individuals report that sounds were excruciatingly painful, forcing them to withdraw into their own world of sensation and movement.\n* **Intellectual problems:** Most autistic children appear to be moderately mentally retarded. They may giggle or cry for no reason, show no fear of real danger, and exhibit terror of harmless objects. \n\nAdditionally, about 10% of individuals with autism have an extraordinary ability in one area, such as mathematics, memory, music, or art (known as \"autistic savants\")."
+      }
+    ]
+  },
+  "How is bed-wetting treated in children?": {
+    "baseline": [
+      {
+        "refusal": false,
+        "text": "Based on the provided context, treatments for bed-wetting include:\n\n* **Bladder training exercises:** Children drink large quantities of water and try to prolong the periods between urinations to increase bladder capacity.\n* **Motivational therapy:** Uses positive reinforcement (such as praise or rewards) and techniques like behavior modification (teaching children to use the bathroom before bedtime and avoid fluids after dinner) and bed-wetting alarms (sensors that trigger an alarm at the first sign of wetness).\n* **Drug therapy:** Medications include desmopressin acetate (DDAVP) nasal spray and imipramine hydrochloride.\n* **Surgery:** Used for underlying physical causes such as enlarged adenoids, physical defects in the urinary system, or a spinal tumor.\n* **Psychotherapy:** Indicated when the child exhibits signs of severe emotional distress, persistently low self-esteem, or depression.\n* **Diet therapy:** Eliminating substances that trigger allergic responses or food sensitivities (such as dairy, citrus products, or chocolate) from the child's diet.\n* **Alternative treatments:** Including massage or acupressure, herbal and homeopathic remedies (such as horsetail, Causticum, Lycopodium, and Pulsatilla), and hypnotherapy."
+      },
+      {
+        "refusal": false,
+        "text": "Based on the provided context, treatments for bed-wetting include:\n\n* **Bladder training exercises:** Children drink large quantities of water and try to prolong the periods between urinations to increase bladder capacity.\n* **Motivational therapy:** Parents encourage the child using positive reinforcement (such as praise or rewards for staying dry). This includes:\n  * **Behavior modification:** Teaching children new behaviors, such as using the bathroom before bedtime and avoiding fluids after dinner.\n  * **Alarms:** Using a sensor in the pajamas or bed pad that triggers an alarm at the first sign of wetness to condition the child to wake up when their bladder is full.\n* **Drug therapy:** Using medications such as desmopressin acetate (DDAVP) nasal spray or imipramine hydrochloride.\n* **Surgical procedures:** Used when bed-wetting has an underlying physical cause, such as enlarged adenoids causing sleep apnea, physical defects in the urinary system, or a spinal tumor.\n* **Psychotherapy:** Indicated if the child exhibits signs of severe emotional distress, persistently low self-esteem, or depression.\n* **Diet therapy:** Eliminating substances that trigger allergic responses or food sensitivities (such as dairy, citrus, or chocolate) from the child's diet.\n* **Alternative treatments:** Including massage or acupressure, herbal and homeopathic remedies (such as horsetail, Causticum, Lycopodium, and Pulsatilla), and hypnotherapy."
+      },
+      {
+        "refusal": true,
+        "text": "I don't know the treatment for a bee sting based on the provided context. \n\nRegarding the treatment for bed-wetting in children, the provided context lists several approaches:\n* **Bladder training exercises:** Designed to increase bladder capacity by having children drink a large quantity of water and prolong periods between urinations.\n* **Motivational therapy:** Using positive reinforcement (praise or rewards) and techniques like behavior modification (such as using the bathroom before bedtime and avoiding fluids after dinner) or alarms (sensors that wake the child at the first sign of wetness).\n* **Drug therapy:** Using medications such as desmopressin acetate (DDAVP) nasal spray or imipramine hydrochloride.\n* **Surgery:** Used in cases with an underlying physical cause, such as enlarged adenoids, physical defects in the urinary system, or a spinal tumor.\n* **Psychotherapy:** Indicated if the child exhibits signs of severe emotional distress, persistently low self-esteem, or depression.\n* **Diet therapy:** Eliminating substances that trigger allergic responses if food sensitivities are causing the bed-wetting.\n* **Alternative treatments:** Including massage or acupressure, herbal and homeopathic remedies, and hypnotherapy."
+      }
+    ],
+    "cot": [
+      {
+        "refusal": false,
+        "text": "Bed-wetting is treated using a variety of approaches:\n\n* **Bladder training exercises:** Children drink large quantities of water and try to prolong periods between urinations to increase functional bladder capacity, though this is only successful in a small number of patients.\n* **Motivational therapy:** Involves positive reinforcement (praise or rewards) and avoiding punishment, which can hamper self-esteem. Common techniques include behavior modification (teaching children to use the bathroom before bed and avoid fluids after dinner) and bed-wetting alarms (sensors in pajamas or bed pads that wake the child at the first sign of wetness, which are considered the most effective available treatment).\n* **Drug therapy:** Fast-acting medications include desmopressin acetate (DDAVP) nasal spray to regulate urine production and imipramine hydrochloride to increase bladder capacity (though children often wet the bed again after stopping imipramine, and it has side effects).\n* **Surgery:** Used when bed-wetting has an underlying physical cause, such as enlarged adenoids causing sleep apnea, urinary system physical defects, or a spinal tumor.\n* **Psychotherapy:** Indicated if the child shows signs of severe emotional distress (such as from a family death, new sibling, school change, or divorce) or persistently low self-esteem or depression.\n* **Diet therapy:** Eliminating specific food allergies or intolerances (such as dairy, citrus, or chocolate) that trigger allergic responses.\n* **Alternative treatments:** These include massage or acupressure (helpful for neurologic problems), herbal remedies (like horsetail) and homeopathic remedies (like Causticum, Lycopodium, and Pulsatilla), and hypnosis, which trains the child to awaken when the bladder feels full and works quickly within four to six sessions with virtually no side effects.\n\nAdditionally, parents can take preventative steps such as encouraging and praising the child for staying dry instead of punishing them, reminding the child to urinate before bed, and limiting liquid intake at least two hours before bedtime."
+      },
+      {
+        "refusal": false,
+        "text": "Bed-wetting can be treated in several ways:\n\n* **Bladder training exercises:** Children are instructed to drink a large amount of water and try to prolong the periods between urinations to help increase bladder capacity, though this is only successful in a small number of patients.\n* **Motivational therapy:** Parents encourage the child, using positive reinforcement (such as praise or rewards) to help improve self-esteem. Common motivational techniques include behavior modification (such as teaching children to use the bathroom before bedtime and avoid drinking fluids after dinner) and bed-wetting alarms (sensors in pajamas or bed pads that wake the child at the first sign of wetness, which are considered the most effective available treatment).\n* **Drug therapy:** Fast-acting medications may be used, such as desmopressin acetate (DDAVP) nasal spray to help regulate urine production, and imipramine hydrochloride to increase bladder capacity. \n* **Surgery:** Surgical procedures may be used to treat bed-wetting with an underlying physical cause, such as enlarged adenoids causing sleep apnea, physical defects in the urinary system, or a spinal tumor.\n* **Psychotherapy:** Indicated if the child shows signs of severe emotional distress (such as from a family death, new sibling, school change, or divorce), persistently low self-esteem, or depression.\n* **Diet therapy:** Eliminating specific foods that trigger allergic or intolerant responses (such as dairy, citrus products, or chocolate) from the child's diet when food sensitivities are present.\n* **Alternative treatments:** These include massage or acupressure done by a trained therapist (helpful if bed-wetting is caused by a neurologic problem), herbal remedies like horsetail, homeopathic remedies (such as Causticum, Lycopodium, and Pulsatilla), and hypnosis, which trains the child to awaken and use the bathroom when the bladder feels full.\n* **Parental steps:** Parents can also help by encouraging and praising the child for staying dry instead of punishing them, reminding the child to urinate before bed if they feel the need, and limiting liquid intake at least two hours before bedtime."
+      },
+      {
+        "refusal": false,
+        "text": "Bed-wetting can be treated in several ways:\n\n* **Bladder training exercises:** Based on the theory of small functional bladder capacity, children are instructed to drink large quantities of water and prolong periods between urinations to increase capacity.\n* **Motivational therapy:** Involves positive reinforcement such as praise and rewards. It includes behavior modification (teaching children to use the bathroom before bed and avoid fluids after dinner) and bed-wetting alarms (sensors in pajamas or bed pads that wake the child at the first sign of wetness).\n* **Drug therapy:** Fast-acting medications include desmopressin acetate (DDAVP) nasal spray to help regulate urine production and imipramine hydrochloride to increase bladder capacity. \n* **Surgical procedures:** Used when there is an underlying physical cause, such as enlarged adenoids causing sleep apnea, physical defects in the urinary system, or a spinal tumor.\n* **Psychotherapy:** Indicated if the child exhibits severe emotional distress (such as from a family death, new sibling, school change, or divorce) or shows signs of persistently low self-esteem or depression.\n* **Diet therapy:** In rare cases where allergies or food intolerances (such as dairy, citrus, or chocolate) cause bed-wetting, discovering and eliminating the trigger substances from the diet can help.\n* **Alternative treatments:** These include massage or acupressure by a trained therapist; herbal remedies (such as horsetail) and homeopathic remedies (such as Causticum, Lycopodium, and Pulsatilla); and hypnosis to train the child to awaken when the bladder feels full."
+      }
+    ]
+  },
+  "What causes bedsores?": {
+    "baseline": [
+      {
+        "refusal": false,
+        "text": "Based on the provided text, bedsores most often develop when constant pressure pinches tiny blood vessels that deliver oxygen and nutrients to the skin. When skin is deprived of oxygen and nutrients for as little as an hour, areas of tissue can die and bedsores can form. Slight rubbing or friction against the skin can also cause minor pressure ulcers, and they can develop when a patient stretches or bends blood vessels by slipping into a different position in a bed or chair. \n\nAdditionally, urine, feces, or other moisture increases the risk of skin infection, and people who are unable to move or recognize internal cues to shift position have a greater than average risk of developing them."
+      },
+      {
+        "refusal": false,
+        "text": "Based on the provided context, bedsores most often develop when constant pressure pinches tiny blood vessels that deliver oxygen and nutrients to the skin, causing areas of tissue to die when deprived of oxygen and nutrients for as little as an hour. Slight rubbing or friction against the skin can cause minor pressure ulcers, and they can also develop when a patient stretches or bends blood vessels by slipping into a different position in a bed or chair. Additionally, urine, feces, or other moisture increases the risk of skin infection."
+      },
+      {
+        "refusal": false,
+        "text": "Based on the provided context, bedsores most often develop when constant pressure pinches tiny blood vessels that deliver oxygen and nutrients to the skin, causing areas of tissue to die when deprived of oxygen and nutrients for as little as an hour. \n\nAdditionally, slight rubbing or friction against the skin can cause minor pressure ulcers, and they can also develop when a patient stretches or bends blood vessels by slipping into a different position in a bed or chair. Urine, feces, or other moisture also increases the risk."
+      }
+    ],
+    "cot": [
+      {
+        "refusal": false,
+        "text": "Bedsores most often develop when constant pressure pinches the tiny blood vessels that deliver oxygen and nutrients to the skin. When skin is deprived of oxygen and nutrients for as little as an hour, areas of tissue can die and bedsores can form. They can also be caused by slight rubbing or friction against the skin, or when a patient stretches or bends blood vessels by slipping into a different position in a bed or chair. \n\nIn addition, several factors increase the risk of developing bedsores, including:\n* Atherosclerosis (hardening of the arteries)\n* Diabetes or other conditions that make skin more susceptible to infection\n* Diminished sensation or a lack of feeling\n* Heart problems\n* Incontinence (inability to control bladder or bowel movements)\n* Malnutrition\n* Obesity\n* Paralysis or immobility\n* Poor circulation\n* Prolonged bed rest, especially in unsanitary conditions or with wet or wrinkled sheets\n* Spinal cord injury\n* Urine, feces, or other moisture, which increases the risk of skin infection\n* Anemia (lack of red blood cells)\n* Disuse atrophy (muscle loss or weakness from lack of use)\n* Infection"
+      },
+      {
+        "refusal": false,
+        "text": "Bedsores most often develop when constant pressure pinches the tiny blood vessels that deliver oxygen and nutrients to the skin, causing tissue to die when deprived for as little as an hour. They can also be caused by slight rubbing or friction against the skin, or when a patient stretches or bends blood vessels by slipping into a different position in a bed or chair. \n\nIn addition, several factors increase the risk of developing bedsores or make people more susceptible:\n- Being over the age of 60\n- Paralysis, immobility, or prolonged bed rest (especially in unsanitary conditions or with wet or wrinkled sheets)\n- Incontinence (inability to control bladder or bowel movements)\n- Diminished sensation or lack of feeling, or an inability to recognize internal cues to shift position\n- Diabetes or other conditions that make skin more susceptible to infection\n- Atherosclerosis (hardening of the arteries), poor circulation, or heart problems\n- Spinal cord injury\n- Malnutrition, obesity, anemia (lack of red blood cells), or disuse atrophy (muscle loss or weakness from lack of use)\n- Infection, or exposure to urine, feces, or other moisture that increases the risk of skin infection"
+      },
+      {
+        "refusal": false,
+        "text": "Bedsores most often develop when constant pressure pinches tiny blood vessels that deliver oxygen and nutrients to the skin. When the skin is deprived of oxygen and nutrients for as little as an hour, areas of tissue can die and bedsores can form. They can also be caused by slight rubbing or friction against the skin, or when a patient stretches or bends blood vessels by slipping into a different position in a bed or chair. \n\nAdditionally, a variety of risk factors increase the likelihood of developing bedsores:\n- Atherosclerosis (hardening of the arteries)\n- Diabetes or other conditions that make the skin more susceptible to infection\n- Diminished sensation or lack of feeling\n- Heart problems\n- Incontinence (inability to control bladder or bowel movements)\n- Malnutrition\n- Obesity\n- Paralysis or immobility\n- Poor circulation\n- Prolonged bed rest, especially in unsanitary conditions or with wet or wrinkled sheets\n- Spinal cord injury\n- Anemia (lack of red blood cells)\n- Disuse atrophy (muscle loss or weakness from lack of use)\n- Infection\n- Urine, feces, or other moisture, which increases the risk of skin infection"
+      }
+    ]
+  },
+  "What are the symptoms of bipolar disorder?": {
+    "baseline": [
+      {
+        "refusal": false,
+        "text": "Based on the provided context, the symptoms of bipolar disorder depend on the specific type of episode:\n\n* **Symptoms of bipolar depressive episodes include:** Low energy levels, feelings of despair, difficulty concentrating, extreme fatigue, psychomotor retardation (slowed mental and physical capabilities), and extremely low energy, retarded mental and physical processes, and more profound fatigue (such as hypersomnia) in bipolar depression.\n* **Symptoms of manic episodes include:** Feelings of euphoria, lack of inhibitions, racing thoughts, diminished need for sleep, talkativeness, risk taking, irritability, feelings of self-importance, elation, increased sociability, a desire to embark on goal-oriented activities, impatience, impulsiveness, hyperactivity, and in extreme cases, hallucinations and other psychotic symptoms such as grandiose illusions. \n* **Other indicators and associated features mentioned:** Mixed states (where both manic/hypomanic and depressive symptoms occur at the same time), dysphoric mania (mania characterized by anger and irritability), and seasonal patterns (depressive episodes typical during winter and fall, and manic episodes more probable in spring and summer)."
+      },
+      {
+        "refusal": false,
+        "text": "Based on the provided context, the symptoms of bipolar disorder depend on whether the patient is experiencing a depressive episode, a manic episode, or other specific states:\n\n*   **Symptoms of bipolar depressive episodes include:** Low energy levels, feelings of despair, difficulty concentrating, extreme fatigue, psychomotor retardation (slowed mental and physical capabilities), and extremely low energy, retarded mental and physical processes, and more profound fatigue (such as hypersomnia) in bipolar depression.\n*   **Symptoms of manic episodes include:** Feelings of euphoria, lack of inhibitions, racing thoughts, diminished need for sleep, talkativeness, risk-taking, irritability, inflated self-esteem, distractibility, an increase in goal-directed activity, and excessive involvement in pleasurable activities with a high potential for painful consequences. In extreme cases, mania can induce hallucinations and other psychotic symptoms such as grandiose illusions.\n*   **Other features/states:** Bipolar patients experiencing mania often have feelings of self-importance, elation, increased sociability, and a desire to embark on goal-oriented activities, coupled with irritability, impatience, impulsiveness, hyperactivity, and a decreased need for sleep. Mixed states involve both manic/hypomanic and depressive symptoms occurring at the same time. Dysphoric mania is characterized by anger and irritability."
+      },
+      {
+        "refusal": false,
+        "text": "Based on the provided context, the symptoms of bipolar disorder include:\n\n* **For bipolar depressive episodes:** Low energy levels, feelings of despair, difficulty concentrating, extreme fatigue, psychomotor retardation (slowed mental and physical capabilities), and extremely low energy, retarded mental and physical processes, and more profound fatigue (such as hypersomnia) in bipolar depression.\n* **For manic episodes:** Feelings of euphoria, lack of inhibitions, racing thoughts, diminished need for sleep, talkativeness, risk-taking, and irritability. In extreme cases, mania can induce hallucinations and other psychotic symptoms such as grandiose illusions. (Additionally, DSM-IV criteria for a manic episode include abnormally elevated or irritable mood, inflated self-esteem, decreased need for sleep, talkativeness, racing thoughts, distractibility, increase in goal-directed activity, or excessive involvement in pleasurable activities with high potential for painful consequences).\n* **Other manic/bipolar I characteristics:** Feelings of self-importance, elation, talkativeness, increased sociability, a desire to embark on goal-oriented activities, irritability, impatience, impulsiveness, hyperactivity, and a decreased need for sleep. \n* **Mixed states and other features:** Depressive symptoms occurring at the same time as manic or hypomanic symptoms (such as depression with the racing thoughts of mania), and dysphoric mania (mania characterized by anger and irritability)."
+      }
+    ],
+    "cot": [
+      {
+        "refusal": false,
+        "text": "The symptoms of bipolar disorder vary depending on whether the patient is experiencing a depressive episode, a manic episode, or specific types of the disorder. \n\nDuring depressive episodes, symptoms include low energy levels, feelings of despair, difficulty concentrating, extreme fatigue, and psychomotor retardation (slowed mental and physical capabilities). Bipolar depression is further characterized by extremely low energy, retarded mental and physical processes, and profound fatigue such as hypersomnia (a need for excessive sleep or sleepiness when awake).\n\nDuring manic episodes, symptoms include feelings of euphoria, lack of inhibitions, racing thoughts, a diminished need for sleep, talkativeness, risk-taking, irritability, and impatience. In extreme cases, mania can induce hallucinations and other psychotic symptoms, such as grandiose illusions. In Bipolar I disorder, mania may also involve feelings of self-importance, elation, increased sociability, a desire to embark on goal-oriented activities, impulsiveness, and hyperactivity. Mixed states can also occur where manic and depressive symptoms happen at the same time (such as depression combined with racing thoughts), and dysphoric mania features characteristic anger and irritability.\n\nSymptoms can present differently in children and adolescents, who tend to experience more psychotic features during manic episodes, chronic rather than acute symptoms, and irritability and aggressiveness instead of elation. They are also easily distracted, impulsive, and hyperactive."
+      },
+      {
+        "refusal": false,
+        "text": "Symptoms of bipolar disorder vary depending on whether the patient is experiencing a depressive episode, a manic episode, or how symptoms present in different age groups. \n\nDuring depressive episodes, symptoms include:\n- Low energy levels\n- Feelings of despair\n- Difficulty concentrating\n- Extreme fatigue\n- Psychomotor retardation (slowed mental and physical capabilities)\n\nDuring manic episodes, symptoms include:\n- Feelings of euphoria\n- Lack of inhibitions\n- Racing thoughts\n- Diminished need for sleep\n- Talkativeness\n- Risk taking\n- Irritability\n- In extreme cases, hallucinations and other psychotic symptoms such as grandiose illusions\n\nIn children and adolescents, symptoms tend to be ongoing rather than episodic, and manic episodes typically feature more psychotic elements, greater irritability and aggressiveness instead of elation, distractibility, impulsivity, and hyperactivity."
+      },
+      {
+        "refusal": false,
+        "text": "The symptoms of bipolar disorder vary depending on whether a person is experiencing a depressive or manic episode, and they can also present differently in children and adolescents. \n\nDuring depressive episodes, symptoms include low energy levels, feelings of despair, difficulty concentrating, extreme fatigue, and psychomotor retardation (slowed mental and physical capabilities). \n\nDuring manic episodes, symptoms include feelings of euphoria, a lack of inhibitions, racing thoughts, a diminished need for sleep, talkativeness, risk-taking behavior, and irritability. In extreme cases, mania can trigger hallucinations and other psychotic symptoms, such as grandiose illusions. \n\nIn children and adolescents, manic episodes tend to be chronic rather than episodic and are more likely to feature irritability, aggressiveness, and psychotic features (which can lead to misdiagnoses like schizophrenia), alongside being easily distracted, impulsive, and hyperactive."
+      }
+    ]
+  },
+  "What causes bladder cancer?": {
+    "baseline": [
+      {
+        "refusal": false,
+        "text": "Based on the provided context, the exact cause of bladder cancer is not known. However, smoking is considered the greatest risk factor, and the disease has been linked to certain risk factors such as exposure to certain chemicals in the dye, rubber, leather, textile, and paint industries, as well as conditions that cause long-term irritation to the bladder like frequent urinary infections and kidney and bladder stones."
+      },
+      {
+        "refusal": true,
+        "text": "I don't know, as the provided context does not state the exact cause of bladder cancer."
+      },
+      {
+        "refusal": true,
+        "text": "I don't know, as the provided context does not state the exact cause of bladder cancer."
+      }
+    ],
+    "cot": [
+      {
+        "refusal": false,
+        "text": "The exact cause of bladder cancer is not known. However, several risk factors and associated conditions are linked to the disease:\n\n* **Smoking:** Smokers are twice as likely as nonsmokers to get bladder cancer, and smoking is considered the greatest risk factor.\n* **Chemical exposure:** Workers exposed to certain chemicals used in the dye, rubber, leather, textile, and paint industries are believed to be at higher risk.\n* **Long-term bladder irritation:** Frequent urinary infections, kidney and bladder stones, and other conditions causing long-term irritation to the bladder may increase the risk.\n* **Demographics:** The disease is three times more common in men than in women, Caucasians are at an increased risk, and the risk increases with age, with most cases found in people aged 50\u201370. \n* **Prior tumors:** A past history of tumors in the bladder could increase the risk of getting other tumors."
+      },
+      {
+        "refusal": false,
+        "text": "The exact cause of bladder cancer is not known, but several risk factors are associated with the disease. Smoking is considered the greatest risk factor, as smokers are twice as likely as nonsmokers to get the disease. Other risk factors include exposure to certain chemicals used in the dye, rubber, leather, textile, and paint industries; being male (the disease is three times more common in men than in women); being Caucasian; and increasing age, with most cases occurring in people aged 50 to 70. Additionally, conditions that cause long-term irritation to the bladder\u2014such as frequent urinary infections, and kidney and bladder stones\u2014may increase the risk, as can a past history of tumors in the bladder."
+      },
+      {
+        "refusal": false,
+        "text": "The exact cause of bladder cancer is not known. However, several factors and conditions increase a person's risk of developing the disease:\n- Smoking is considered the greatest risk factor, as smokers are twice as likely as nonsmokers to get the disease.\n- Exposure to certain chemicals used in the dye, rubber, leather, textile, and paint industries puts workers at a higher risk.\n- Conditions that cause long-term irritation to the bladder\u2014such as frequent urinary infections, and kidney and bladder stones\u2014may increase the risk.\n- A past history of tumors in the bladder can increase the risk of getting other tumors. \nOther factors associated with a higher likelihood of the disease include older age (most cases are found in people aged 50\u201370), being male (the disease is three times more common in men than women), and being Caucasian."
+      }
+    ]
+  },
+  "What are the symptoms of botulism?": {
+    "baseline": [
+      {
+        "refusal": false,
+        "text": "Based on the provided context, the symptoms of botulism vary depending on the type and progression:\n\n* **General progression / Severe symptoms:** As botulism progresses, victims experience weakness or paralysis starting with the head muscles and progressing down the body. Breathing becomes increasingly difficult, and respiratory failure and death are very likely without medical care.\n* **Food-borne botulism:** Symptoms typically appear within 18\u201336 hours of eating contaminated food. Initial symptoms include blurred or double vision, and difficulty swallowing and speaking. Possible gastrointestinal problems include constipation, nausea, and vomiting.\n* **Infant botulism:** The first symptoms include constipation, lethargy, and poor feeding. As it progresses, sucking and swallowing become difficult. The baby suffers overall weakness, cannot control head movements, appears \"floppy\" due to flaccid paralysis of the muscles, and breathing is impaired. (A nursing mother will often notice breast engorgement as the first sign of her infant's illness.)\n* **Wound botulism:** Symptoms usually appear four to 18 days after an injury occurs and are similar to food-borne botulism, although gastrointestinal symptoms may be absent."
+      },
+      {
+        "refusal": false,
+        "text": "Based on the provided context, the symptoms of botulism vary by type and progression:\n\n* **Food-borne botulism:** Initial symptoms include blurred or double vision and difficulty swallowing and speaking. Possible gastrointestinal problems include constipation, nausea, and vomiting. As it progresses, the victim experiences weakness or paralysis starting with the head muscles and progressing down the body, making breathing increasingly difficult.\n* **Infant botulism:** The first symptoms include constipation, lethargy, and poor feeding. As it progresses, sucking and swallowing become difficult, the baby suffers overall weakness, cannot control head movements (appearing \"floppy\"), and breathing is impaired. A nursing mother will often notice breast engorgement as the first sign.\n* **Wound botulism:** Symptoms are similar to food-borne botulism, although gastrointestinal symptoms may be absent."
+      },
+      {
+        "refusal": false,
+        "text": "Based on the provided context, the symptoms of botulism vary by type and progression:\n\n*   **Food-borne botulism:** Initial symptoms typically include blurred or double vision, difficulty swallowing, and difficulty speaking. Gastrointestinal problems such as nausea, vomiting, and constipation may also occur. As it progresses, victims experience weakness or paralysis starting with the head muscles and moving down the body, making breathing increasingly difficult (leading to respiratory failure and death without medical care).\n*   **Infant botulism:** The first symptoms include constipation, lethargy, and poor feeding. As it progresses, sucking and swallowing become difficult, the baby suffers overall weakness, cannot control head movements, appears \"floppy\" due to flaccid paralysis of the muscles, and breathing is impaired (with respiratory failure being a danger). (Breast engorgement in a nursing mother is often noted as the first sign of her infant's illness).\n*   **Wound botulism:** Symptoms are similar to food-borne botulism (though gastrointestinal symptoms may be absent). As the disease progresses, victims experience weakness or paralysis starting with the head muscles and progressing down the body, making breathing increasingly difficult."
+      }
+    ],
+    "cot": [
+      {
+        "refusal": false,
+        "text": "The symptoms of botulism vary depending on the type (food-borne, infant, or wound):\n\n* **Food-borne botulism:** Symptoms typically appear within 18 to 36 hours of eating contaminated food. Initial signs include blurred or double vision, difficulty swallowing and speaking, and possible gastrointestinal problems such as constipation, nausea, and vomiting. As the condition progresses, victims experience weakness or paralysis that starts with the head muscles and moves down the body, accompanied by increasingly difficult breathing. Respiratory failure and death are very likely without medical care.\n* **Infant botulism:** The first symptoms include constipation, lethargy, and poor feeding. As it progresses, infants have difficulty sucking and swallowing, suffer overall weakness, cannot control head movements (making the baby appear \"floppy\"), and a nursing mother will often notice breast engorgement as a first sign. Breathing is impaired, with respiratory failure posing a real danger of death.\n* **Wound botulism:** Symptoms typically appear four to 18 days after an injury and are similar to those of food-borne botulism, although gastrointestinal symptoms may be absent."
+      },
+      {
+        "refusal": false,
+        "text": "The symptoms of botulism depend on the type:\n\n* **Food-borne botulism:** Symptoms typically appear within 18 to 36 hours of eating contaminated food (with extremes ranging from four hours to eight days). Initial symptoms include blurred or double vision, difficulty swallowing and speaking, and gastrointestinal issues such as nausea, vomiting, and constipation. As the condition progresses, victims experience weakness or paralysis that starts in the head muscles and moves down the body, alongside increasingly difficult breathing. Respiratory failure and death are very likely without medical care.\n* **Infant botulism:** The first signs include constipation, lethargy, and poor feeding. As it progresses, babies have trouble sucking and swallowing, suffer overall weakness, cannot control head movements, and appear \"floppy\" due to flaccid paralysis of the muscles. A nursing mother will often notice breast engorgement as the first sign of her infant's illness. Breathing is also impaired, and death from respiratory failure is a real danger.\n* **Wound botulism:** Symptoms usually appear four to 18 days after an injury occurs and are similar to those of food-borne botulism, although gastrointestinal symptoms may be absent."
+      },
+      {
+        "refusal": false,
+        "text": "The symptoms of botulism vary depending on the type:\n\n* **Food-borne botulism:** Symptoms typically appear within 18 to 36 hours of eating contaminated food. Initial signs include blurred or double vision, and difficulty swallowing and speaking. Gastrointestinal problems may include constipation, nausea, and vomiting. As the condition progresses, victims experience weakness or paralysis that starts with the head muscles and moves down the body, along with increasingly difficult breathing. Without medical care, respiratory failure and death are very likely.\n* **Infant botulism:** The first symptoms include constipation, lethargy, and poor feeding. A nursing mother will often notice breast engorgement as the first sign of her infant's illness. As it progresses, sucking and swallowing become difficult, the baby suffers overall weakness, cannot control head movements, and appears \"floppy\" due to flaccid paralysis of the muscles. Breathing is impaired, and death from respiratory failure is a real danger.\n* **Wound botulism:** Symptoms usually appear four to 18 days after an injury and are similar to those of food-borne botulism, except that gastrointestinal symptoms may be absent."
+      }
+    ]
+  },
+  "What are the symptoms of a brain tumor?": {
+    "baseline": [
+      {
+        "refusal": false,
+        "text": "Based on the provided context, when a brain tumor grows large enough to displace, damage, or destroy delicate brain tissue, a patient may experience the following symptoms:\n\n* Headaches that become increasingly painful and are most painful when lying down\n* Nausea and vomiting or sudden attacks of vomiting not accompanied by nausea\n* Seizures\n* Dizziness, loss of coordination, or balance\n* Personality changes\n* Sudden loss of vision\n* Memory loss\n* Speech problems\n* Sensory changes\n* Mental impairment\n* Weakness or paralysis on one side of the body"
+      },
+      {
+        "refusal": false,
+        "text": "Based on the provided context, when a brain tumor grows large enough to displace, damage, or destroy delicate brain tissue, a patient may experience the following symptoms:\n\n* Headaches that become increasingly painful and are most painful when lying down\n* Nausea and vomiting or sudden attacks of vomiting not accompanied by nausea\n* Seizures\n* Dizziness, loss of coordination or balance\n* Personality changes\n* Sudden loss of vision\n* Memory loss\n* Speech problems\n* Sensory changes\n* Mental impairment\n* Weakness or paralysis on one side of the body\n\n*(Note: Depending on the specific type of tumor, such as Schwannomas, early symptoms may also include slight hearing loss, balance problems, facial numbness or tingling, trouble walking, swallowing, or controlling eye movements, and changes in the sense of taste.)*"
+      },
+      {
+        "refusal": false,
+        "text": "Based on the provided context, when a brain tumor grows large enough to displace, damage, or destroy delicate brain tissue, a patient may experience the following symptoms:\n\n* Headaches that become increasingly painful and are most painful when lying down\n* Nausea and vomiting or sudden attacks of vomiting not accompanied by nausea\n* Seizures\n* Dizziness, loss of coordination, or balance\n* Personality changes\n* Sudden loss of vision\n* Memory loss\n* Speech problems\n* Sensory changes\n* Mental impairment\n* Weakness or paralysis on one side of the body"
+      }
+    ],
+    "cot": [
+      {
+        "refusal": false,
+        "text": "Symptoms of a brain tumor usually do not appear until the tumor grows large enough to displace, damage, or destroy delicate brain tissue. When that occurs, a patient may experience:\n- Headaches that become increasingly painful and are most painful when lying down\n- Nausea and vomiting, or sudden attacks of vomiting not accompanied by nausea\n- Seizures\n- Dizziness, loss of coordination, or balance\n- Personality changes\n- Sudden loss of vision\n- Memory loss\n- Speech problems\n- Sensory changes\n- Mental impairment\n- Weakness or paralysis on one side of the body\n\nSpecific tumor types and locations can cause additional symptoms. For example, Schwannomas can cause slight hearing loss and balance problems as early symptoms, which may progress to sudden or gradual hearing loss, headaches, facial numbness or tingling, difficulty walking, swallowing, or controlling eye movements, and changes in the sense of taste. Tumors that grow large enough to press on the brainstem can result in headaches, walking difficulties, and involuntary muscle shaking movements (tremors)."
+      },
+      {
+        "refusal": false,
+        "text": "The symptoms of a brain tumor depend on its size and location, and usually do not appear until the tumor grows large enough to displace, damage, or destroy delicate brain tissue. General symptoms may include:\n\u2022 Headaches that become increasingly painful and are most painful when lying down\n\u2022 Nausea and vomiting, or sudden attacks of vomiting not accompanied by nausea\n\u2022 Seizures\n\u2022 Dizziness, loss of coordination or balance\n\u2022 Personality changes\n\u2022 Sudden loss of vision\n\u2022 Memory loss\n\u2022 Speech problems\n\u2022 Sensory changes\n\u2022 Mental impairment\n\u2022 Weakness or paralysis on one side of the body\n\nSpecific types of tumors can cause additional symptoms. For example, Schwannomas may cause early symptoms of slight hearing loss and balance problems, sudden or gradual hearing loss in an ear, headaches, facial numbness or tingling, trouble walking, swallowing, or controlling eye movements, and changes in the sense of taste. If a tumor grows large enough to impact the brainstem, symptoms can include headaches, walking difficulties (gait ataxia), involuntary shaking movements of the muscles (tremors), and in rare untreated cases, nausea, vomiting, lethargy, coma, respiratory difficulties, and death."
+      },
+      {
+        "refusal": false,
+        "text": "The symptoms of a brain tumor typically do not appear until the tumor grows large enough to displace, damage, or destroy delicate brain tissue. When this happens, patients may experience:\n- Headaches that become increasingly painful and are most painful when lying down\n- Nausea and vomiting, or sudden attacks of vomiting not accompanied by nausea\n- Seizures\n- Dizziness, loss of coordination, or balance\n- Personality changes\n- Sudden loss of vision\n- Memory loss\n- Speech problems\n- Sensory changes\n- Mental impairment\n- Weakness or paralysis on one side of the body\n\nFor specific tumor types like Schwannomas, earliest symptoms can include slight hearing loss and balance problems, and as the tumor progresses it can cause sudden or gradual hearing loss, headaches, facial numbness or tingling, trouble walking, swallowing, or controlling eye movements, and an affected sense of taste. A doctor should be notified whenever a patient experiences one or more of these symptoms."
+      }
+    ]
+  },
+  "What are the symptoms of breast cancer?": {
+    "baseline": [
+      {
+        "refusal": true,
+        "text": "I don't know the answer to that based on the provided context."
+      },
+      {
+        "refusal": true,
+        "text": "I don't know the answer to that based on the provided context."
+      },
+      {
+        "refusal": true,
+        "text": "I don't know the answer to that based on the provided context."
+      }
+    ],
+    "cot": [
+      {
+        "refusal": false,
+        "text": "Symptoms and physical signs of breast cancer include:\n* The presence of a lump in the breast or underarms (which is a very common presenting sign, including new, hard lumps)\n* Skin dimpling, puckering, or retraction (where the nipple pulls in)\n* Nipple discharge (though bloody discharge is most often caused by benign disease, discharge that begins suddenly and appears in only one breast is a trouble sign)\n* Changes in breast size or shape\n* Redness, swelling, or warmth that does not go away\n* Pain in one area that does not vary with a woman's monthly cycle\n* An itchy, sore, or scaling area on one nipple\n* More advanced or late findings include skin dimpling or nipple retraction in the presence of an underlying breast mass, as well as actual skin involvement with edema or ulceration."
+      },
+      {
+        "refusal": false,
+        "text": "Symptoms and physical signs of breast cancer include:\n* A lump within the breast or underarms (the most common presenting finding)\n* Skin dimpling or puckering\n* Nipple retraction (a nipple that pulls in)\n* Discharge from the nipple, particularly if it begins suddenly and appears in only one breast\n* Skin involvement with edema (swelling) or ulceration\n* Redness or warmth that does not go away\n* Changes in breast size or shape\n* Pain in one area that does not vary with a woman's monthly cycle\n* An itchy, sore, or scaling area on one nipple"
+      },
+      {
+        "refusal": false,
+        "text": "The symptoms and physical signs of breast cancer include:\n- The presence of a lump in the breast or underarms (noted as a very common presenting sign)\n- Changes in breast size or shape\n- Skin dimpling, puckering, or retraction\n- Actual skin involvement with edema (swelling) or ulceration, which are late findings\n- Redness, swelling, or warmth that does not go away\n- Pain in one area that does not vary with a woman's monthly cycle\n- A nipple that pulls in\n- Discharge from the nipple (though bloody discharge is most often caused by benign disease, sudden discharge appearing in only one breast is listed as a trouble sign)\n- An itchy, sore, or scaling area on one nipple"
+      }
+    ]
+  },
+  "What are the symptoms of bronchitis?": {
+    "baseline": [
+      {
+        "refusal": false,
+        "text": "Based on the provided context, the symptoms of bronchitis include:\n\n* **Acute Bronchitis:** Begins with symptoms of a cold (such as a runny nose, sneezing, and a dry cough), which soon becomes deep and painful. Coughing brings up a greenish-yellow phlegm or sputum, and may be accompanied by a fever of up to 102\u00b0F (38.8\u00b0C) and wheezing after coughing. \n* **Chronic Bronchitis:** Includes a mild cough (smokers' cough) that brings up phlegm, which may be accompanied by wheezing, shortness of breath, difficulty breathing, and decreased activity."
+      },
+      {
+        "refusal": false,
+        "text": "Based on the provided context, the symptoms of bronchitis include:\n\n* **Acute Bronchitis:** Begins with cold symptoms such as a runny nose, sneezing, and a dry cough, which soon becomes deep and painful. Coughing brings up a greenish-yellow phlegm or sputum, and may be accompanied by a fever of up to 102\u00b0F (38.8\u00b0C). Wheezing after coughing is also common.\n* **Chronic Bronchitis:** A mild cough (often called smokers' cough) is usually the first visible sign, which brings up phlegm. This may be accompanied by wheezing, shortness of breath, and difficulty breathing as the disease advances and lung function decreases."
+      },
+      {
+        "refusal": false,
+        "text": "Based on the provided context, the symptoms of bronchitis include:\n\n* **Acute Bronchitis:** Begins with cold symptoms such as a runny nose, sneezing, and a dry cough, which soon becomes deep and painful and brings up greenish-yellow phlegm or sputum. This may be accompanied by a fever of up to 102\u00b0F (38.8\u00b0C) and wheezing after coughing. \n* **Chronic Bronchitis:** The first visible sign is usually a mild cough (sometimes called smoker's cough) that brings up phlegm. This may be accompanied by wheezing, shortness of breath, and difficulty breathing as the disease advances and lung function decreases."
+      }
+    ],
+    "cot": [
+      {
+        "refusal": false,
+        "text": "The symptoms of bronchitis depend on whether the condition is acute or chronic:\n\n**Acute Bronchitis Symptoms:**\n* Usually begins with cold symptoms like a runny nose, sneezing, and a dry cough.\n* The cough quickly turns deep and painful, bringing up greenish-yellow phlegm or sputum.\n* Fever up to 102\u00b0F (38.8\u00b0C).\n* Wheezing after coughing is common.\n\n**Chronic Bronchitis Symptoms:**\n* A mild cough (often called a smoker's cough) is usually the first visible sign.\n* Coughing that brings up phlegm (the amount varies from person to person).\n* Wheezing and shortness of breath.\n* Diagnostic tests show a decrease in lung function.\n* As the disease advances, breathing becomes increasingly difficult, activity decreases, and the body does not get enough oxygen, leading to changes in blood composition."
+      },
+      {
+        "refusal": false,
+        "text": "The symptoms of bronchitis depend on whether the condition is acute or chronic:\n\n**Acute bronchitis:**\n* Begins with cold symptoms such as a runny nose, sneezing, and a dry cough\n* The cough quickly becomes deep and painful, bringing up greenish-yellow phlegm or sputum\n* Fever of up to 102\u00b0F (38.8\u00b0C)\n* Wheezing after coughing is common\n\n**Chronic bronchitis:**\n* A mild cough (sometimes called a smoker's cough) is usually the first visible sign\n* Coughing brings up phlegm (in amounts that vary from person to person)\n* Wheezing and shortness of breath may accompany the cough\n* Diagnostic tests show decreased lung function\n* As the disease advances, breathing becomes difficult, activity decreases, and the body does not get enough oxygen, leading to changes in blood composition"
+      },
+      {
+        "refusal": false,
+        "text": "The symptoms of bronchitis depend on whether the condition is acute or chronic:\n\n* **Acute bronchitis** usually begins with cold symptoms such as a runny nose, sneezing, and a dry cough. The cough quickly turns deep and painful, bringing up greenish-yellow phlegm or sputum. These signs can be accompanied by a fever of up to 102\u00b0F (38.8\u00b0C), and wheezing after coughing is common.\n* **Chronic bronchitis** typically starts with a mild cough (sometimes called a smoker's cough) that brings up phlegm, along with possible wheezing and shortness of breath. As the disease advances, breathing becomes difficult, activity decreases, and insufficient oxygen reaching the body leads to changes in blood composition."
+      }
+    ]
+  },
+  "What is bulimia nervosa?": {
+    "baseline": [
+      {
+        "refusal": false,
+        "text": "Based on the provided context, bulimia nervosa is a serious health problem (and considered a psychiatric illness) affecting over two million adolescent girls and young women in the United States. It involves bingeing (consuming large amounts of food) and purging (trying to rid oneself of the food and calories through fasting, excessive exercise, vomiting, or using laxatives) to reduce stress and relieve anxiety. It results from an excessive concern with weight control and self-image, and is often accompanied by depression."
+      },
+      {
+        "refusal": false,
+        "text": "Based on the provided context, bulimia nervosa is a serious health problem (and an eating disorder / psychiatric illness) for over two million adolescent girls and young women in the United States, which involves bingeing (consuming large amounts of food) and purging (trying to rid oneself of the food and calories through fasting, excessive exercise, vomiting, or using laxatives) due to an excessive concern with weight control and self-image."
+      },
+      {
+        "refusal": false,
+        "text": "Based on the provided context, bulimia nervosa is a serious health problem (and considered a psychiatric illness) for over two million adolescent girls and young women in the United States, associated with bingeing and purging activities that can cause severe damage or even death."
+      }
+    ],
+    "cot": [
+      {
+        "refusal": false,
+        "text": "Bulimia nervosa is an eating disorder characterized by binge eating and inappropriate compensatory behavior\u2014such as fasting, excessive exercise, vomiting, or using laxatives\u2014to rid the body of food and calories. People with the disorder consume large amounts of food and then try to purge. The behavior often serves to reduce stress and relieve anxiety, and because the condition results from an excessive concern with weight control and self-image and is frequently accompanied by depression, it is also considered a psychiatric illness."
+      },
+      {
+        "refusal": false,
+        "text": "Bulimia nervosa is an eating disorder characterized by binge eating followed by inappropriate compensatory behavior\u2014such as fasting, excessive exercise, vomiting, or using laxatives or diuretics\u2014to rid the body of food and calories. People with bulimia consume large amounts of food and try to purge the food and calories. Because the condition results from an excessive concern with weight control and self-image and is frequently accompanied by depression, it is also considered a psychiatric illness."
+      },
+      {
+        "refusal": false,
+        "text": "Bulimia nervosa is an eating disorder characterized by binge eating (consuming large amounts of food) followed by inappropriate compensatory behavior\u2014or purging\u2014to rid the body of the food and calories. These compensatory methods can include fasting, excessive exercise, vomiting, or using laxatives. It is considered a serious psychiatric illness that affects over two million adolescent girls and young women in the United States, and it stems from an excessive concern with weight control and self-image, often accompanied by depression."
+      }
+    ]
+  },
+  "What causes a bunion?": {
+    "baseline": [
+      {
+        "refusal": false,
+        "text": "Based on the provided context, bunions are caused by:\n\n* Abnormal motion of the foot during walking or running (such as excessive stress placed upon the inside of the foot)\n* Age, as underlying bone displacement worsens over time unless corrective measures are taken\n* Wearing improperly fitting shoes, especially those with a narrow toe box and excessive heel height\n* Genetic factors that can predispose people to hallux valgus bone displacement (a strong family history)\n* Various arthritic conditions and several genetic and neuromuscular diseases (such as Down syndrome and Marfan syndrome) that cause muscle imbalances\n* Leg-length discrepancies, with the bunion present on the longer leg\n* Trauma occurring to the joint of the big toe\n* Chronic irritation and pressure from poorly fitting footwear"
+      },
+      {
+        "refusal": false,
+        "text": "Based on the provided context, bunions are caused by:\n\n* Abnormal motion of the foot during walking or running (such as an excessive amount of stress placed upon the inside of the foot)\n* Age, because underlying bone displacement worsens over time unless corrective measures are taken\n* Wearing improperly fitting shoes, especially those with a narrow toe box and excessive heel height\n* Genetic factors that can predispose people to hallux valgus bone displacement (a strong family history of bunions)\n* Various arthritic conditions and several genetic and neuromuscular diseases (such as Down syndrome and Marfan syndrome) that cause muscle imbalances leading to displacement of the first metatarsal and big toe\n* Leg-length discrepancies, with the bunion present on the longer leg\n* Trauma occurring to the joint of the big toe\n* Chronic irritation and pressure from poorly fitting footwear"
+      },
+      {
+        "refusal": false,
+        "text": "Based on the provided text, bunions are caused by inflammation and usually result from chronic irritation and pressure from poorly fitting footwear. Additionally, bunions may form as a result of:\n\n* Abnormal motion of the foot during walking or running (such as excessive stress placed upon the inside of the foot)\n* Age (because underlying bone displacement worsens over time unless corrective measures are taken)\n* Wearing improperly fitting shoes, especially those with a narrow toe box and excessive heel height\n* Genetic factors that predispose people to hallux valgus bone displacement (a strong family history of bunions)\n* Various arthritic conditions and several genetic and neuromuscular diseases (such as Down syndrome and Marfan syndrome) that cause muscle imbalances\n* Leg-length discrepancies (with the bunion present on the longer leg)\n* Trauma occurring to the joint of the big toe"
+      }
+    ],
+    "cot": [
+      {
+        "refusal": false,
+        "text": "A bunion is caused by inflammation, usually resulting from chronic irritation and pressure from poorly fitting footwear, especially shoes with a narrow toe box and excessive heel height. Other causes include:\n- Abnormal motion of the foot during walking or running, such as excessive stress placed on the inside of the foot.\n- Age, as underlying bone displacement worsens over time if corrective measures are not taken.\n- Genetic factors and a strong family history of bunions, which can predispose people to hallux valgus bone displacement.\n- Various arthritic conditions and genetic and neuromuscular diseases (such as Down syndrome and Marfan syndrome) that cause muscle imbalances resulting in bone displacement.\n- Leg-length discrepancies, with the bunion appearing on the longer leg.\n- Trauma occurring to the joint of the big toe."
+      },
+      {
+        "refusal": false,
+        "text": "A bunion is caused by inflammation and typically results from chronic irritation and pressure from poorly fitting footwear. Specific contributing factors and causes include:\n- Wearing improperly fitting shoes, especially those with a narrow toe box and excessive heel height, as well as tight-fitting socks or stockings.\n- Abnormal motion of the foot during walking or running, such as placing an excessive amount of stress on the inside of the foot.\n- Genetic factors and a strong family history that can predispose people to hallux valgus bone displacement.\n- Various arthritic conditions, as well as genetic and neuromuscular diseases (such as Down syndrome and Marfan syndrome) that cause muscle imbalances leading to bone displacement.\n- Leg-length discrepancies, with the bunion appearing on the longer leg.\n- Trauma occurring to the joint of the big toe.\n- Age, because underlying bone displacement tends to worsen over time unless corrective measures are taken."
+      },
+      {
+        "refusal": false,
+        "text": "Bunions can be caused by several factors:\n* Wearing improperly fitting shoes, particularly those with a narrow toe box and excessive heel height, which causes chronic irritation and pressure.\n* Abnormal foot motion during walking or running, such as excessive stress placed on the inside of the foot.\n* Age, because underlying bone displacement tends to worsen over time if corrective measures are not taken.\n* Genetic factors and a strong family history of bunions that predispose people to bone displacement.\n* Various arthritic conditions as well as genetic and neuromuscular diseases (such as Down syndrome and Marfan syndrome) that create muscle imbalances, leading to the displacement of the first metatarsal and big toe.\n* Leg-length discrepancies, where the bunion appears on the longer leg.\n* Trauma occurring to the joint of the big toe."
+      }
+    ]
+  },
+  "How should burns be treated?": {
+    "baseline": [
+      {
+        "refusal": false,
+        "text": "Based on the provided context, burn treatment consists of relieving pain, preventing infection, and maintaining body fluids, electrolytes, and calorie intake while the body heals. Specific treatments vary depending on the type and severity of the burn:\n\n* **Thermal Burns:**\n  * Stop the burning process by letting cool water run over the burned area or soaking it in cool (not cold) water. Never apply ice.\n  * Cool, wet compresses may provide pain relief for small first- and second-degree burns.\n  * Never apply butter, shortening, or similar salves.\n  * Minor burns may be gently cleaned with soap and water. Do not break blisters.\n  * Leave unbroken skin exposed to the air if it won't be irritated; coat broken or disturbed skin lightly with an antibacterial ointment and cover with a sterile bandage.\n  * Aspirin, acetaminophen (Tylenol), or ibuprofen (Advil) may be taken for pain and inflammation.\n  * Moderate or critical burns require immediate emergency medical assistance and lifesaving measures (such as artificial respiration if breathing stops). Prevent shock in burns covering more than 12% BSA by laying the person flat and elevating the feet about 12 inches, and raising burned arms/hands higher than the heart.\n  * At the hospital, treatments may include breathing tubes, intravenous replacement fluids, intravenous antibiotics, tetanus shots, cleaning, sterile bandages, surgical removal of dead tissue (debridement), cutting of scabs (eschar) to improve blood flow, physical and occupational therapy, skin grafts, or placement in a hyperbaric chamber.\n\n* **Chemical Burns:**\n  * Liquid chemical burns must be rinsed with cool water for at least 15 minutes (eyes must be similarly flushed).\n  * Dry chemical burns (like lime) should be completely brushed away before washing the area.\n  * Remove clothing that absorbed the chemical, loosely cover the burn with a sterile gauze pad, and take the person to the hospital.\n\n* **Electrical Burns:**\n  * Disconnect the power source and move the victim away before treatment. \n  * Prioritize lifesaving measures (check and assist breathing).\n  * Loosely cover the burns with sterile gauze pads and take the person to the hospital.\n\n* **Alternative Treatments (for minor burns):**\n  * Homeopathic remedies such as *Cantharis* and *Causticum*.\n  * Topical botanical remedies including aloe (*Aloe barbadensis*), oil of St.-John's-wort (*Hypericum perforatum*), calendula (*Calendula officinalis*), and comfrey."
+      },
+      {
+        "refusal": false,
+        "text": "Based on the provided context, burn treatment consists of relieving pain, preventing infection, and maintaining body fluids, electrolytes, and calorie intake while the body heals. Specific treatments vary depending on the type of burn:\n\n* **Thermal burns:** \n  * The first step is to stop the burning process by letting cool water run over the burned area, soaking it in cool (not cold) water, or using cool wet compresses. (Ice, butter, shortening, or similar salves should never be applied).\n  * Minor burns may be gently cleaned with soap and water. Unbroken skin not subject to pressure or friction should be left exposed to the air. Broken or easily disturbed skin should be coated lightly with an antibacterial ointment and covered with a sterile bandage.\n  * Pain can be eased using aspirin, acetaminophen (Tylernol), or ibuprofen (Advil). Blisters should not be broken.\n  * For moderate or critical burns, emergency medical assistance must be called immediately, lifesaving measures (such as artificial respiration if breathing stops) take priority, and steps should be taken to prevent shock (such as laying the person flat and elevating the feet about 12 inches).\n  * At the hospital, treatment may include a breathing tube, intravenous replacement fluids, intravenous antibiotics, a tetanus shot, surgical removal of dead tissue (debridement), sterile bandages, physical and occupational therapy, skin grafts, or hyperbaric oxygen chamber therapy.\n\n* **Chemical burns:** \n  * Liquid chemical burns must be rinsed with cool water for at least 15 minutes (or the eyes flushed with water). \n  * Dry chemical burns (such as lime) should be completely brushed away before washing the area. \n  * Remove clothing that absorbed the chemical, loosely cover the burn with a sterile gauze pad, and take the person to the hospital.\n\n* **Electrical burns:** \n  * First, disconnect the power source if possible and move the victim away from it. \n  * Check and assist breathing if necessary. \n  * Loosely cover the burns with sterile gauze pads and take the person to the hospital."
+      },
+      {
+        "refusal": true,
+        "text": "I don't know the answer to your question about bee stings based on the provided context. \n\nHowever, regarding how burns should be treated, the provided information outlines several methods depending on the type of burn:\n\n* **Thermal Burns:** \n  * Stop the burning process by running cool water over the area or soaking it in cool (not cold) water. Never apply ice, butter, shortening, or similar salves.\n  * For small, minor burns, gently clean with soap and water. Leave unbroken skin exposed to the air if it won't be irritated. If the skin is broken or easily disturbed, coat it lightly with an antibacterial ointment and cover with a sterile bandage.\n  * Aspirin, acetaminophen (Tylenol), or ibuprofen (Advil) may be taken to ease pain and relieve inflammation. Do not break blisters.\n  * Moderate or critical burns require emergency medical assistance, lifesaving measures (such as artificial respiration if breathing stops), and measures to prevent shock (like laying the person flat, elevating the feet about 12 inches, and raising burned arms and hands higher than the heart). Smother flames with a blanket if needed (\"stop, drop, and roll\"), and remove burn-free clothing that comes off easily while leaving embedded clothing alone. \n  * Hospital treatments may include breathing tubes, intravenous replacement fluids and antibiotics, a tetanus shot, debridement (surgical removal of dead tissue), cutting scabs to improve blood flow, physical and occupational therapy, skin grafts, or hyperbaric oxygen therapy.\n\n* **Chemical Burns:** \n  * Liquid chemical burns must be rinsed with cool water for at least 15 minutes (flush eyes similarly). \n  * Dry chemical burns (like lime) should be completely brushed away before washing the area. \n  * Remove contaminated clothing, loosely cover the burn with a sterile gauze pad, and take the person to the hospital.\n\n* **Electrical Burns:** \n  * Disconnect the power source and move the victim away from it before giving aid. Check and assist breathing if necessary. \n  * Loosely cover the burns with sterile gauze pads and take the person to the hospital.\n\n* **Alternative Treatments (for minor burns):** \n  * Homeopathic remedies such as Cantharis and Causticum, or topical botanical remedies including aloe, oil of St.-John\u2019s-wort, calendula, and comfrey, may help burns heal.\n\n*Remember, this information is educational only and is not a substitute for professional medical advice, diagnosis, or treatment.*"
+      }
+    ],
+    "cot": [
+      {
+        "refusal": false,
+        "text": "Burn treatment varies depending on the type and severity of the burn, but general objectives include relieving pain, preventing infection, and maintaining body fluids, electrolytes, and calorie intake. \n\nFor thermal burns:\n- The burning process must first be stopped by letting cool water run over the area, soaking it in cool water, or using cool wet compresses for minor first- and second-degree burns. Never apply ice, butter, shortening, or salves.\n- Minor burns can be cleaned gently with soap and water without breaking blisters. If unbroken and unlikely to be irritated, leave the burn exposed to air; if broken or prone to disturbance, coat it lightly with antibacterial ointment and cover with a sterile bandage. Aspirin, acetaminophen, or ibuprofen may be used for pain and inflammation.\n- For moderate or critical burns, lifesaving measures take priority. Administer artificial respiration if breathing stops. Prevent shock by laying the person flat, elevating the feet about 12 inches, and raising burned arms and hands higher than the heart. Smother flames using a blanket and \"stop, drop, and roll.\" Remove smoldering apparel and cover the person with a light, cool, wet cloth (like a sheet), but do not disturb clothing embedded in the burn.\n- Hospital treatment for serious burns includes breathing tubes if airways are damaged, intravenous replacement fluids and antibiotics, a tetanus shot, debridement (surgical removal of dead tissue), cutting scabs (eschar) to improve blood flow, physical and occupational therapy, skin grafts (autografts, allografts, or xenografts), and potentially placement in a hyperbaric chamber with pure oxygen within 24 hours of being burned.\n\nFor chemical burns:\n- Liquid chemical burns must be rinsed with cool water for at least 15 minutes (flush eyes similarly if affected). \n- Dry chemical powders, like lime, should be completely brushed away before washing the area. \n- Remove clothing that absorbed the chemical, loosely cover the burn with a sterile gauze pad, and take the person to the hospital.\n\nFor electrical burns:\n- Disconnect the power source and move the victim away before giving aid. Check and assist breathing as a priority, cover the burns loosely with sterile gauze pads, and take the person to the hospital.\n\nAlternative treatments (for minor burns) include homeopathic remedies like Cantharis and Causticum, and topical botanical remedies such as aloe, oil of St.-John's-wort, calendula, and comfrey. Major burns should always be treated by a medical practitioner."
+      },
+      {
+        "refusal": false,
+        "text": "Burn treatment generally aims to relieve pain, prevent infection, and maintain body fluids, electrolytes, and calorie intake. Specific treatment depends on the type and severity of the burn:\n\n* **Minor Thermal Burns:** Stop the burning process by letting cool water run over the area or soaking it in cool water (never apply ice, butter, shortening, or salves). Clean minor burns gently with soap and water, leave blisters unbroken, and leave unbroken skin exposed to the air if it won't be irritated. If skin is broken, apply a light coat of antibacterial ointment and a sterile bandage. Aspirin, acetaminophen, or ibuprofen may be taken for pain and inflammation. Consult a doctor if signs of infection appear (such as increased warmth, redness, pain, swelling, pus, swollen lymph nodes, or spreading red streaks).\n* **Moderate to Critical Thermal Burns:** Call emergency medical assistance immediately and prioritize lifesaving measures. If the person stops breathing, administer artificial respiration. To help prevent shock, lay the person flat with their feet elevated about 12 inches, and raise burned arms and hands higher than the heart. Smother flames with a blanket during rescue, remove smoldering apparel (leaving embedded clothing alone), and cover the person with a light, cool, wet cloth. At the hospital, treatments may include breathing tubes, intravenous replacement fluids and antibiotics, tetanus shots, debridement (surgical removal of dead tissue), bandage changes, physical and occupational therapy, skin grafts (autografts, allografts, or xenografts), or placement in a hyperbaric oxygen chamber within 24 hours of the burn.\n* **Chemical Burns:** Rinse liquid chemical burns (and eye burns) with cool water for at least 15 minutes. For dry chemicals like lime, brush the powder completely away before washing the area. Remove contaminated clothing, cover the burn loosely with a sterile gauze pad, and take the person to the hospital.\n* **Electrical Burns:** Disconnect the power source and move the victim away before giving aid. Check and assist breathing if necessary, cover the burns loosely with sterile gauze pads, and take the person to the hospital.\n* **Alternative Treatments:** For minor burns, homeopathic remedies like *Cantharis* and *Causticum* can assist healing, as can topical botanical remedies such as aloe, oil of St.-John's-wort, calendula, and comfrey. (Major burns should always be treated by a medical practitioner.)"
+      },
+      {
+        "refusal": false,
+        "text": "Burn treatment generally aims to relieve pain, prevent infection, and maintain body fluids, electrolytes, and calorie intake. Specific treatment depends on the type and severity of the burn:\n\n* **Minor Thermal Burns:** Stop the burning process by running cool water over the area or soaking it in cool water (never use ice, butter, shortening, or salves). Do not break blisters. If the skin is unbroken and not subject to pressure, leave it exposed to air; if broken, coat lightly with antibacterial ointment and cover with a sterile bandage. Aspirin, acetaminophen, or ibuprofen may be taken for pain and inflammation. \n* **Moderate to Critical Thermal Burns:** Lifesaving measures take precedence. If breathing stops, administer artificial respiration immediately. Prevent shock by laying the person flat, elevating their feet about 12 inches, and raising burned arms and hands higher than the heart. Smother flames, remove smoldering apparel (do not disturb embedded clothing), and cover the person with a light, cool, wet cloth (like a sheet). Seek emergency medical assistance.\n* **Hospital Treatment for Serious Burns:** Staff may insert a breathing tube, administer intravenous replacement fluids and antibiotics, give a tetanus shot, perform surgical removal of dead tissue (debridement), and cut thick scabs (eschar) to improve blood flow. Burned areas are cleaned, treated with antibiotic cream, and covered with sterile bandages changed two to three times a day. Patients may also undergo physical and occupational therapy, skin grafts, or treatment in a hyperbaric oxygen chamber within 24 hours of being burned.\n* **Chemical Burns:** Rinse liquid chemical burns with cool water for at least 15 minutes (including the eyes). For dry chemicals like lime, completely brush away the powder before washing. Remove contaminated clothing, loosely cover the burn with a sterile gauze pad, and take the person to the hospital.\n* **Electrical Burns:** Disconnect the power source and move the victim away before giving aid. Check and assist breathing if necessary, loosely cover the burns with sterile gauze pads, and take the person to the hospital.\n* **Alternative Treatments:** For minor burns, homeopathic remedies such as Cantharis and Causticum, as well as topical botanical remedies including aloe, oil of St.-John\u2019s-wort, calendula, and comfrey, can assist in healing. (Major burns should always be treated by a medical practitioner.)"
+      }
+    ]
+  },
+  "What is bursitis?": {
+    "baseline": [
+      {
+        "refusal": true,
+        "text": "I don't know the answer to your question based on the provided context, as the context does not define bursitis (though it discusses its causes, symptoms, diagnosis, and treatment)."
+      },
+      {
+        "refusal": true,
+        "text": "I don't know the definition of bursitis based on the provided context."
+      },
+      {
+        "refusal": true,
+        "text": "I don't know the answer to your question based on the provided context."
+      }
+    ],
+    "cot": [
+      {
+        "refusal": false,
+        "text": "Bursitis is a condition affecting a joint and its bursa, commonly caused by repeated physical activity, trauma, rheumatoid arthritis, gout, or acute or chronic infection. Its symptoms include pain and tenderness, and if the affected joint is close to the skin (such as the shoulder, knee, elbow, or Achilles tendon), swelling and redness can be seen and the area may feel warm to the touch. Movement may be limited and painful. In acute bursitis, symptoms appear suddenly, while in chronic bursitis, pain, tenderness, and limited movement reappear after exercise or strain."
+      },
+      {
+        "refusal": false,
+        "text": "Bursitis is a condition affecting a bursa (such as around joints like the shoulder, knee, elbow, hip, or Achilles tendon) that causes symptoms like pain, tenderness, and limited, painful movement. If the affected joint is close to the skin, swelling and redness are seen and the area may feel warm to the touch, whereas bursa around deeper joints like the hip do not show obvious swelling. In acute bursitis, symptoms appear suddenly, while in chronic bursitis, pain, tenderness, and limited movement reappear after exercise or strain. It can be triggered by repeated physical activity, trauma, rheumatoid arthritis, gout, or acute or chronic infection, though it can also flare up for no known reason."
+      },
+      {
+        "refusal": false,
+        "text": "The provided text does not explicitly define what bursitis is, but it describes its causes and symptoms. Bursitis can flare up for no known reason or be caused by repeated physical activity, trauma, rheumatoid arthritis, gout, and acute or chronic infection. Its common symptoms include pain and tenderness. Depending on the joint, swelling, redness, and warmth may be seen if the joint is close to the skin (like the shoulder, knee, elbow, or Achilles tendon), though deeper bursa like the hip do not show obvious swelling. Movement of the affected area may be limited and painful. In acute bursitis, symptoms appear suddenly, while in chronic bursitis, pain, tenderness, and limited movement reappear after exercise or strain."
+      }
+    ]
+  },
+  "What is an abscess?": {
+    "baseline": [
+      {
+        "refusal": false,
+        "text": "Based on the provided context, an abscess is the last stage of a tissue infection that begins with inflammation, where tissue turns to liquid and a pocket of pus forms. It is a pus-filled sore, usually caused by a bacterial infection (making it a septic abscess), or it can be a sterile abscess caused by non-living irritants such as drugs rather than an infection."
+      },
+      {
+        "refusal": false,
+        "text": "Based on the provided context, an abscess is the last stage of a tissue infection that begins with inflammation, where tissue turns to liquid and a pocket of pus forms. It is a pus-filled sore, usually caused by a bacterial infection, and can be septic (resulting from an infection) or sterile (caused by non-living irritants such as drugs)."
+      },
+      {
+        "refusal": false,
+        "text": "Based on the provided text, an abscess is the last stage of a tissue infection that begins with inflammation, where tissue turns to liquid and forms a pus-filled sore. It is a pocket of pus containing digested germs, digested tissue, white blood cells, and enzymes. Abscesses can be septic (resulting from an infection) or sterile (caused by non-living irritants such as drugs), and they can develop in soft tissue under the skin or in any organ of the body."
+      }
+    ],
+    "cot": [
+      {
+        "refusal": false,
+        "text": "An abscess is a pus-filled sore that represents the final stage of a tissue infection beginning with inflammation. Most abscesses are septic, meaning they result from an infection where white blood cells gather and produce enzymes that kill germs and break them down, but these chemicals also digest body tissue. The resulting thick, yellow liquid\u2014pus\u2014contains digested germs, digested tissue, white blood cells, and enzymes. There are also sterile abscesses, which are a milder form caused by non-living irritants like unabsorbed injected drugs rather than infections. Abscesses can develop in soft tissues under the skin (such as the armpit or groin), in any organ including the breast and gums, or in deeper organs like the lung, liver, or brain."
+      },
+      {
+        "refusal": false,
+        "text": "An abscess is a pus-filled sore or pocket resulting from an infection or non-living irritant, representing the final stage of a tissue infection that begins with inflammation. \n\nThere are two main types of abscesses:\n* **Septic abscesses:** Most abscesses are septic, meaning they are caused by an infection. In response to invading germs, white blood cells gather and produce enzymes that kill the germs and break them down, but these chemicals also digest body tissues. This process creates pus\u2014a thick, yellow liquid made of digested germs, digested tissue, white blood cells, and enzymes. Septic abscesses can occur anywhere in the body, commonly in soft tissues under the skin (such as the armpit or groin), in organs like the breast and gums, or more seriously in deep organs such as the lungs, liver, or brain. \n* **Sterile abscesses:** These are a milder form caused by non-living irritants (such as an unabsorbed injected drug like penicillin) rather than germs or infection. Unlike pus-filled pockets, sterile abscesses are quite likely to turn into hard, solid lumps as they scar."
+      },
+      {
+        "refusal": false,
+        "text": "An abscess is a pus-filled sore and the final stage of a tissue infection that begins with inflammation. There are two types:\n* **Septic abscesses:** Most abscesses are septic, meaning they result from an infection. In response to invading germs, white blood cells gather and produce enzymes that kill the germs and break them down, but these chemicals also digest body tissues, resulting in pus (a thick, yellow liquid containing digested germs, digested tissue, white blood cells, and enzymes). Septic abscesses can occur anywhere in the body, are often found in soft tissue under the skin (such as the armpit or groin), and are commonly found in the breast and gums. \n* **Sterile abscesses:** These are a milder form caused by non-living irritants, such as an unabsorbed injected drug (like penicillin), rather than germs. Because no infection is involved, they are quite likely to turn into hard, solid lumps as they scar, rather than remaining pockets of pus.\n\nAbscesses can also develop in deep organs, such as the lung, liver, or brain, which makes them far more serious and requires more specific treatment."
+      }
+    ]
+  },
+  "What are the side effects of acetaminophen?": {
+    "baseline": [
+      {
+        "refusal": false,
+        "text": "Based on the provided context, the side effects of acetaminophen include:\n\n* Lightheadedness (the most common side effect)\n* Trembling\n* Pain in the side or lower back\n* Allergic reactions (rare), which may include symptoms such as a rash, swelling, or difficulty breathing\n* Yellow skin or eyes\n* Unusual bleeding or bruising\n* Weakness\n* Fatigue\n* Bloody or black stools\n* Bloody or cloudy urine\n* A sudden decrease in the amount of urine\n\n*(Note: Overdoses of acetaminophen may cause nausea, vomiting, sweating, and exhaustion, with very large overdoses potentially causing liver damage.)*"
+      },
+      {
+        "refusal": false,
+        "text": "Based on the provided context, the side effects of acetaminophen include:\n\n* **Most common:** Lightheadedness\n* **Other side effects:** Trembling, pain in the side or lower back, and allergic reactions (such as a rash, swelling, or difficulty breathing)\n* **Rare side effects:** Yellow skin or eyes, unusual bleeding or bruising, weakness, fatigue, bloody or black stools, bloody or cloudy urine, and a sudden decrease in the amount of urine\n\n*(Note: This information is educational only and is not a substitute for professional medical advice, diagnosis, or treatment.)*"
+      },
+      {
+        "refusal": false,
+        "text": "Based on the provided context, the side effects of acetaminophen include:\n\n* Lightheadedness (the most common)\n* Trembling\n* Pain in the side or lower back\n* Allergic reactions (which are rare and can involve symptoms such as a rash, swelling, or difficulty breathing)\n* Yellow skin or eyes\n* Unusual bleeding or bruising\n* Weakness\n* Fatigue\n* Bloody or black stools\n* Bloody or cloudy urine\n* A sudden decrease in the amount of urine\n\n*(Note: This information is educational only and is not a substitute for professional medical advice, diagnosis, or treatment.)*"
+      }
+    ],
+    "cot": [
+      {
+        "refusal": false,
+        "text": "Acetaminophen causes few side effects. The most common side effect is lightheadedness. Some people may also experience trembling and pain in the side or the lower back. Although rare, allergic reactions do occur; anyone who develops symptoms like a rash, swelling, or difficulty breathing after taking the drug should stop taking it and get immediate medical attention. Other rare side effects include yellow skin or eyes, unusual bleeding or bruising, weakness, fatigue, bloody or black stools, bloody or cloudy urine, and a sudden decrease in the amount of urine. Additionally, overdoses can cause nausea, vomiting, sweating, and exhaustion, while very large overdoses can cause liver damage."
+      },
+      {
+        "refusal": false,
+        "text": "Acetaminophen causes few side effects. The most common side effect is lightheadedness. Some people may experience trembling and pain in the side or the lower back. Allergic reactions are rare, but anyone who develops symptoms such as a rash, swelling, or difficulty breathing should stop taking the drug and get immediate medical attention. Other rare side effects include yellow skin or eyes, unusual bleeding or bruising, weakness, fatigue, bloody or black stools, bloody or cloudy urine, and a sudden decrease in the amount of urine. Additionally, overdoses may cause nausea, vomiting, sweating, and exhaustion, while very large overdoses can cause liver damage."
+      },
+      {
+        "refusal": false,
+        "text": "Acetaminophen causes few side effects. The most common is lightheadedness, and some people may experience trembling and pain in the side or the lower back. Rare side effects include yellow skin or eyes, unusual bleeding or bruising, weakness, fatigue, bloody or black stools, bloody or cloudy urine, and a sudden decrease in the amount of urine. Allergic reactions are also rare, but anyone who develops symptoms such as a rash, swelling, or difficulty breathing after taking the drug should stop taking it and get immediate medical attention. Additionally, overdoses may cause nausea, vomiting, sweating, and exhaustion, while very large overdoses can cause liver damage and require immediate medical attention."
+      }
+    ]
+  },
+  "What causes amnesia?": {
+    "baseline": [
+      {
+        "refusal": false,
+        "text": "Based on the provided context, amnesia has several root causes, most of which are traceable to brain injury related to:\n* Physical trauma\n* Disease\n* Infection (such as encephalitis and herpes)\n* Drug and alcohol abuse (such as alcohol use resulting in damage to the memory centers in Wernicke-Korsakoff syndrome)\n* Reduced blood flow to the brain (vascular insufficiency)\n\nAdditionally, psychological origins (termed psychogenic) can cause amnesia, and triggers for transient global amnesia include migraines or transient ischemic attacks."
+      },
+      {
+        "refusal": false,
+        "text": "Based on the provided context, amnesia has several root causes, most of which are traceable to brain injury related to physical trauma, disease, infection, drug and alcohol abuse, or reduced blood flow to the brain (vascular insufficiency). Specific examples mentioned include Wernicke-Korsakoff syndrome (resulting from alcohol use or malnutrition) and infections that damage brain tissue, such as encephalitis and herpes. If the amnesia is thought to be of psychological origin, it is termed psychogenic."
+      },
+      {
+        "refusal": false,
+        "text": "Based on the provided context, amnesia has several root causes, most of which are traceable to:\n* Brain injury related to physical trauma\n* Disease\n* Infection (such as encephalitis and herpes)\n* Drug and alcohol abuse (such as alcohol use or malnutrition in Wernicke-Korsakoff syndrome)\n* Reduced blood flow to the brain (vascular insufficiency)\n* Psychological origin (termed psychogenic amnesia)"
+      }
+    ],
+    "cot": [
+      {
+        "refusal": false,
+        "text": "Amnesia has several root causes, most of which trace back to brain injury from physical trauma, disease, infection, drug and alcohol abuse, or reduced blood flow to the brain (vascular insufficiency). Specific examples include Wernicke-Korsakoff syndrome, where damage to the memory centers of the brain results from alcohol use or malnutrition, and brain tissue-damaging infections like encephalitis and herpes. When amnesia is thought to have a psychological origin, it is called psychogenic amnesia. Additionally, transient global amnesia may be triggered by migraines or transient ischemic attacks (temporary blockages of blood flow in the brain)."
+      },
+      {
+        "refusal": false,
+        "text": "Amnesia has several root causes, most of which stem from brain injury related to physical trauma, disease, infection, drug and alcohol abuse, or reduced blood flow to the brain (vascular insufficiency). For example, Wernicke-Korsakoff syndrome involves damage to the brain's memory centers resulting from alcohol use or malnutrition, and brain-damaging infections like encephalitis and herpes can also cause amnesia. When amnesia is thought to be of psychological origin, it is called psychogenic. Another type, transient global amnesia, has no consistently identifiable cause, though researchers suggest it may be triggered by migraines or transient ischemic attacks, which are temporary blockages of blood supply to part of the brain."
+      },
+      {
+        "refusal": false,
+        "text": "Amnesia has several root causes, most of which trace back to brain injury linked to physical trauma, disease, infection, drug and alcohol abuse, or reduced blood flow to the brain (vascular insufficiency). Specific examples include Wernicke-Korsakoff syndrome\u2014where damage to the memory centers of the brain results from alcohol use or malnutrition\u2014and brain-damaging infections like encephalitis and herpes. When amnesia is thought to be of psychological origin, it is called psychogenic. Additionally, transient global amnesia has no consistently identifiable cause, though migraines or transient ischemic attacks have been suggested as potential triggers."
+      }
+    ]
+  },
+  "What are the symptoms of angina?": {
+    "baseline": [
+      {
+        "refusal": false,
+        "text": "Based on the provided context, the symptoms of angina include:\n\n* A pressing pain or sensation of heaviness, usually in the chest area under the breast bone (sternum)\n* Pain occasionally experienced in the shoulder, arm, neck, or jaw regions"
+      },
+      {
+        "refusal": false,
+        "text": "Based on the provided context, the symptoms of angina include:\n\n* A pressing pain or sensation of heaviness, usually in the chest area under the breast bone (sternum)\n* Pain occasionally experienced in the shoulder, arm, neck, or jaw regions"
+      },
+      {
+        "refusal": false,
+        "text": "Based on the provided context, angina causes a pressing pain or sensation of heaviness, usually in the chest area under the breast bone (sternum), which is occasionally experienced in the shoulder, arm, neck, or jaw regions."
+      }
+    ],
+    "cot": [
+      {
+        "refusal": false,
+        "text": "Angina causes a pressing pain or a sensation of heaviness, which usually occurs in the chest area under the breastbone (sternum). It is also occasionally experienced in the shoulder, arm, neck, or jaw regions."
+      },
+      {
+        "refusal": false,
+        "text": "Angina causes a pressing pain or sensation of heaviness, usually in the chest area under the breastbone (sternum). This discomfort is occasionally experienced in the shoulder, arm, neck, or jaw regions."
+      },
+      {
+        "refusal": false,
+        "text": "Angina causes a pressing pain or sensation of heaviness, usually in the chest area under the breastbone (sternum). This discomfort is occasionally felt in the shoulder, arm, neck, or jaw regions."
+      }
+    ]
+  }
+}
