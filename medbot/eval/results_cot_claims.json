@@ -1,0 +1,269 @@
+{
+  "variant": "cot",
+  "results": [
+    {
+      "question": "What causes acne?",
+      "precision_at_k": 0.75,
+      "groundedness": 1.0,
+      "groundedness_rationale": "Every single point in the generated answer is directly extracted from the provided text under the causes and risk factors section of acne.",
+      "answer": "The exact cause of acne is unknown, but several risk factors and contributing influences have been identified:\n- Age: Teenagers are more likely to develop acne due to the hormonal changes they experience.\n- Gender: Boys develop acne more often and have more severe acne than girls.\n- Disease: Hormonal disorders can complicate acne in girls.\n- Heredity: Individuals with a family history of acne have a greater susceptibility to the disease.\n- Hormonal changes: Acne can flare up before menstruation, during pregnancy, and during menopause.\n- Diet: While no foods cause acne, certain foods may cause flare-ups.\n- Drugs: Acne can be a side effect of tranquilizers, antidepressants, antibiotics, oral contraceptives, and anabolic steroids.\n- Personal hygiene: Abrasive soaps, hard scrubbing, or picking at pimples will make them worse.\n- Cosmetics: Oil-based makeup and hair sprays worsen acne.\n- Environment: Exposure to oils and greases, polluted air, and sweating in hot weather aggravate acne.\n- Stress: Emotional stress may contribute to acne.",
+      "claim_score": 1.0,
+      "claims": 12,
+      "supported": 12,
+      "claim_rationale": "All claims in the generated answer are directly supported by the provided source context."
+    },
+    {
+      "question": "What are the symptoms of alcoholism?",
+      "precision_at_k": 0.25,
+      "groundedness": 1.0,
+      "groundedness_rationale": "Every symptom, physical sign, withdrawal effect, and behavioral problem mentioned in the generated answer is directly sourced and supported by the provided text.",
+      "answer": "The effects and symptoms associated with alcoholism span physical signs, withdrawal effects, and behavioral or life difficulties. \n\nPhysical examination may reveal signs such as evidence of old injuries, a visible network of enlarged veins just under the skin around the navel (caput medusae), fluid in the abdomen (ascites), a yellowish skin tone, decreased testicular size in men, and poor nutritional status. Alcohol also affects every body system, causing health problems like poor nutrition, memory disorders, difficulty with balance and walking, liver disease, high blood pressure, muscle weakness, heart rhythm disturbances, anemia, clotting disorders, decreased immunity to infections, gastrointestinal inflammation, pancreas problems, low blood sugar, high blood fat, and weakened bones. \n\nWhen a person stops drinking, withdrawal symptoms can range from mild to life-threatening. Mild withdrawal symptoms include nausea, achiness, diarrhea, difficulty sleeping, sweatiness, anxiety, and trembling. More severe effects can include hallucinations, seizures, an unbearable craving for alcohol, confusion, fever, fast heart rate, high blood pressure, and delirium.\n\nBehaviorally and socially, alcoholism involves repeated life problems, such as repeatedly failing to live up to important responsibilities, physically endangering oneself or others, getting into trouble with the law, or experiencing difficulties in relationships or jobs. It can also lead to personal struggles like depression, unemployment, and family dysfunction.",
+      "claim_score": 1.0,
+      "claims": 4,
+      "supported": 4,
+      "claim_rationale": "All claims made in the generated answer regarding physical signs, health effects, withdrawal symptoms, and behavioral impacts of alcoholism are directly supported by the text."
+    },
+    {
+      "question": "What causes allergic rhinitis?",
+      "precision_at_k": 1.0,
+      "groundedness": 1.0,
+      "groundedness_rationale": "Every claim in the generated answer regarding the causes of allergic rhinitis, seasonal triggers, and perennial triggers is directly supported by details explicitly stated in the provided context.",
+      "answer": "Allergic rhinitis is caused by an allergic reaction to airborne substances (allergens) that trigger an immune reaction. Specifically, seasonal allergic rhinitis is most commonly caused by airborne plant pollens\u2014such as grass and tree pollens, as well as weeds like ragweed, sagebrush, lamb's-quarters, plantain, pigweed, and dock/sorrel. Perennial allergic rhinitis is usually caused by home or workplace airborne pollutants, which include house dust (house mite body parts, animal dander, and mold spores), cigarette smoke, perfume, cosmetics, cleansers, copier chemicals, industrial chemicals, and construction material gases.",
+      "claim_score": 1.0,
+      "claims": 3,
+      "supported": 3,
+      "claim_rationale": "All claims in the generated answer are fully supported by the provided source context."
+    },
+    {
+      "question": "What are the symptoms of anaphylaxis?",
+      "precision_at_k": 1.0,
+      "groundedness": 1.0,
+      "groundedness_rationale": "Every symptom and detail included in the generated answer is directly supported by the provided text.",
+      "answer": "Symptoms of anaphylaxis can begin within minutes or even seconds of exposure (or up to an hour or more later) and may include:\n* Urticaria (hives), which are raised, reddened, and itchy patches on the skin\n* Angioedema, a deeper and more extensive skin reaction involving fluid collection and pain, usually occurring on the extremities, fingers, toes, and parts of the head, neck, and face\n* Swelling and irritation of the tongue or mouth\n* Swelling of the sinuses\n* Difficulty breathing and wheezing\n* Airway constriction or complete airway obstruction\n* Cramping, vomiting, diarrhea, or other intestinal irritation\n* Anxiety or confusion\n* Strong, very rapid heartbeat (palpitations) or altered heart rhythms\n* Loss of consciousness\n* Dizziness, weakness, seizures, coughing, flushing, or shock\n\nNot all of these symptoms may be present during a reaction.",
+      "claim_score": 1.0,
+      "claims": 12,
+      "supported": 12,
+      "claim_rationale": "All claims made in the generated answer are directly supported by the provided source context."
+    },
+    {
+      "question": "What are the symptoms of appendicitis?",
+      "precision_at_k": 1.0,
+      "groundedness": 1.0,
+      "groundedness_rationale": "Every detail provided in the generated answer regarding the symptoms of appendicitis and signs of rupture is directly and accurately supported by the provided text.",
+      "answer": "The distinguishing symptom of appendicitis is pain that begins around or above the navel and eventually moves into the right lower corner of the abdomen. In that lower area, the pain becomes steadier and more severe, and it often increases with movement and coughing. The abdomen frequently becomes rigid and tender to the touch, with increasing rigidity and tenderness indicating a higher likelihood of perforation and peritonitis. \n\nOther common symptoms include a very frequent loss of appetite, nausea and vomiting in about half of the cases, and occasional constipation or diarrhea. Body temperature may be normal or slightly elevated, and the presence of a fever can indicate that the appendix has ruptured. Additional signs that the appendix may have ruptured include symptoms lasting for more than 24 hours, a high white blood cell count, and a fast heart rate.",
+      "claim_score": 1.0,
+      "claims": 10,
+      "supported": 10,
+      "claim_rationale": "All claims made in the generated answer are directly supported by the provided text."
+    },
+    {
+      "question": "What triggers an asthma attack?",
+      "precision_at_k": 1.0,
+      "groundedness": 1.0,
+      "groundedness_rationale": "Every single trigger listed in the generated answer is explicitly mentioned and supported by the provided context.",
+      "answer": "Asthma attacks can be triggered by a wide range of factors, including:\n- Inhaled allergens, such as pollen, house-dust mites, animal dander and proteins, fungi (molds), and cockroach allergens.\n- Occupational exposures, such as chemicals, fumes, or particles of industrial materials in the air, animal products, certain forms of plastic, wood dust, or metals.\n- Exercise and physical activity, including cold-induced asthma and exercise-induced asthma in certain children.\n- Exposure to cold air.\n- Stress, intense emotions, high levels of anxiety, and even crying or laughing.\n- Certain medicines, including aspirin, related drugs, and beta-blockers used to treat high blood pressure.\n- Medical conditions and infections, such as viral respiratory tract infections, rhinitis, sinusitis, and acid reflux.\n- Inhaling tobacco smoke (from smoking or secondhand exposure) and air pollutants.",
+      "claim_score": 1.0,
+      "claims": 8,
+      "supported": 8,
+      "claim_rationale": "All generated claims are directly supported by the provided source context."
+    },
+    {
+      "question": "What is atherosclerosis?",
+      "precision_at_k": 1.0,
+      "groundedness": 1.0,
+      "groundedness_rationale": "Every claim in the generated answer is directly supported by information found in the provided context.",
+      "answer": "Atherosclerosis is a type of arteriosclerosis (hardening of the arteries) and a progressive process responsible for most heart disease. It involves the accumulation of fat\u2014largely made up of cholesterol carried in the blood\u2014on the inner lining of an artery. This condition is characterized by plaque deposits made of fatty substances, cholesterol, cell waste products, calcium, and fibrin. As plaque forms, the artery wall's inner layer thickens, the artery's diameter is reduced, and blood flow and oxygen delivery are decreased. Plaques can also rupture or crack open, leading to sudden blood clots (thrombosis), which can cause heart attacks or strokes if they completely block blood flow in the heart or brain arteries, or cause kidney failure, gangrene, and amputation if they occur in other arteries.",
+      "claim_score": 1.0,
+      "claims": 7,
+      "supported": 7,
+      "claim_rationale": "All factual claims in the generated answer are directly supported by the provided context."
+    },
+    {
+      "question": "What are the symptoms of autism?",
+      "precision_at_k": 0.75,
+      "groundedness": 1.0,
+      "groundedness_rationale": "Every symptom and detail included in the generated answer is directly supported by the provided text regarding autism.",
+      "answer": "The symptoms of autism span several areas and range in severity from mild to severe:\n\n* **Social Interaction Problems:** These are the most common symptoms. Infants with the disorder may not cuddle, avoid eye contact, and show little interest in human contact or physical affection. They may become rigid or flaccid when held, cry when picked up, fail to smile or lift their arms in anticipation of being held, form no attachment to parents, show no normal anxiety toward strangers, and fail to learn typical childhood games like peek-a-boo.\n* **Language Problems:** An autistic child may not speak at all, or may speak only in single words. They may endlessly repeat words or phrases addressed to them and reverse pronouns (such as saying \"You go sleep\" instead of \"I want to go to sleep\").\n* **Restricted Interests and Activities:** Children with autism often have trouble playing normally. They typically do not act out adult roles or enjoy fantasy play, instead repeatedly mimicking others' actions. Bizarre behavior patterns are very common, including complex rituals, screaming fits, rhythmic rocking, arm flapping, finger twiddling, crying without tears, and playing with their own saliva, feces, or urine. They may also exhibit self-destructive behaviors such as biting their hands, gouging at their eyes, pulling their hair, or banging their head.\n* **Sensory Problems:** Autistic children may seem overwhelmed by their senses. They may ignore objects or become obsessed with them, continually watching an object or the movement of their fingers over it. They may react to sounds by banging their head or flapping their fingers, and some high-functioning adults report that sounds were excruciatingly painful, forcing them to withdraw into their own world of sensation and movement.\n* **Intellectual Problems:** Most autistic children appear to be moderately mentally retarded. They may giggle or cry for no reason, show no fear of real danger, and exhibit terror of harmless objects. \n\nAdditionally, about 10% of individuals with autism have an extraordinary ability in one area, such as mathematics, memory, music, or art (known as \"autistic savants\").",
+      "claim_score": 1.0,
+      "claims": 22,
+      "supported": 22,
+      "claim_rationale": "All claims made in the generated answer are directly and fully supported by the provided text."
+    },
+    {
+      "question": "How is bed-wetting treated in children?",
+      "precision_at_k": 0.75,
+      "groundedness": 1.0,
+      "groundedness_rationale": "Every treatment method listed in the generated answer\u2014including bladder training, motivational therapy, drugs, surgery, psychotherapy, diet therapy, and alternative treatments\u2014is directly and accurately supported by the provided text.",
+      "answer": "Bed-wetting treatments for children include the following approaches:\n\n* **Bladder training exercises:** Children are instructed to drink large quantities of water and prolong the time between urinating in order to increase functional bladder capacity, though this is successful in only a small number of patients.\n* **Motivational therapy:** Utilizing positive reinforcement (praise and rewards for staying dry) and motivational techniques such as behavior modification (learning to use the bathroom before bed and avoiding fluids after dinner) and bed-wetting alarms (sensors in pajamas or bed pads that wake the child at the first sign of wetness). \n* **Drug therapy:** Fast-acting medications include desmopressin acetate (DDAVP) nasal spray to regulate urine production and imipramine hydrochloride to increase bladder capacity. \n* **Surgery:** Surgical procedures may treat bed-wetting that has an underlying physical cause, such as enlarged adenoids causing sleep apnea, physical urinary system defects, or a spinal tumor.\n* **Psychotherapy:** Indicated if the child exhibits signs of severe emotional distress (due to events like a family death, new sibling, school change, or divorce), persistent low self-esteem, or depression.\n* **Diet therapy:** Eliminating food allergens or intolerances (such as dairy, citrus, or chocolate) if they are identified as the trigger.\n* **Alternative treatments:** These include massage or acupressure by a trained therapist (particularly for neurologic problems), herbal and homeopathic remedies (such as horsetail, Causticum, Lycopodium, and Pulsatilla), and hypnosis to train the child to awaken when the bladder feels full.",
+      "claim_score": 1.0,
+      "claims": 7,
+      "supported": 7,
+      "claim_rationale": "All claims in the generated answer are directly supported by the provided source context."
+    },
+    {
+      "question": "What causes bedsores?",
+      "precision_at_k": 0.75,
+      "groundedness": 1.0,
+      "groundedness_rationale": "Every single cause and risk factor listed in the generated answer is directly extracted from the provided text without any unsupported claims.",
+      "answer": "Bedsores most often develop when constant pressure pinches tiny blood vessels that deliver oxygen and nutrients to the skin. When the skin is deprived of oxygen and nutrients for as little as an hour, tissue areas can die and bedsores can form. Minor pressure ulcers can also be caused by slight rubbing or friction against the skin, or when a patient stretches or bends blood vessels by slipping into a different position in a bed or chair. Moisture such as urine or feces increases the risk of skin infection. \n\nAdditionally, a variety of factors increase the risk of developing bedsores:\n* Atherosclerosis (hardening of the arteries)\n* Diabetes or other conditions that make the skin more susceptible to infection\n* Diminished sensation or lack of feeling\n* Heart problems\n* Incontinence (inability to control bladder or bowel movements)\n* Malnutrition\n* Obesity\n* Paralysis or immobility\n* Poor circulation\n* Prolonged bed rest, particularly in unsanitary conditions or with wet or wrinkled sheets\n* Spinal cord injury\n* Anemia (lack of red blood cells)\n* Disuse atrophy (muscle loss or weakness from lack of use)\n* Infection",
+      "claim_score": 1.0,
+      "claims": 18,
+      "supported": 18,
+      "claim_rationale": "All claims made in the generated answer are directly supported by the provided source context."
+    },
+    {
+      "question": "What are the symptoms of bipolar disorder?",
+      "precision_at_k": 0.75,
+      "groundedness": 1.0,
+      "groundedness_rationale": "Every claim in the generated answer regarding the symptoms of bipolar disorder for both adults and younger patients is directly supported by the provided text.",
+      "answer": "The symptoms of bipolar disorder vary depending on the phase of the condition and the age of the patient:\n\n* **Depressive episodes:** Symptoms include low energy levels, feelings of despair, difficulty concentrating, extreme fatigue, and psychomotor retardation (slowed mental and physical capabilities).\n* **Manic episodes:** Symptoms include feelings of euphoria, a lack of inhibitions, racing thoughts, a diminished need for sleep, talkativeness, risk-taking behavior, and irritability. In extreme cases, mania can cause hallucinations and other psychotic symptoms, such as grandiose illusions.\n* **Children and adolescents:** In younger patients, manic episodes tend to involve chronic irritability and aggressiveness rather than elation, along with being easily distracted, impulsive, and hyperactive.",
+      "claim_score": 1.0,
+      "claims": 3,
+      "supported": 3,
+      "claim_rationale": "All of the claims regarding the symptoms of depressive episodes, manic episodes, and symptoms in children and adolescents are directly supported by the text."
+    },
+    {
+      "question": "What causes bladder cancer?",
+      "precision_at_k": 1.0,
+      "groundedness": 1.0,
+      "groundedness_rationale": "Every claim in the generated answer is directly supported by information found in the provided context.",
+      "answer": "The exact cause of bladder cancer is not known, but several risk factors are identified. Smoking is considered the greatest risk factor, making smokers twice as likely to get the disease as nonsmokers. Other factors that increase the risk include exposure to certain chemicals used in the dye, rubber, leather, textile, and paint industries; being male (the disease is three times more common in men than women); being caucasian; and advancing age (with most cases found in people aged 50\u201370). Conditions that cause long-term irritation to the bladder\u2014such as frequent urinary infections, kidney stones, and bladder stones\u2014may also increase the risk, as can a past history of tumors in the bladder.",
+      "claim_score": 1.0,
+      "claims": 8,
+      "supported": 8,
+      "claim_rationale": "All claims in the generated answer are directly supported by the provided source context."
+    },
+    {
+      "question": "What are the symptoms of botulism?",
+      "precision_at_k": 1.0,
+      "groundedness": 1.0,
+      "groundedness_rationale": "Every detail provided in the generated answer regarding the symptoms of food-borne, infant, and wound botulism is directly supported by the text.",
+      "answer": "The symptoms of botulism vary depending on the type of exposure:\n\n* **Food-borne botulism:** Symptoms typically appear within 18 to 36 hours of eating contaminated food. Initial signs include blurred or double vision, difficulty swallowing and speaking, nausea, and vomiting. As the condition progresses, the victim experiences weakness or paralysis that starts with the head muscles and moves down the body, along with increasingly difficult breathing. Respiratory failure and death are very likely without medical care.\n* **Infant botulism:** The first signs include constipation, lethargy, poor feeding, and a nursing mother's breast engorgement can often be noticed as an early sign of the infant's illness. As it progresses, sucking and swallowing become difficult, the baby suffers overall weakness, cannot control head movements, appears \"floppy\" due to flaccid muscle paralysis, and has impaired breathing where respiratory failure is a real danger.\n* **Wound botulism:** Symptoms usually appear four to 18 days after an injury and are similar to those of food-borne botulism, except that gastrointestinal symptoms may be absent.",
+      "claim_score": 1.0,
+      "claims": 12,
+      "supported": 12,
+      "claim_rationale": "All claims made in the generated answer regarding the symptoms of food-borne, infant, and wound botulism are directly supported by the provided text."
+    },
+    {
+      "question": "What are the symptoms of a brain tumor?",
+      "precision_at_k": 0.75,
+      "groundedness": 1.0,
+      "groundedness_rationale": "Every claim in the generated answer is directly supported by the information provided in the text.",
+      "answer": "Symptoms of a brain tumor typically do not appear until the tumor grows large enough to displace, damage, or destroy delicate brain tissue. When symptoms do occur, they may include:\n- Headaches that become increasingly painful and are most painful when lying down\n- Nausea and vomiting, or sudden attacks of vomiting not accompanied by nausea\n- Seizers\n- Dizziness, loss of coordination, or balance\n- Personality changes\n- Sudden loss of vision\n- Memory loss\n- Speech problems\n- Sensory changes\n- Mental impairment\n- Weakness or paralysis on one side of the body\n\nSpecific tumors can also cause related symptoms. For instance, schwannomas can cause early symptoms like slight hearing loss and balance problems, or sudden/gradual hearing loss, and later symptoms such as headaches, facial numbness or tingling, trouble walking, swallowing, or controlling eye movements, and affected taste. If large tumors impact the brainstem or remain untreated, they can eventually result in walking difficulties, involuntary muscle shaking, nausea, lethargy, coma, respiratory difficulties, and death.",
+      "claim_score": 0.9375,
+      "claims": 16,
+      "supported": 15,
+      "claim_rationale": "The claim that seizures are spelled \"seizers\" is unsupported because the context spells it correctly as \"se seizures\"."
+    },
+    {
+      "question": "What are the symptoms of breast cancer?",
+      "precision_at_k": 1.0,
+      "groundedness": 1.0,
+      "groundedness_rationale": "Every symptom and sign listed in the generated answer is explicitly mentioned and supported by the provided text.",
+      "answer": "Symptoms and physical signs of breast cancer include:\n- The presence of a lump in the breast or underarms (which is a very common presenting sign)\n- Skin dimpling or puckering (including skin dimpling or nipple retraction in the presence of an underlying breast mass, which is noted as a more advanced finding)\n- Nipple retraction or a nipple that pulls in\n- Discharge from the nipple (including sudden discharge appearing in only one breast)\n- Actual skin involvement, such as edema or ulceration of the skin (described as late findings)\n- Changes in breast size or shape\n- Redness, swelling, or warmth that does not go away\n- Pain in one area that does not vary with a woman's monthly cycle\n- One nipple having an itchy, sore, or scaling area",
+      "claim_score": 1.0,
+      "claims": 9,
+      "supported": 9,
+      "claim_rationale": "All claims in the generated answer regarding the symptoms and physical signs of breast cancer are directly supported by the text."
+    },
+    {
+      "question": "What are the symptoms of bronchitis?",
+      "precision_at_k": 1.0,
+      "groundedness": 1.0,
+      "groundedness_rationale": "Every detail regarding the symptoms of both acute and chronic bronchitis in the generated answer is directly and accurately supported by the provided text.",
+      "answer": "The symptoms of bronchitis depend on whether the condition is acute or chronic:\n\n**Acute bronchitis** typically begins with cold-like symptoms such as a runny nose, sneezing, and a dry cough. The cough soon turns deep and painful, bringing up greenish yellow phlegm or sputum. This can be accompanied by a fever of up to 102\u00b0F (38.8\u00b0C) and common wheezing after coughing. \n\n**Chronic bronchitis** features a mild cough (sometimes called a smokers' cough) as its usual first visible sign, along with coughing up phlegm in amounts that vary from person to person. Wheezing and shortness of breath may accompany the cough. As the disease advances, breathing becomes difficult, activity decreases, and the body does not get enough oxygen, leading to changes in the composition of the blood.",
+      "claim_score": 1.0,
+      "claims": 10,
+      "supported": 10,
+      "claim_rationale": "All claims made in the generated answer regarding the symptoms of acute and chronic bronchitis are directly supported by the provided text."
+    },
+    {
+      "question": "What is bulimia nervosa?",
+      "precision_at_k": 0.75,
+      "groundedness": 1.0,
+      "groundedness_rationale": "Every claim in the generated answer is directly supported by the details provided in the context about bulimia nervosa.",
+      "answer": "Bulimia nervosa is a serious eating disorder and psychiatric illness characterized by consuming large amounts of food (binge eating) followed by attempts to rid the body of the food and calories (purging) through fasting, excessive exercise, vomiting, or using laxatives. The disorder often stems from an excessive concern with weight control and self-image and is frequently accompanied by depression.",
+      "claim_score": 1.0,
+      "claims": 2,
+      "supported": 2,
+      "claim_rationale": "All claims in the generated answer are directly supported by the provided text."
+    },
+    {
+      "question": "What causes a bunion?",
+      "precision_at_k": 0.75,
+      "groundedness": 1.0,
+      "groundedness_rationale": "Every claim in the generated answer regarding the causes and contributing factors of bunions is directly supported by the provided text.",
+      "answer": "A bunion is caused by inflammation and typically results from chronic irritation and pressure from poorly fitting footwear. Specifically, causes and contributing factors include:\n\n* **Footwear:** Wearing improperly fitting shoes, especially those with narrow toe boxes and excessive heel height, as well as tight-fitting socks or stockings.\n* **Foot Mechanics:** Abnormal motion of the foot during walking or running, such as excessive stress placed on the inside of the foot.\n* **Genetics and Bone Displacement:** A strong family history and genetic factors that predispose people to hallux valgus bone displacement. \n* **Medical Conditions:** Muscle imbalances caused by various arthritic conditions and genetic or neuromuscular diseases, such as Down syndrome and Marfan syndrome.\n* **Other Factors:** Age (as untreated bone displacement worsens over time), leg-length discrepancies (with the bunion appearing on the longer leg), and trauma occurring to the joint of the big toe.",
+      "claim_score": 1.0,
+      "claims": 6,
+      "supported": 6,
+      "claim_rationale": "All claims in the generated answer, including the definition/general causes, footwear, foot mechanics, genetics, medical conditions, and other factors, are directly supported by the provided source context."
+    },
+    {
+      "question": "How should burns be treated?",
+      "precision_at_k": 0.75,
+      "groundedness": 1.0,
+      "groundedness_rationale": "Every detail in the generated answer regarding the treatment of thermal, chemical, and electrical burns, as well as alternative treatments, is directly derived from and supported by the provided text.",
+      "answer": "Burn treatment generally aims to relieve pain, prevent infection, and maintain body fluids, electrolytes, and calorie intake as the body heals. \n\nFor thermal burns, the first step is to stop the burning process by running cool (not cold) water over the area or soaking it; ice, butter, shortening, or salves should never be applied. Minor burns can be gently cleaned with soap and water, leaving unbroken blisters intact. If the skin is broken, apply an antibacterial ointment and cover with a sterile bandage. Pain and inflammation can be eased with aspirin, acetaminophen, or ibuprofen. Seek medical attention if signs of infection appear, such as increased warmth, redness, pain, swelling, pus, swollen lymph nodes, or spreading red streaks.\n\nFor moderate or critical burns, emergency medical assistance is required immediately. Lifesaving measures take priority, including artificial respiration if the person stops breathing. To help prevent shock, lay the person flat with their feet elevated about 12 inches, and raise burned arms and hands higher than the heart. At the hospital, further medical treatment may include a breathing tube, intravenous replacement fluids and antibiotics, a tetanus shot, bandage changes, surgical removal of dead tissue (debridement), physical and occupational therapy, skin grafts (using the patient's own skin, human donor skin, or animal skin), or placement in a hyperbaric oxygen chamber within 24 hours of being burned.\n\nFor chemical burns, liquid chemicals must be rinsed with cool water for at least 15 minutes. Dry chemical powders, such as lime, should be completely brushed away before the area is washed, and any clothing that absorbed the chemical must be removed. The burn should be loosely covered with a sterile gauze pad and the person taken to the hospital.\n\nFor electrical burns, the power source must first be disconnected and the victim moved away to prevent electrocution. Check and assist breathing if necessary, cover the burns loosely with sterile gauze pads, and take the person to the hospital.\n\nAdditionally, alternative treatments may help, such as the homeopathic remedies Cantharis and Causticum, and topical botanical remedies like aloe, oil of St.-John\u2019s-wort, calendula, and comfrey. Major burns should always be treated by a medical practitioner.",
+      "claim_score": 1.0,
+      "claims": 31,
+      "supported": 31,
+      "claim_rationale": "All factual claims in the generated answer are directly supported by the provided context."
+    },
+    {
+      "question": "What is bursitis?",
+      "precision_at_k": 0.75,
+      "groundedness": 1.0,
+      "groundedness_rationale": "Every detail provided in the generated answer regarding the causes, symptoms, and nature of bursitis is directly extracted and supported by the text.",
+      "answer": "The provided text does not explicitly define what bursitis is, but it describes its characteristics, causes, and symptoms. \n\nBursitis involves pain and tenderness in a joint. If the affected joint is close to the skin (such as the shoulder, knee, elbow, or Achilles tendon), symptoms include swelling, redness, and the area feeling warm to the touch. When the bursa around the hip joint is affected, it is deeper and swelling is not obvious. Movement may be limited and painful; for example, in the shoulder, it may be difficult to raise the arm out from the body, making activities like putting on a jacket or combing the hair troublesome. \n\nIn acute bursitis, symptoms appear suddenly, whereas with chronic bursitis, pain, tenderness, and limited movement reappear after exercise or strain. The most common cause is repeated physical activity, but it can also be caused by trauma, rheumatoid arthritis, gout, and acute or chronic infection.",
+      "claim_score": 1.0,
+      "claims": 4,
+      "supported": 4,
+      "claim_rationale": "All factual claims in the generated answer are directly supported by the provided text."
+    },
+    {
+      "question": "What is an abscess?",
+      "precision_at_k": 1.0,
+      "groundedness": 1.0,
+      "groundedness_rationale": "Every claim in the generated answer is directly supported by the provided text regarding the definition, formation, and types of abscesses.",
+      "answer": "An abscess is a pus-filled sore that represents the final stage of a tissue infection starting with inflammation. It forms when invading germs activate the body's immune system, causing white blood cells to gather and produce enzymes that kill the germs by digesting them. Because these enzymes also digest body tissues, the result is a thick, yellow liquid called pus, which contains digested germs, digested tissue, white blood cells, and enzymes. Most abscesses are septic (caused by an infection), but sterile abscesses can also develop from non-living irritants like unabsorbed injected drugs.",
+      "claim_score": 1.0,
+      "claims": 7,
+      "supported": 7,
+      "claim_rationale": "All claims in the generated answer are directly supported by the provided source context."
+    },
+    {
+      "question": "What are the side effects of acetaminophen?",
+      "precision_at_k": 0.25,
+      "groundedness": 1.0,
+      "groundedness_rationale": "Every detail provided in the generated answer regarding the side effects, allergic reactions, and overdoses of acetaminophen is directly and accurately supported by the provided text.",
+      "answer": "Acetaminophen causes few side effects. The most common side effect is lightheadedness. Some people may also experience trembling and pain in the side or lower back. \n\nRare side effects include:\n\u2022 Yellow skin or eyes\n\u2022 Unusual bleeding or bruising\n\u2022 Weakness and fatigue\n\u2022 Bloody or black stools\n\u2022 Bloody or cloudy urine, or a sudden decrease in the amount of urine\n\nAllergic reactions are also rare. Anyone who develops symptoms such as a rash, swelling, or difficulty breathing after taking acetaminophen should stop taking the drug and get immediate medical attention. Additionally, overdoses may cause nausea, vomiting, sweating, and exhaustion, with very large overdoses capable of causing liver damage.",
+      "claim_score": 1.0,
+      "claims": 12,
+      "supported": 12,
+      "claim_rationale": "All factual claims made in the generated answer are directly and fully supported by the provided source context."
+    },
+    {
+      "question": "What causes amnesia?",
+      "precision_at_k": 1.0,
+      "groundedness": 1.0,
+      "groundedness_rationale": "Every claim in the generated answer is directly and accurately supported by the provided context regarding the causes of amnesia.",
+      "answer": "Amnesia has several root causes, most of which stem from brain injury related to physical trauma, disease, infection, drug and alcohol abuse, or reduced blood flow to the brain (vascular insufficiency). Specific examples include Wernicke-Korsakoff syndrome, where damage to the memory centers of the brain is caused by alcohol use or malnutrition, and brain tissue-damaging infections such as encephalitis and herpes. When amnesia is thought to have a psychological origin, it is called psychogenic amnesia. Additionally, transient global amnesia has no consistently identifiable cause, but migraines or transient ischemic attacks (temporary blockages of blood flow in the brain) have been suggested as potential triggers.",
+      "claim_score": 1.0,
+      "claims": 4,
+      "supported": 4,
+      "claim_rationale": "All factual claims in the generated answer are directly supported by the provided source context."
+    },
+    {
+      "question": "What are the symptoms of angina?",
+      "precision_at_k": 1.0,
+      "groundedness": 1.0,
+      "groundedness_rationale": "Every claim in the generated answer is directly supported by the provided text regarding the symptoms of angina.",
+      "answer": "Angina causes a pressing pain or sensation of heaviness, which usually occurs in the chest area under the breast bone (sternum) and is sometimes experienced in the shoulder, arm, neck, or jaw regions. In the context of anemia symptoms, angina pectoris is also described as chest pain that is often accompanied by a choking sensation which provokes severe anxiety.",
+      "claim_score": 1.0,
+      "claims": 2,
+      "supported": 2,
+      "claim_rationale": "All claims in the generated answer regarding the symptoms of angina are directly supported by the provided text."
+    }
+  ]
+}

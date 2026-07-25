@@ -86,6 +86,73 @@ Run via `python -m medbot.eval.run_eval`; full numbers and per-question results 
   3's CoT rewrite (temperature=0 alone won't fix it). Full writeup, including a precision audit
   of the two weakest retrieval cases, in `medbot/eval/results.md`.
 
+**Sprint 3 (chain-of-thought prompting) — also done (2026-07-25):** the false-refusal bug Sprint 2
+found is fixed and measured. `medbot/prompt.py` gained a `cot` prompt variant (now the default):
+six worked examples in question → context → reasoning → answer form, each built from chunks
+actually retrieved from this corpus, on A–B topics deliberately held out of the eval set. The
+reasoning trace is stripped before the user sees it (`strip_reasoning`/`run_query` in
+`medbot/query_handler.py`, used by both the app and the harness, so what's measured is what's
+shown). `temperature` dropped 0.1 → 0. Full write-up in `medbot/eval/results_sprint3.md`.
+- **A/B, both arms re-run fresh at temperature 0** so the prompt is the only variable (comparing
+  against Sprint 2's temp-0.1 numbers would have confounded the two changes): claim-level mean
+  groundedness **0.84 → 1.00**, false refusals **2/24 → 0/24**, per-question **6 improved,
+  0 regressed** (after the fix round below). Precision@4 identical at 0.83 in both arms — expected,
+  since retrieval was untouched, and a useful sanity check that the harness measures what it claims.
+- **Attributed, not just observed.** A four-arm ablation separates the instruction rewrite from the
+  worked exemplars (refusals over 20 trials): baseline 10, instruction-only 5, examples-only 1,
+  cot 0. Breast cancer is fixed by either change alone; **bursitis is untouched by the instruction
+  rewrite (5/5, same as baseline)** and needs the exemplars. The two are not substitutes and only
+  the combination reaches zero — so the CoT exemplars earn their ~2,400 tokens per query.
+- **Credit splits between the two changes.** Temperature 0 alone fixed bedsores and abscess. The
+  CoT prompt fixed the other two: breast cancer and bursitis refused **5/5 under the baseline
+  prompt at temperature 0** — deterministic, not noise — and 0/5 under CoT. Bursitis had refused
+  6/6 at both temperatures in Sprint 2.
+- **Guarded against the cheap win.** Driving refusals to zero is trivial with a prompt that never
+  refuses, which would swap a refusal bug for a hallucination bug. Two defences: one of the six
+  exemplars is a genuine "context doesn't support it" case (asking for anorexia symptoms retrieves
+  *bulimia's*), and a new out-of-corpus trial suite where refusing is correct — both variants
+  refused 6/6, no over-answering regression.
+- **Corrects a Sprint 2 claim:** "the corpus is A–B only, so C–Z questions retrieve badly" is too
+  strong. Stroke causation turned out to be covered inside the *A* entries for embolism and
+  atherosclerosis, and both variants answered it correctly from them. Coverage has to be checked
+  per question, not inferred from the first letter.
+- Verified end-to-end through the real Streamlit app via `AppTest`, not just the harness: bursitis
+  answers correctly, no reasoning trace leaks to the UI, external sources still render.
+- **Audited afterwards** (`medbot/eval/sprint3_audit.md`) — the audit corrected two overstatements
+  in the first draft of the results and found one real defect, all now fixed:
+  - The "10/20 vs 0/20" framing was pseudo-replication: those are 5 repeats of 4 questions, not 20
+    independent samples. At the question level, Fisher exact gives **p=0.43 — not significant**. The
+    within-question effect is total and repeatable; the across-question sample is simply too small.
+  - The old groundedness judge only ever returned 0.0 or 1.0. Replaced with a claim-level judge
+    (supported claims / total claims, `judge_groundedness_claims` + `rejudge.py`), which
+    discriminates properly and revised **baseline down from 0.917 to 0.841** — Sprint 2's 0.83
+    headline was coarser than it claimed.
+  - The stricter judge found two things the binary one could not: **few-shot contamination in the
+    baseline prompt** (the atherosclerosis answer opens by declining a question about *osteoporosis*,
+    bled in from its own selected exemplar, and the old judge scored that 1.00), and **a genuine
+    regression in the shipped CoT arm** (bedsores 1.00 → 0.75, an over-linked causal chain). The
+    honest tally was 6 improved / 1 regressed — the regression was then fixed, see the fix round below.
+  - Fixed defect: `run_eval` with no `--variant` would have silently overwritten Sprint 2's recorded
+    `results.json`/`results.md` with CoT numbers. Output is now always variant-suffixed.
+  - `tests/test_prompt_variants.py` added: covers `strip_reasoning` and **pins a sha256 of the
+    rendered CoT prompt**, so the shipped prompt cannot drift from the string the recorded numbers
+    describe without the check failing. Runs standalone; pytest-collectable in Sprint 4.
+  - **Fix round: the regression the audit found was fixed, not just filed.** An anti-over-linking
+    clause was added to the CoT instruction ("do not join two separate statements from the context
+    into a cause-and-effect chain unless the context asserts that link") and the anorexia exemplar's
+    bulimia content was trimmed. The CoT arm was then re-run in full against the new prompt:
+    bedsores **0.75 → 1.00**, claim-level mean **0.990 → 0.997**, refusals still 0/20, out-of-corpus
+    guard strengthened to 10/10 at 5 trials, Precision@4 unchanged. No new regression.
+  - The single remaining sub-1.0 answer is a **judge artefact**: the model wrote "seizers" for
+    "seizures" and the claim judge scored the misspelling as an unsupported claim. Real but trivial
+    output defect; the judge is grading spelling as if it were factual support. Concrete reason F6
+    (human calibration of the judge) is still worth doing.
+  - **Quote the claim-level 0.84 → 1.00, not the binary 0.92 → 1.00**, and keep the sample caveat:
+    Fisher p=0.43 at the question level. Large clean effect, small sample — both halves are true.
+  - **Still open after this sprint:** question-set expansion (24 questions, a 2-question refusal
+    delta) and blinded human calibration of the judge. Both are measurement-confidence work, not
+    defects in the shipped behaviour.
+
 ---
 
 ## 3. What we're going to do (Sprints 2–9)
@@ -102,7 +169,7 @@ harder later.
 | Sprint | Focus | Why it's here |
 |---|---|---|
 | **2** | Evaluation harness | Build the measurement tool everything after this depends on: Precision@K retrieval metric (reused from the AML fraud project) against a 20–30 question test set with known-correct source passages, plus a faithfulness/groundedness check (NLI-based or documented manual rubric) on generated answers. Report numbers honestly, weak spots included. |
-| **3** | Chain-of-thought few-shot upgrade | Rewrite 5–8 of the 27 few-shot examples as Question → Reasoning (what does the question ask, what does retrieved context say, does it actually support an answer) → Answer. Strip the reasoning trace before it reaches the user-facing answer. A/B against the original few-shot-only prompt using Sprint 2's harness — don't ship on vibes. |
+| **3** ✅ | Chain-of-thought few-shot upgrade | Done — see §2. Implemented as six new held-out CoT exemplars used as a fixed set, rather than rewriting 5–8 of the existing 27 in place: with the selector at `k=1` only one example reaches the prompt, so rewriting a minority of 27 would have left ~70% of queries seeing no CoT demonstration at all, and would have diluted the A/B. |
 | **4** | Automated testing foundation | Zero tests exist today. Add `pytest`, unit tests for config/external-search, formalize the `AppTest` smoke script, and a regression test that fails if Sprint 2/3's eval numbers drop. |
 | **5** | CI/CD pipeline | Tests nobody runs automatically aren't a safety net — GitHub Actions on push/PR, lint + pre-commit. |
 | **6** | Retrieval quality improvements | Use Sprint 2's findings to act on them: chunk metadata, a relevance threshold, source citations. (Building the harness itself moved to Sprint 2 — this is now about using it.) |

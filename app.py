@@ -1,7 +1,12 @@
 import streamlit as st
 from medbot.model_handler import initialize_model
 from medbot.data_processing import create_vector_database
-from medbot.query_handler import create_query_chain, search_external_sources, format_external_results
+from medbot.query_handler import (
+    create_query_chain,
+    run_query,
+    search_external_sources,
+    format_external_results,
+)
 
 # Add a header for your chatbot
 st.header("MEDBOT - Your Medical Chat Assistant")
@@ -32,7 +37,8 @@ def process_user_input(user_query):
     query_chain = create_query_chain(model, vectordb, user_query)
     if query_chain is None:
         return {"result": "Sorry, something went wrong setting up the retrieval chain. Please try again."}
-    return query_chain.invoke({"query": user_query})
+    # run_query strips the chain-of-thought reasoning trace so only the answer is shown.
+    return run_query(query_chain, user_query)
 
 def process_external_queries(user_query):
     return search_external_sources(user_query)

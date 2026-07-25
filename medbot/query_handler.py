@@ -2,12 +2,41 @@ import re
 import traceback
 from langchain.chains import RetrievalQA
 from medbot.external_search import search_pubmed, search_wikipedia, search_serpapi
-from medbot.prompt import build_context_prompt
+from medbot.prompt import build_context_prompt, emits_reasoning
 
-def create_query_chain(model, vectordb, question):
+# The chain-of-thought prompt makes the model emit "Reasoning: ... Answer: ...".
+# Only the answer is for the user. Anchored to the start of a line because the
+# reasoning text itself often contains the phrase "support an answer:" mid-
+# sentence, which an unanchored match would split on.
+# The trailing \** matters: the model often bolds the label as "**Answer:**", and
+# without it the closing asterisks survive into the text shown to the user.
+ANSWER_MARKER_RE = re.compile(
+    r"^[ \t]*\**[ \t]*answer[ \t]*\**[ \t]*:[ \t]*\**",
+    re.IGNORECASE | re.MULTILINE,
+)
+
+
+def strip_reasoning(text):
+    """
+    Return just the answer portion of a chain-of-thought response.
+
+    Falls back to the full text when no "Answer:" marker is present. That is the
+    right failure mode here: the baseline prompt produces no marker at all and
+    must pass through untouched, and on a malformed CoT response showing
+    something verbose beats showing the user nothing.
+    """
+    if not text:
+        return text
+    matches = list(ANSWER_MARKER_RE.finditer(text))
+    if not matches:
+        return text.strip()
+    return text[matches[-1].end():].strip()
+
+
+def create_query_chain(model, vectordb, question, variant=None):
     try:
         retriever = vectordb.as_retriever()
-        prompt = build_context_prompt(question)
+        prompt = build_context_prompt(question, variant=variant)
         document_chain = RetrievalQA.from_chain_type(
             retriever=retriever,
             llm=model,
@@ -18,6 +47,20 @@ def create_query_chain(model, vectordb, question):
         print("Error occurred during query chain creation:")
         print(traceback.format_exc())
         return None
+
+
+def run_query(chain, question, variant=None):
+    """
+    Invoke `chain` and return its response with the reasoning trace removed.
+
+    Both the app and the eval harness go through here, so what gets measured is
+    what the user actually sees.
+    """
+    response = chain.invoke({"query": question})
+    if emits_reasoning(variant):
+        response = dict(response)
+        response["result"] = strip_reasoning(response.get("result", ""))
+    return response
 
 def search_external_sources(query):
     try:

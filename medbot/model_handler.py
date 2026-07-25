@@ -42,7 +42,10 @@ def initialize_model():
         start_time = time.time()
         model = ChatGoogleGenerativeAI(
             model=GEMINI_CHAT_MODEL,
-            temperature=0.1,
+            # Sprint 2's temperature experiment: false refusals dropped from 67%
+            # to 42% going from 0.1 to 0 (medbot/eval/temperature_experiment.json).
+            # Partial mitigation only - the CoT prompt targets the rest.
+            temperature=0,
         )
 
         end_time = time.time()

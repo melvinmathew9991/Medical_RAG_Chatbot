@@ -8,6 +8,7 @@ Precision@K, then runs the real answer-generation chain and scores groundedness
 via an LLM-judge. Writes results.json and results.md next to this file.
 """
 
+import argparse
 import json
 import os
 import statistics
@@ -17,7 +18,8 @@ from google.api_core.exceptions import ResourceExhausted
 
 from medbot.data_processing import create_vector_database
 from medbot.model_handler import initialize_model
-from medbot.query_handler import create_query_chain
+from medbot.query_handler import create_query_chain, run_query
+from medbot.prompt import DEFAULT_PROMPT_VARIANT, PROMPT_VARIANTS
 from medbot.eval.dataset import EVAL_QUESTIONS
 from medbot.eval.retrieval_metrics import precision_at_k
 from medbot.eval.groundedness import judge_groundedness
@@ -45,7 +47,24 @@ def call_with_backoff(fn, *args, **kwargs):
             time.sleep(RATE_LIMIT_BACKOFF_SECONDS)
 
 
-def run():
+def result_paths(variant):
+    """
+    Always write to a variant-suffixed filename, resolving None to whichever
+    variant actually ran.
+
+    Sprint 2's results.json/results.md are a recorded historical run and nothing
+    here should overwrite them. An earlier version of this function wrote the
+    unsuffixed names when `variant` was None, which was a trap: the app default
+    is now "cot", so a plain `python -m medbot.eval.run_eval` would have silently
+    replaced Sprint 2's baseline record with CoT numbers under a filename that
+    still claimed to be the baseline.
+    """
+    variant = variant or DEFAULT_PROMPT_VARIANT
+    return (os.path.join(RESULTS_DIR, f"results_{variant}.json"),
+            os.path.join(RESULTS_DIR, f"results_{variant}.md"))
+
+
+def run(variant=None):
     vectordb = create_vector_database()
     model = initialize_model()
     if vectordb is None or model is None:
@@ -65,7 +84,7 @@ def run():
         retrieved_texts = [d.page_content for d in retrieved_docs]
         precision = precision_at_k(retrieved_texts, expected_keywords)
 
-        chain = create_query_chain(model, vectordb, question)
+        chain = create_query_chain(model, vectordb, question, variant=variant)
         if chain is None:
             results.append({
                 "question": question,
@@ -76,7 +95,9 @@ def run():
             })
             continue
 
-        response = call_with_backoff(chain.invoke, {"query": question})
+        # Goes through run_query, not chain.invoke, so the answer scored here is
+        # the trace-stripped one the user would actually see.
+        response = call_with_backoff(run_query, chain, question, variant=variant)
         answer = response.get("result", "")
         context = "\n\n".join(retrieved_texts)
         judged = call_with_backoff(judge_groundedness, model, question, context, answer)
@@ -91,7 +112,7 @@ def run():
 
         # Checkpoint after every question so a late-run rate-limit failure
         # doesn't discard already-completed (and already Gemini-billed) work.
-        with open(os.path.join(RESULTS_DIR, "results.json"), "w", encoding="utf-8") as f:
+        with open(result_paths(variant)[0], "w", encoding="utf-8") as f:
             json.dump({"summary": summarize(results), "results": results}, f, indent=2)
 
     return results
@@ -115,8 +136,8 @@ def summarize(results):
     }
 
 
-def write_report(results, summary):
-    json_path = os.path.join(RESULTS_DIR, "results.json")
+def write_report(results, summary, variant=None):
+    json_path, md_path = result_paths(variant)
     with open(json_path, "w", encoding="utf-8") as f:
         json.dump({"summary": summary, "results": results}, f, indent=2)
 
@@ -125,18 +146,33 @@ def write_report(results, summary):
         if summary["mean_precision_at_k"] is not None else "- Mean Precision@K: n/a"
     )
     groundedness_line = (
-        f"- **Mean groundedness (LLM-judge, 0-1)**: {summary['mean_groundedness']:.2f}"
+        f"- **Mean groundedness (binary LLM-judge, 0-1)**: {summary['mean_groundedness']:.2f}"
         if summary["mean_groundedness"] is not None else "- Mean groundedness: n/a"
+    )
+    # Sprint 3 audit finding F2: this judge returns only 0.0 or 1.0 in practice, so
+    # the figure above reads as a quality score but is really a pass/fail rate. Say
+    # so in the generated report itself - a reader who opens only this file should
+    # not walk away quoting it as a quality benchmark.
+    judge_caveat = (
+        "> **Read the groundedness figure with care.** This judge returned only 0.0 or 1.0 on "
+        "every answer it graded, so it behaves as pass/fail and cannot see partial degradation. "
+        "For discriminating scores use the claim-level judge "
+        "(`medbot.eval.rejudge` -> `results_<variant>_claims.json`), and see "
+        "`results_sprint3.md` for the interpretation."
     )
 
     lines = [
-        "# MEDBOT Sprint 2 Evaluation Results",
+        "# MEDBOT Evaluation Results"
+        + (f" - `{variant}` prompt" if variant else " - Sprint 2"),
         "",
         f"Ran {summary['n_questions']} questions through the live RAG pipeline "
-        f"(retrieval top-{TOP_K}, Gemini `gemini-flash-lite-latest` generation).",
+        f"(retrieval top-{TOP_K}, Gemini `gemini-flash-lite-latest` generation"
+        + (f", `{variant}` prompt variant" if variant else "") + ").",
         "",
         precision_line,
         groundedness_line,
+        "",
+        judge_caveat,
         "",
         "**Methodology and limitations:** Precision@K uses keyword-containment against "
         "manually verified expected phrases (see `dataset.py`), not embedding similarity "
@@ -163,7 +199,6 @@ def write_report(results, summary):
         rationale = (r.get("groundedness_rationale") or "").replace("|", "/")
         lines.append(f"| {r['question']} | {p} | {g} | {rationale} |")
 
-    md_path = os.path.join(RESULTS_DIR, "results.md")
     with open(md_path, "w", encoding="utf-8") as f:
         f.write("\n".join(lines) + "\n")
 
@@ -171,9 +206,18 @@ def write_report(results, summary):
 
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--variant", choices=sorted(PROMPT_VARIANTS), default=None,
+        help=f"Prompt variant to evaluate. Omit to use the app default "
+             f"({DEFAULT_PROMPT_VARIANT}). Output is always written to "
+             f"results_<variant>.json/.md.",
+    )
+    args = parser.parse_args()
+
     start = time.time()
-    results = run()
+    results = run(variant=args.variant)
     summary = summarize(results)
-    json_path, md_path = write_report(results, summary)
+    json_path, md_path = write_report(results, summary, variant=args.variant)
     print(f"\nDone in {time.time() - start:.0f}s. Report: {md_path}")
     print(json.dumps(summary, indent=2))
