@@ -1,0 +1,48 @@
+{
+  "How is psoriasis treated?": {
+    "baseline": [
+      {
+        "refusal": true,
+        "text": "I don't know the answer to how psoriasis is treated based on the provided context."
+      },
+      {
+        "refusal": true,
+        "text": "I don't know."
+      },
+      {
+        "refusal": true,
+        "text": "I don't know."
+      }
+    ],
+    "cot": [
+      {
+        "refusal": true,
+        "text": "I don't know based on the provided context. The text discusses treatments for acne, bedsores, and atopic dermatitis, but it does not mention psoriasis. Please consult a qualified healthcare provider for information on how psoriasis is treated."
+      },
+      {
+        "refusal": true,
+        "text": "I don't know based on the provided context. The context contains information on treating acne, bedsores, and atopic dermatitis, but it does not mention psoriasis or its treatments. Please consult a qualified healthcare provider for information on treating psoriasis."
+      },
+      {
+        "refusal": true,
+        "text": "I don't know based on the provided context. The text discusses treatments for acne, bedsores, and atopic dermatitis, but it does not contain any information about psoriasis or how it is treated. Please consult a qualified healthcare provider for information on psoriasis treatment."
+      }
+    ]
+  },
+  "What are the symptoms of schizophrenia?": {
+    "baseline": [
+      {
+        "refusal": true,
+        "text": "I don't know the answer to that question based on the provided context."
+      },
+      {
+        "refusal": true,
+        "text": "I do not know the answer to your question based on the provided context."
+      },
+      {
+        "refusal": true,
+        "text": "I don't know the answer based on the provided context, as there is no information regarding the symptoms of schizophrenia."
+      }
+    ]
+  }
+}

@@ -42,9 +42,61 @@ def call_with_backoff(fn, *args, **kwargs):
         except ResourceExhausted:
             if attempt == MAX_RATE_LIMIT_RETRIES:
                 raise
+            # flush: without it this line sits in the stdout buffer whenever the
+            # run is piped, so a quota-dead run is indistinguishable from a slow
+            # one -- 12 minutes of empty console before the first checkpoint.
             print(f"  rate limited, backing off {RATE_LIMIT_BACKOFF_SECONDS}s "
-                  f"(attempt {attempt}/{MAX_RATE_LIMIT_RETRIES})")
+                  f"(attempt {attempt}/{MAX_RATE_LIMIT_RETRIES})", flush=True)
             time.sleep(RATE_LIMIT_BACKOFF_SECONDS)
+
+
+# Telling the two 429s apart. The important difference is that backing off cannot
+# clear the daily cap: RPM recovers in 60s, RPD only at the rollover, so retrying
+# a day-capped run just burns MAX_RATE_LIMIT_RETRIES x 65s per call and dies anyway.
+#
+# The metric name alone does NOT discriminate: Google reports both against
+# `generate_content_free_tier_requests`, and the per-minute quota id merely
+# suffixes it -- so a substring match on the metric treats an RPM blip as fatal
+# and aborts runs that would have finished. The quota *id* is what differs
+# (GenerateRequestsPerDayPerProjectPerModel-FreeTier vs ...PerMinute...), with
+# the observed daily limit as a fallback signal.
+PER_MINUTE_SIGNALS = ("perminute", "per_minute", "requests_per_minute")
+DAILY_QUOTA_SIGNALS = ("perday", "per_day", "limit: 500")
+
+
+def preflight(model):
+    """
+    One minimal call, to fail a quota-dead run in seconds instead of after the
+    first 3x65s backoff cycle. Returns None if the model answers.
+
+    Costs 1 request against the daily 500. Worth it before committing 54-240.
+
+    Distinguishes the two 429s: a per-minute limit is transient and the caller
+    should just proceed into the normal backoff path, but the daily cap cannot be
+    waited out within a run. The rollover is midnight US Pacific, NOT local
+    midnight -- assuming otherwise is why the Sprint 4 out-of-corpus run was
+    retried at 01:00 IST and failed against a quota that had not reset.
+    """
+    try:
+        model.invoke("ok")
+        return None
+    except ResourceExhausted as exc:
+        message = str(exc)
+        low = message.lower()
+        # Checked first: the per-minute id contains the daily metric name as a
+        # substring, so testing for the daily signal first would swallow it.
+        if any(signal in low for signal in PER_MINUTE_SIGNALS):
+            return None  # transient, the normal backoff path handles it
+        if any(signal in low for signal in DAILY_QUOTA_SIGNALS):
+            return (
+                "Daily free-tier quota (500 requests) is exhausted. Backing off "
+                "will not clear it -- the counter rolls over at midnight US "
+                "Pacific (~12:30 IST), not local midnight.\n"
+                f"  {message.splitlines()[0]}"
+            )
+        # An unrecognised 429. Prefer letting the run try and back off over
+        # aborting on a message format that may simply have changed.
+        return None
 
 
 def result_paths(variant):

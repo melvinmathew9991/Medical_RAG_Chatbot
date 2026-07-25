@@ -14,13 +14,16 @@ Medical_RAG_Chatbot/
 │   ├── model_handler.py    # ChatGoogleGenerativeAI (Gemini) initialization + caching
 │   ├── prompt.py           # few-shot prompt template + example selector
 │   ├── query_handler.py    # RetrievalQA chain + external search orchestration
+│   ├── eval/               # evaluation harness, results, and audits
 │   └── legacy/             # experimental code not wired into app.py
 │       ├── retriever.py
 │       └── speech.txt
+├── tests/                  # pytest suite (see "Tests" below)
 ├── data/                   # source documents ingested into the vector index
 ├── vectorstore/            # committed FAISS index (index.faiss, index.pkl)
 ├── .devcontainer/          # GitHub Codespaces / VS Code dev container
 ├── .env.example            # required environment variables
+├── pytest.ini
 └── requirements.txt
 ```
 
@@ -44,6 +47,61 @@ quota, since Gemini's free embedding quota can't cover this corpus.
 On first run, `medbot/data_processing.py` builds a FAISS index from every PDF/text file in `data/`
 and saves it to `vectorstore/`. On subsequent runs it loads the existing index instead of
 rebuilding it.
+
+## Tests
+
+```
+pytest              # 99 offline tests, ~6s, no network and no API quota
+pytest -m live      # 4 end-to-end tests against the real app (needs GOOGLE_API_KEY)
+pytest -m ""        # everything
+```
+
+The default run is offline by design (`addopts = -m "not live"` in `pytest.ini`), so it is
+free, deterministic, and safe for CI. Anything that reaches the network or spends Gemini
+free-tier quota must be marked `@pytest.mark.live`.
+
+`tests/conftest.py` enforces that: a non-`live` test that opens an outbound socket fails with
+the offending test and host named. This exists because a mock pointed at the wrong module
+once let a test hit PubMed, Wikipedia and SerpAPI for real *while still passing* — a mock that
+misses looks exactly like a mock that works, only slower.
+
+Note `tests/test_eval_regression.py` reads the committed JSON artefacts in `medbot/eval/`
+rather than calling the model. It catches someone committing worse numbers; it does not
+detect live model drift. Regenerating those artefacts is a deliberate, quota-spending act —
+see `medbot/eval/results_sprint4.md`.
+
+## Evaluation
+
+`medbot/eval/` holds the harness and every recorded result. Start with the sprint write-ups:
+
+- `results_sprint4.md` — current state of the evidence, and what it does not support
+- `results_sprint3.md` + `sprint3_audit.md` — the chain-of-thought A/B and its adversarial audit
+- `results.md` — the original Sprint 2 baseline
+
+Two tools worth knowing about, both free to run since they use only local retrieval:
+
+- `python -m medbot.eval.verify_coverage --candidates` — checks whether the corpus actually
+  covers a topic, by reading what retrieval returns. Use this before adding any question to
+  the out-of-corpus suite; assuming coverage from a topic's name has produced two wrong
+  questions so far. The full screened list, rejections included, lives in that file.
+- `python -m medbot.eval.refusal_stats --prefix sprint4_` — question-level significance on the
+  stored refusal trials. Questions missing trials in either arm are excluded and reported,
+  never counted as zeros; also prints how much of the result rests on single trials.
+- `python -m medbot.eval.calibration_score` — scores a filled-in `calibration_sheet.md`
+  against the judge. Reports differential bias (cot − baseline), which is what would
+  undermine the groundedness comparison; a bias equal in both arms cancels out of it.
+
+Note `medbot/data_processing.py` does **not** load the index on import — call
+`create_vector_database()` explicitly. Importing it used to build the index when absent,
+which made a bare `--help` or `pytest --collect-only` capable of starting a 1225-chunk embed.
+
+Trial runs that spend quota take `--resume`, which keeps cells already recorded and measures
+only the gaps — the free tier is 500 requests/day and it rolls over at midnight **US
+Pacific**, not local midnight:
+
+```
+python -m medbot.eval.refusal_trials --trials 3 --suite overanswer --out-prefix sprint4_ --resume
+```
 
 ## Notes
 

@@ -151,7 +151,104 @@ shown). `temperature` dropped 0.1 → 0. Full write-up in `medbot/eval/results_s
     Fisher p=0.43 at the question level. Large clean effect, small sample — both halves are true.
   - **Still open after this sprint:** question-set expansion (24 questions, a 2-question refusal
     delta) and blinded human calibration of the judge. Both are measurement-confidence work, not
-    defects in the shipped behaviour.
+    defects in the shipped behaviour. *(Sprint 4 closed the first: the refusal result is now
+    significant at p=0.0219 on all 24 questions. See below.)*
+
+**Sprint 4 (testing foundation) — mostly done (2026-07-25):** scoped as "add pytest", became
+mostly a measurement sprint, because the tests immediately found that two of the three question
+sets Sprint 3's result rested on were selecting the wrong questions. Full write-up in
+`medbot/eval/results_sprint4.md`.
+
+  - **103 tests: 99 offline (~6s, no network, no quota) + 4 live.** `pytest.ini` sets
+    `addopts = -m "not live"`, so the default run is free and deterministic — which is what
+    Sprint 5's CI needs, having no API key. (The sprint first reported "57 tests: 53
+    offline"; the real figure before the audit round was 58/54 — see results_sprint4.md §6.)
+  - **`tests/conftest.py` fails any non-`live` test that opens an outbound socket.** Written
+    after a mock in this very sprint was pointed at the defining module instead of the calling
+    one (`from ... import ...` had already bound the name), missed entirely, and let the test
+    hit PubMed/Wikipedia/SerpAPI for real *while passing*. A mock that misses looks exactly like
+    a mock that works, only slower — so it is enforced rather than left to discipline.
+  - **Bug found and fixed:** `search_serpapi` caught only `RequestException` while its two
+    siblings caught `Exception`, so an auth/quota error from the serpapi client escaped into
+    `search_external_sources`, whose blanket `except` then discarded **all three** sources. A bad
+    SerpAPI key silently cost the user their PubMed and Wikipedia results too.
+  - **The refusal suite was measuring the wrong questions (audit F1).** Re-mining the stored
+    Sprint 3 answers found FOUR baseline refusals, only two of them in the hand-picked 4-question
+    suite. `"What causes bladder cancer?"` answered "I don't know, as the provided context does
+    not state the exact cause" on a **perfect Precision@4** and had been outside the suite for two
+    sprints. The suite is now the whole 24-question eval set.
+  - **Headline: the refusal result now reaches significance.** 24 questions × 2 arms × 3 trials:
+    baseline refuses **6/24** questions, cot **0/24**. **Fisher exact p = 0.0219**, versus p=0.43
+    on Sprint 3's 4 questions. Still to be read at the question level — 13/72 vs 0/72 trials is
+    the same repeated-measures mistake the Sprint 3 draft made.
+  - **The out-of-corpus guard contained a question the corpus covers (audit F7/F8).** "What are
+    the symptoms of diabetes?" was half the 2-question guard; its top chunks include the *blood
+    sugar tests* entry (a B entry) explaining insulin and hyperglycemia. Exactly the F8 stroke
+    mistake, still live one sprint after the lesson was recorded. Fixed with a tool rather than
+    a resolution to be careful: `medbot/eval/verify_coverage.py` checks candidates against real
+    retrieval, costs no quota, and rejected 14 of 26 candidates.
+  - **NOT FINISHED — the hallucination guard is not armed.** The run hit the free tier's 500
+    requests/day at question 2 of 10. No over-answering in what was recorded, but 1 of 10
+    questions does not establish absence. `test_out_of_corpus_gate_is_fully_armed` skips with the
+    missing questions listed rather than passing quietly. **Run this first, before any further
+    prompt work:** `python -m medbot.eval.refusal_trials --trials 3 --suite overanswer
+    --out-prefix sprint4_ --resume` (~54 calls).
+    - Retried 2026-07-26 and **still quota-blocked**: `generate_content_free_tier_requests,
+      limit: 500` on a bare one-token call. The daily counter rolls over at **midnight US
+      Pacific (~12:30 IST)**, not local midnight — which is why "run it tomorrow morning"
+      failed. Run it after ~12:30 IST.
+  - **Judge calibration (F6) is partial and needs a human.** Length bias is *ruled out*: answers
+    are +27.5% longer in the cot arm but the judge extracts +23.8% more claims — ~101 vs 104
+    chars per claim, and the score is a ratio. Hedging bias remains untested, since the cot arm
+    has almost no score variance left to correlate against. `medbot/eval/calibration_sheet.md`
+    is ready to hand-label: 25 answers, arm and score hidden, order shuffled, context included.
+    I cannot close this one — I am the model being audited, so my labels are not independent.
+
+**Sprint 4 audit round (2026-07-26):** every headline number recomputed from the raw JSON
+rather than read from the prose. The headline **survives unchanged** — 6/24 vs 0/24, Fisher
+exact p=0.0219 — as do the calibration figures (781/995 chars, 7.71/9.54 claims), the claim
+scores (0.841 → 0.997), Precision@4 (0.8333) and the 25-item calibration sheet. Four defects
+found and fixed; full write-up in `medbot/eval/results_sprint4.md` §6.
+  - **`refusal_stats.py` counted unmeasured cells as zeros.** On the incomplete out-of-corpus
+    data it reported cot "1/2 questions ever refusing" and computed a Fisher p that included
+    the schizophrenia question — which has no cot trials at all — scoring a question the model
+    was never asked as one it answered. Missing arms are now excluded and reported as
+    `INCOMPLETE`. A sprint about measuring the wrong questions should not ship a stats tool
+    that invents observations.
+  - **The hand-rolled Fisher exact had no test** despite producing the sprint's headline; its
+    docstring claimed validation that nothing enforced. Now pinned against tea-tasting
+    (0.4857), Sprint 3 (0.4286) and Sprint 4 (0.0219), plus symmetry and the p ≤ 1 bound.
+  - **The trial runner could not resume** — `run()` started from an empty dict and the
+    checkpoint overwrote the file, so a quota-killed run restarted at question 1 and could
+    never reach question 3 if the quota died twice in the same place. That is the actual
+    mechanism behind this sprint stalling, not bad luck. `--resume` added, 12 tests.
+  - **The coverage screen was not reproducible:** `CANDIDATES` held 12 of the 25 questions
+    actually screened, so `--candidates` could not reproduce the selection and the recorded
+    "14 of 26" was wrong and uncheckable. True figures **25 screened, 15 rejected, 10 kept**;
+    the full list including rejections now lives in the file, and
+    `test_out_of_corpus_selection.py` re-runs the screen against the live index every test
+    run, asserting both that the shipped 10 are still absent and that rejected candidates are
+    still detected — so a screen degrading into accepting everything fails loudly.
+
+  Second pass, on the work quota does *not* gate:
+  - **The calibration exercise had no analysis step** — `calibration_key.json` was written by
+    `calibration_sample.py` and read by nothing, so labelling all 25 answers would have produced
+    no result. `calibration_score.py` closes the loop and reports **differential** bias (cot −
+    baseline), which is the statistic that matters: a judge wrong by the same margin in both
+    arms leaves the 0.841 → 0.997 claim intact, since a constant bias cancels out of a
+    difference. Refusals are held out, not scored as 0.0.
+  - **A quota-dead run looked exactly like a slow one** — the backoff notice was unflushed and
+    there was no preflight, so tonight's attempt sat silent for 12 minutes. Added `flush=True`
+    and a one-call `preflight()` that tells the daily cap from the per-minute cap (Google
+    reports both under the same metric name, so the obvious substring check would kill
+    recoverable runs). Fails in **6.5s instead of 32s**, spending nothing.
+  - **`data_processing.py` loaded the FAISS index at import time** via a module-level
+    `vectordb = create_vector_database()` that nothing consumed — `app.py` and all five eval
+    scripts call the function themselves. Every consumer paid the load twice and the test suite
+    paid it for nothing. Worse, the call *builds* the index when absent, so importing the module
+    on a machine without `vectorstore/` would start embedding 1225 chunks — from `--help`, or
+    from `pytest --collect-only`. A live trap for Sprint 5's CI. Removed; offline suite
+    **33s → 5.6s**.
 
 ---
 
@@ -170,7 +267,7 @@ harder later.
 |---|---|---|
 | **2** | Evaluation harness | Build the measurement tool everything after this depends on: Precision@K retrieval metric (reused from the AML fraud project) against a 20–30 question test set with known-correct source passages, plus a faithfulness/groundedness check (NLI-based or documented manual rubric) on generated answers. Report numbers honestly, weak spots included. |
 | **3** ✅ | Chain-of-thought few-shot upgrade | Done — see §2. Implemented as six new held-out CoT exemplars used as a fixed set, rather than rewriting 5–8 of the existing 27 in place: with the selector at `k=1` only one example reaches the prompt, so rewriting a minority of 27 would have left ~70% of queries seeing no CoT demonstration at all, and would have diluted the A/B. |
-| **4** | Automated testing foundation | Zero tests exist today. Add `pytest`, unit tests for config/external-search, formalize the `AppTest` smoke script, and a regression test that fails if Sprint 2/3's eval numbers drop. |
+| **4** ⚠️ | Automated testing foundation | Scoped as "add pytest"; became mostly a measurement sprint once the tests found that both the refusal suite and the out-of-corpus guard were selecting the wrong questions. 83 offline tests + 4 live, a socket guard that makes silently-fake mocks impossible, the refusal result re-measured on all 24 questions (p=0.0219), and an audit round that recomputed every headline from raw data and fixed four defects. **One piece still unfinished:** the out-of-corpus guard has 1 of 10 questions measured, blocked on the 500/day free-tier quota, which rolls over at midnight US Pacific (~12:30 IST). |
 | **5** | CI/CD pipeline | Tests nobody runs automatically aren't a safety net — GitHub Actions on push/PR, lint + pre-commit. |
 | **6** | Retrieval quality improvements | Use Sprint 2's findings to act on them: chunk metadata, a relevance threshold, source citations. (Building the harness itself moved to Sprint 2 — this is now about using it.) |
 | **7** | Observability & UX polish | Replace `print()` logging with structured logging, finish wiring the now-live LangSmith key, implement real token streaming. |
