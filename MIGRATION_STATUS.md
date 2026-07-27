@@ -98,11 +98,22 @@ shown). `temperature` dropped 0.1 → 0. Full write-up in `medbot/eval/results_s
   groundedness **0.84 → 1.00**, false refusals **2/24 → 0/24**, per-question **6 improved,
   0 regressed** (after the fix round below). Precision@4 identical at 0.83 in both arms — expected,
   since retrieval was untouched, and a useful sanity check that the harness measures what it claims.
-- **Attributed, not just observed.** A four-arm ablation separates the instruction rewrite from the
-  worked exemplars (refusals over 20 trials): baseline 10, instruction-only 5, examples-only 1,
-  cot 0. Breast cancer is fixed by either change alone; **bursitis is untouched by the instruction
-  rewrite (5/5, same as baseline)** and needs the exemplars. The two are not substitutes and only
-  the combination reaches zero — so the CoT exemplars earn their ~2,400 tokens per query.
+- **Attributed, not just observed** — ⚠️ **but the attribution was WITHDRAWN on 2026-07-27; see the
+  `is_refusal` correction under Sprint 4.** A four-arm ablation separated the instruction rewrite
+  from the worked exemplars (refusals over 20 trials): baseline 10, instruction-only 5,
+  examples-only 1, cot 0. The conclusion drawn was that **bursitis is untouched by the instruction
+  rewrite (5/5, same as baseline)** and needs the exemplars, that the two are not substitutes, and
+  that only the combination reaches zero — so the CoT exemplars earn their ~2,400 tokens per query.
+  **All five instruction-only "refusals" were few-shot contamination**, not refusals: the model
+  declined a question about *nosebleeds* (from its own selected exemplar) and then answered
+  "What is bursitis?" correctly in the same reply. Re-scored, the ablation reads **instruction-only
+  0, examples-only 1** — inverting the conclusion. On this evidence the instruction rewrite alone
+  reaches zero and the exemplars alone do not, so **the exemplars' tokens are not justified by the
+  refusal result.** Not acted on at the time: 4 questions is far too small a base to strip the
+  exemplars on. **Re-run on all 24 questions the same day** — the refusal parity holds
+  (instruction-only vs cot p = 1.0000), the true token cost is **~2,770 per query**, and the
+  exemplars still stay, on grounds that are not refusal-shaped. See the ablation re-run entry
+  under Sprint 4.
 - **Credit splits between the two changes.** Temperature 0 alone fixed bedsores and abscess. The
   CoT prompt fixed the other two: breast cancer and bursitis refused **5/5 under the baseline
   prompt at temperature 0** — deterministic, not noise — and 0/5 under CoT. Bursitis had refused
@@ -151,18 +162,20 @@ shown). `temperature` dropped 0.1 → 0. Full write-up in `medbot/eval/results_s
     Fisher p=0.43 at the question level. Large clean effect, small sample — both halves are true.
   - **Still open after this sprint:** question-set expansion (24 questions, a 2-question refusal
     delta) and blinded human calibration of the judge. Both are measurement-confidence work, not
-    defects in the shipped behaviour. *(Sprint 4 closed the first: the refusal result is now
-    significant at p=0.0219 on all 24 questions. See below.)*
+    defects in the shipped behaviour. *(Sprint 4 closed the first: the refusal result is
+    significant on all 24 questions — at p=0.0094 after the 2026-07-27 instrument correction,
+    p=0.0219 as originally measured. See below.)*
 
 **Sprint 4 (testing foundation) — mostly done (2026-07-25):** scoped as "add pytest", became
 mostly a measurement sprint, because the tests immediately found that two of the three question
 sets Sprint 3's result rested on were selecting the wrong questions. Full write-up in
 `medbot/eval/results_sprint4.md`.
 
-  - **103 tests: 99 offline (~6s, no network, no quota) + 4 live.** `pytest.ini` sets
+  - **110 tests: 106 offline (~6s, no network, no quota) + 4 live.** `pytest.ini` sets
     `addopts = -m "not live"`, so the default run is free and deterministic — which is what
     Sprint 5's CI needs, having no API key. (The sprint first reported "57 tests: 53
-    offline"; the real figure before the audit round was 58/54 — see results_sprint4.md §6.)
+    offline"; the real figure before the audit round was 58/54 — see results_sprint4.md §6.
+    The third audit round added 7 more covering the `is_refusal` correction.)
   - **`tests/conftest.py` fails any non-`live` test that opens an outbound socket.** Written
     after a mock in this very sprint was pointed at the defining module instead of the calling
     one (`from ... import ...` had already bound the name), missed entirely, and let the test
@@ -181,22 +194,28 @@ sets Sprint 3's result rested on were selecting the wrong questions. Full write-
     baseline refuses **6/24** questions, cot **0/24**. **Fisher exact p = 0.0219**, versus p=0.43
     on Sprint 3's 4 questions. Still to be read at the question level — 13/72 vs 0/72 trials is
     the same repeated-measures mistake the Sprint 3 draft made.
+    - ⚠️ **SUPERSEDED 2026-07-27.** Half of those six baseline refusals were the measurement
+      instrument miscounting few-shot contamination. Re-scored, this run is **3/24 vs 0/24,
+      p = 0.2340 — not significant.** The result that stands is the 5-trial re-run below. See
+      "The instrument was wrong" for the full account.
   - **The out-of-corpus guard contained a question the corpus covers (audit F7/F8).** "What are
     the symptoms of diabetes?" was half the 2-question guard; its top chunks include the *blood
     sugar tests* entry (a B entry) explaining insulin and hyperglycemia. Exactly the F8 stroke
     mistake, still live one sprint after the lesson was recorded. Fixed with a tool rather than
     a resolution to be careful: `medbot/eval/verify_coverage.py` checks candidates against real
     retrieval, costs no quota, and rejected 14 of 26 candidates.
-  - **NOT FINISHED — the hallucination guard is not armed.** The run hit the free tier's 500
-    requests/day at question 2 of 10. No over-answering in what was recorded, but 1 of 10
-    questions does not establish absence. `test_out_of_corpus_gate_is_fully_armed` skips with the
-    missing questions listed rather than passing quietly. **Run this first, before any further
-    prompt work:** `python -m medbot.eval.refusal_trials --trials 3 --suite overanswer
-    --out-prefix sprint4_ --resume` (~54 calls).
-    - Retried 2026-07-26 and **still quota-blocked**: `generate_content_free_tier_requests,
-      limit: 500` on a bare one-token call. The daily counter rolls over at **midnight US
-      Pacific (~12:30 IST)**, not local midnight — which is why "run it tomorrow morning"
-      failed. Run it after ~12:30 IST.
+  - **The hallucination guard is armed — CLOSED 2026-07-27.** The original run hit the free
+    tier's 500 requests/day at question 2 of 10, and a retry on 2026-07-26 was still
+    quota-blocked, because the daily counter rolls over at **midnight US Pacific (~12:30 IST)**,
+    not local midnight — so every "run it tomorrow morning" attempt before ~12:30 IST was
+    spending against the *previous* Pacific day and had no chance of succeeding. Completed at
+    12:37 IST on 2026-07-27, one rollover later, via `--resume` (51 calls; 3 cells already held
+    trials). **All 10 questions × 2 arms × 3 trials refused: 60/60, zero invented answers.**
+    Both arms 10/10 questions, Fisher p = 1.0000 between them — which is the desired result
+    here: CoT drove false refusals down without buying it by over-answering.
+    `test_out_of_corpus_gate_is_fully_armed` no longer skips. The guard survived the
+    `is_refusal` correction below unchanged, still 60/60, which is the one direction that
+    instrument must never fail in.
   - **Judge calibration (F6) is partial and needs a human.** Length bias is *ruled out*: answers
     are +27.5% longer in the cot arm but the judge extracts +23.8% more claims — ~101 vs 104
     chars per claim, and the score is a ratio. Hedging bias remains untested, since the cot arm
@@ -205,10 +224,18 @@ sets Sprint 3's result rested on were selecting the wrong questions. Full write-
     I cannot close this one — I am the model being audited, so my labels are not independent.
 
 **Sprint 4 audit round (2026-07-26):** every headline number recomputed from the raw JSON
-rather than read from the prose. The headline **survives unchanged** — 6/24 vs 0/24, Fisher
-exact p=0.0219 — as do the calibration figures (781/995 chars, 7.71/9.54 claims), the claim
-scores (0.841 → 0.997), Precision@4 (0.8333) and the 25-item calibration sheet. Four defects
-found and fixed; full write-up in `medbot/eval/results_sprint4.md` §6.
+rather than read from the prose. The headline appeared to **survive unchanged** — 6/24 vs 0/24,
+Fisher exact p=0.0219 — as did the calibration figures (781/995 chars, 7.71/9.54 claims), the
+claim scores (0.841 → 0.997), Precision@4 (0.8333) and the 25-item calibration sheet. Four
+defects found and fixed; full write-up in `medbot/eval/results_sprint4.md` §6.
+
+  ⚠️ **The refusal headline did not actually survive, and the method of this audit is why it
+  looked like it did.** "Recompute from the raw JSON" recomputed the *statistics* from the
+  stored `refusal` booleans — but those booleans are themselves derived, by `is_refusal`, and
+  that function was the thing that was wrong. Re-deriving a number from data the same broken
+  instrument produced cannot detect the instrument. What caught it a day later was reading the
+  stored answer **text**, which is the actual raw measurement. Recompute from the rawest thing
+  available, not merely from something rawer than prose.
   - **`refusal_stats.py` counted unmeasured cells as zeros.** On the incomplete out-of-corpus
     data it reported cot "1/2 questions ever refusing" and computed a Fisher p that included
     the schizophrenia question — which has no cot trials at all — scoring a question the model
@@ -250,6 +277,104 @@ found and fixed; full write-up in `medbot/eval/results_sprint4.md` §6.
     from `pytest --collect-only`. A live trap for Sprint 5's CI. Removed; offline suite
     **33s → 5.6s**.
 
+**Sprint 4 second audit round — the instrument was wrong (2026-07-27):** the fragility warning
+`refusal_stats` prints on its own headline was taken at face value and the refusal suite re-run at
+5 trials per cell instead of 3 (240 calls). The extra trials did not settle the statistics — they
+exposed a defect in `is_refusal`, the measurement instrument behind every refusal number in
+Sprints 2–4. Full write-up in `medbot/eval/results_sprint4.md`.
+
+  - **`is_refusal` counted two things that are not refusals.** It scored any refusal marker in the
+    opening 200 characters, regardless of what followed:
+    - **Few-shot contamination.** The model declines a question drawn from its own selected
+      exemplar, then answers the real one: *"I don't know the answer to your question about **bee
+      stings**… However, regarding how burns should be treated,"* followed by 2,462 characters of
+      correct burn treatment. Also osteoporosis standing in for atherosclerosis, and nosebleeds
+      for bursitis. A real defect — the Sprint 3 audit already logged it — but a *contamination*
+      defect, and scoring it as a declined question attributes it to the wrong bug while
+      inflating the baseline arm the whole CoT result is measured against.
+    - **A leading hedge before a full answer.** *"The context does not provide a single,
+      straightforward list labeled 'symptoms of alcoholism,' but it describes numerous health
+      problems…"* — then 1,189 characters of symptoms. The existing note anticipated *trailing*
+      caveats; this is the same thing at the front.
+  - **Fixed by a substance rule:** a marker makes an answer a refusal *candidate*, and it only
+    scores as a refusal if nothing survives stripping the sentences that assert absence
+    (`delivered_content` + `ABSENCE_RE`). Calibrated against all **572 stored trials**; 16 labels
+    change and every one was inspected by hand.
+  - **Two plausible fixes were tried and rejected**, both pinned as tests so they are not
+    re-attempted. *Length alone* fails because genuine refusals routinely run 200–400 characters
+    while helpfully enumerating what the corpus covers instead. *Matching the question's own
+    terms* is actively dangerous: refusals end "…does not mention **psoriasis**", so a term check
+    flips precisely the out-of-corpus refusals the hallucination guard depends on.
+  - **`medbot/eval/relabel.py`** re-derives the stored `refusal` booleans from the stored text
+    (dry-run by default, no quota). It exists because `test_refusal_labels_match_the_heuristic`
+    fails by design when the instrument changes — the fix and the re-scoring cannot drift apart.
+    Answer text is never modified, so any re-scoring is reversible.
+  - **Sprint 4's shipped headline does not survive its own corrected instrument.** The 3-trial
+    run goes from 6/24 vs 0/24, p=0.0219, to **3/24 vs 0/24, p = 0.2340 — not significant.**
+  - **The result that stands** is the 5-trial run under the corrected instrument: baseline
+    **7/24** questions, cot **0/24**, 20/120 vs 0/120 trials, **Fisher exact p = 0.0094**. CoT is
+    back to a clean zero — its single apparent refusal was the alcoholism false positive.
+  - **The 5-trial run was worth it, but not for the stated reason.** It was launched to settle the
+    fragility of two 1-of-3 questions; it moved the raw p-value only 0.0219 → 0.0226. Its actual
+    value was generating the data that exposed the instrument bug, and being the only run that
+    survives correction.
+  - **More trials per question is NOT the fix — and the advice that said so was `refusal_stats`'s
+    own output, now corrected.** Going 3 → 5 left the fragility warning firing on 3 of 7 questions
+    (p=0.1092 if they are dropped), and the membership churned: burns (1/3) did not reproduce at
+    0/5 while autism and bedsores appeared fresh at 1/5. That churn is the signature of low-rate
+    stochastic refusal — extra trials do not resolve the existing 1-of-N questions into confident
+    refusers, they surface new ones that were previously missed, each arriving at exactly one hit.
+    So the sensitivity check keeps failing however much quota is spent on it. The binding
+    constraint is **24 questions**, not trials per question. The fragility block now says so, and
+    the source carries the evidence, so the next person does not re-spend the 240 calls.
+  - **Still open:** blinded human calibration of the groundedness judge (F6) is still not
+    something I can close, for the same reason as before. *(The ablation re-run, the other item
+    listed here, was done the same day — see below.)*
+
+**Sprint 3 ablation re-run under the corrected instrument (2026-07-27):** the open decision was
+whether the CoT exemplars earn their per-query tokens. Re-measured on the honest denominator —
+`instruction-only`, all 24 eval questions, 5 trials (120 calls), plus the 10-question
+out-of-corpus guard at 3 trials (30 calls), all three arms now at 5 trials on the same
+questions with prompt, index and model unchanged. Full write-up in `medbot/eval/results_sprint4.md` §8.
+
+  - **The exemplars cost ~2,770 tokens per query, not ~2,400** — measured from the rendered
+    templates (cot 12,151 chars vs instruction-only 1,064). The older figure understated it.
+  - **Refusals: baseline 7/24 questions, instruction-only 1/24, cot 0/24.** baseline vs cot
+    p = 0.0094 (the shipped headline, reproduced); baseline vs instruction-only p = 0.0479;
+    **instruction-only vs cot p = 1.0000.** Out-of-corpus guard: all three arms 30/30, so
+    **90/90**. On refusals the exemplars buy nothing measurable over the instruction rewrite.
+  - **A third `is_refusal` defect, found by the third arm.** The guard first read as
+    instruction-only inventing answers to 4 of 10 out-of-corpus questions. All six such trials
+    were flat refusals phrased *"there is no mention of…"* — `"no mention"` was not in
+    `REFUSAL_MARKERS`, so the candidate gate never opened. **The marker list had been calibrated
+    on baseline and cot trials only, because those were the only arms with data; a prompt change
+    changes refusal wording, so a wording-keyed instrument does not transfer to a new arm.**
+    Fixed by making the gate the union of the marker list and `ABSENCE_RE` (neither contains the
+    other). Blast radius measured across all **1,022** stored trials before changing anything:
+    exactly **6 labels**, all in the new instruction-only guard data — **every baseline and cot
+    label, the p = 0.0094 headline and the 60/60 guard are untouched.**
+  - **`refusal_stats` was reporting the guard in the unit that cannot see a leak** — "questions
+    ever refusing" reads 9/10 and p = 1.0000 for an arm that answered 4 of 10 out-of-corpus
+    questions. `report()` now takes `unit=ever-refused|ever-answered`, the guard uses
+    `ever-answered`, and both counts always print. The six trials were an artefact; the reporting
+    hole was real.
+  - **A fixture had been passing for the wrong reason:** the F9 "kept verbatim" partial answer
+    was a shortened paraphrase (97 chars surviving, under the threshold) that only passed because
+    the narrow gate never reached the substance rule. Replaced with the real 603-char stored text.
+  - **Contamination belongs to the legacy example format, not to "having examples."** The two
+    arms using the legacy semantic 1-shot selector both substitute a neighbouring example's
+    question (baseline: osteoporosis for atherosclerosis 5/5; instruction-only: nosebleeds for
+    bursitis 5/5); neither CoT arm does. So dropping the CoT exemplars means returning to the
+    format that contaminates, not to "no examples".
+  - **Decision: the exemplars stay for now**, and not out of caution — instruction-only's
+    claim-level groundedness has never been measured (the 0.841 → 0.997 result is baseline vs
+    cot, ~48 calls to close), and instruction-only contaminates on 5/5 bursitis trials. The arm
+    worth running next is the one nobody has measured: **new instruction with no examples at
+    all** (~150 tokens, contamination-proof by construction) — not `examples-only`.
+  - Offline suite now **112 tests** (was 106): the gate fix, the union rule, the wider gate's
+    interaction with the substance test, the instruction-only guard data, and the reporting unit
+    are all pinned.
+
 ---
 
 ## 3. What we're going to do (Sprints 2–9)
@@ -267,7 +392,7 @@ harder later.
 |---|---|---|
 | **2** | Evaluation harness | Build the measurement tool everything after this depends on: Precision@K retrieval metric (reused from the AML fraud project) against a 20–30 question test set with known-correct source passages, plus a faithfulness/groundedness check (NLI-based or documented manual rubric) on generated answers. Report numbers honestly, weak spots included. |
 | **3** ✅ | Chain-of-thought few-shot upgrade | Done — see §2. Implemented as six new held-out CoT exemplars used as a fixed set, rather than rewriting 5–8 of the existing 27 in place: with the selector at `k=1` only one example reaches the prompt, so rewriting a minority of 27 would have left ~70% of queries seeing no CoT demonstration at all, and would have diluted the A/B. |
-| **4** ⚠️ | Automated testing foundation | Scoped as "add pytest"; became mostly a measurement sprint once the tests found that both the refusal suite and the out-of-corpus guard were selecting the wrong questions. 83 offline tests + 4 live, a socket guard that makes silently-fake mocks impossible, the refusal result re-measured on all 24 questions (p=0.0219), and an audit round that recomputed every headline from raw data and fixed four defects. **One piece still unfinished:** the out-of-corpus guard has 1 of 10 questions measured, blocked on the 500/day free-tier quota, which rolls over at midnight US Pacific (~12:30 IST). |
+| **4** ✅ | Automated testing foundation | Scoped as "add pytest"; became mostly a measurement sprint once the tests found that both the refusal suite and the out-of-corpus guard were selecting the wrong questions. 106 offline tests + 4 live, a socket guard that makes silently-fake mocks impossible, and three audit rounds. The out-of-corpus guard is closed at 60/60 across all 10 questions. The third round found that `is_refusal` itself — the instrument behind every refusal number in Sprints 2–4 — was scoring few-shot contamination as refusal; fixing it withdrew the sprint's own p=0.0219 headline and replaced it with **7/24 vs 0/24, p=0.0094** from a 5-trial re-run. |
 | **5** | CI/CD pipeline | Tests nobody runs automatically aren't a safety net — GitHub Actions on push/PR, lint + pre-commit. |
 | **6** | Retrieval quality improvements | Use Sprint 2's findings to act on them: chunk metadata, a relevance threshold, source citations. (Building the harness itself moved to Sprint 2 — this is now about using it.) |
 | **7** | Observability & UX polish | Replace `print()` logging with structured logging, finish wiring the now-live LangSmith key, implement real token streaming. |

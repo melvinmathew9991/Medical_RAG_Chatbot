@@ -20,6 +20,7 @@ medbot/prompt.py, not by this script.)
 import argparse
 import json
 import os
+import re
 
 from medbot.data_processing import create_vector_database
 from medbot.model_handler import initialize_model
@@ -148,12 +149,147 @@ REFUSAL_MARKERS = [
 # prompt wording changes.
 REFUSAL_WINDOW_CHARS = 200
 
+# Second condition, added 2026-07-27 after the 5-trial re-run (see below). A
+# marker in the opening window makes an answer a refusal *candidate*; it only
+# scores as a refusal if the answer then fails to deliver any substance.
+#
+# Why this was needed. The 5-trial run surfaced two patterns the 3-trial run had
+# too few samples to show, both scored as refusals by the window rule alone and
+# both wrong:
+#
+#   1. Few-shot contamination. The model declines a question from its own
+#      selected exemplar, then answers the real one:
+#        "I don't know the answer to your question about BEE STINGS based on the
+#         provided context. However, regarding how burns should be treated, ..."
+#      (2,462 chars of correct burn treatment followed.) Also seen as osteoporosis
+#      standing in for atherosclerosis, and nosebleeds for bursitis. This is a
+#      real defect -- the Sprint 3 audit already recorded it -- but it is a
+#      *contamination* defect, not a declined question, and counting it as a
+#      false refusal attributes it to the wrong bug.
+#   2. A leading hedge before a full answer:
+#        "The context does not provide a single, straightforward list labeled
+#         'symptoms of alcoholism,' but it describes numerous health problems..."
+#      followed by 1,189 chars of symptoms. The note on REFUSAL_WINDOW_CHARS
+#      anticipated *trailing* caveats; this is the same thing at the front.
+#
+# What makes this hard, and why the two obvious fixes are wrong:
+#
+#   - Length alone does not work. Genuine refusals frequently run 200-400 chars
+#     because they helpfully enumerate what the corpus covers *instead*:
+#     "I don't know based on the provided context. The context contains
+#      information on treating acne, bedsores, and atopic dermatitis, but it does
+#      not mention psoriasis." That is a refusal, and a long one.
+#   - Matching the question's own terms is worse than useless: the refusal above
+#     ends "...does not mention PSORIASIS", so a term check flips exactly the
+#     out-of-corpus refusals that the hallucination guard depends on. Tried and
+#     rejected -- it turned 60/60 into a much weaker guard, which is the one
+#     direction this instrument must never fail in.
+#
+# So the test is: strip every sentence that asserts absence, and see whether any
+# content survives. A refusal is all absence; a contaminated or hedged answer has
+# substance left over. Validated below against all 572 stored trials.
+ABSENCE_RE = re.compile(
+    r"(?:do(?:es)?|did)\s*n(?:o|')t\s+(?:\w+\s+){0,2}"
+    r"(?:contain|provide|mention|list|state|define|specify|describe|explain|"
+    r"include|say|detail|support|address|cover|give|offer|discuss)"
+    r"|i\s+(?:do\s*n(?:o|')t|cannot|can'?t|am\s+unable\s+to)\s+"
+    r"(?:know|answer|find|determine|provide|give)"
+    r"|no\s+(?:information|mention|details|specific\s+information)"
+    r"|not\s+(?:mentioned|found|stated|listed|specified|covered|discussed)"
+    r"|outside\s+the\s+provided|beyond\s+the\s+provided"
+    r"|consult\s+(?:a|your|with)"
+    r"|i\s*'?\s*a?m\s+sorry",
+    re.IGNORECASE,
+)
+# The {0,2} gap is not decoration: "does not EXPLICITLY define" and "does not
+# support AN ANSWER TO" both appeared in the stored trials and were mislabelled
+# by fixed-string matching during calibration.
+SENTENCE_SPLIT = re.compile(r"(?<=[.!?:])\s+|\n+")
+
+# Chosen from the calibration, not by taste. Across the 138 marker-flagged
+# trials, surviving content is 0 chars for 119 of them (flat refusals) and 190+
+# for every contaminated or hedged answer. The only values in between are three
+# identical 113-char cases, so the threshold sits in the 113-190 gap.
+#
+# Those three are the one genuinely debatable label in the set, and they are
+# recorded here rather than smoothed over. All three are "What causes bladder
+# cancer?" under baseline:
+#
+#   "I don't know, as the provided context does not state the exact cause of
+#    bladder cancer. However, the text notes that the exact cause is not known,
+#    though smoking is considered the greatest risk factor."
+#
+# Scored a refusal at this threshold. The argument the other way is real: the
+# corpus itself says the cause is unknown, so declining to give one is arguably
+# correct, and the answer does supply the risk factor. Lowering the threshold to
+# 110 would flip all three and take baseline from 7/24 questions to 6/24. It is
+# left as a refusal because the answer opens by declining the question that was
+# asked, and because Sprint 4 (audit F1) singled this question out as the
+# textbook false refusal -- flipping it silently here would quietly erase that
+# finding. Revisit deliberately if at all, not by nudging the constant.
+MIN_SUBSTANCE_CHARS = 120
+
+
+def delivered_content(answer):
+    """The part of `answer` that is not asserting the absence of an answer."""
+    kept = []
+    for sentence in SENTENCE_SPLIT.split(answer):
+        sentence = sentence.strip(" \t-*•()")
+        if sentence and not ABSENCE_RE.search(sentence):
+            kept.append(sentence)
+    return " ".join(kept)
+
+
+def opens_with_absence_language(text):
+    """
+    Whether `text` opens by asserting that an answer is not available -- the
+    candidate gate the substance rule then arbitrates.
+
+    Both readers are consulted, and the reason is a defect found on 2026-07-27
+    while re-running the Sprint 3 ablation. REFUSAL_MARKERS was calibrated
+    against stored baseline and cot trials only, because those were the only two
+    arms with data. The instruction-only arm phrases the same refusal
+    differently:
+
+        "Based on the provided context, there is no mention of the symptoms of
+         shingles. Therefore, the context does not support an answer to this
+         question."
+
+    "no mention" is not in the list ("no information" and "does not mention"
+    are), so the gate never opened, the substance rule was never reached, and
+    six flat refusals across four out-of-corpus questions were scored as
+    ANSWERS -- i.e. as invented content, in the one direction the hallucination
+    guard must never fail in. It read as instruction-only inventing answers to
+    mumps, measles, shingles and schizophrenia when it had refused all six times
+    correctly.
+
+    The general lesson, which is the same shape as audit F1: a marker list
+    calibrated on two arms does not transfer to a third. A prompt change changes
+    the model's refusal wording, so any instrument keyed to wording has to be
+    re-validated per arm.
+
+    ABSENCE_RE already covered this phrasing, since it was written against
+    sentences rather than openings. It is not a superset of the marker list
+    though -- "cannot answer" without a leading "I" matches a marker and not the
+    regex -- so the fix is the union, not a replacement. The union is strictly
+    broader than the old gate, so it can only add candidates, and every added
+    candidate still has to survive the substance test to score as a refusal.
+    That bounds the damage a wider gate can do: verified across all 1022 stored
+    trials, it changes exactly the six labels above.
+    """
+    head = text[:REFUSAL_WINDOW_CHARS]
+    lowered = head.lower()
+    return (any(marker in lowered for marker in REFUSAL_MARKERS)
+            or bool(ABSENCE_RE.search(head)))
+
 
 def is_refusal(answer):
-    if not answer:
+    if not answer or not answer.strip():
         return True
-    head = answer[:REFUSAL_WINDOW_CHARS].lower()
-    return any(marker in head for marker in REFUSAL_MARKERS)
+    text = answer.strip()
+    if not opens_with_absence_language(text):
+        return False
+    return len(delivered_content(text)) < MIN_SUBSTANCE_CHARS
 
 
 def load_existing(out_filename):
