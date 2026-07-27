@@ -111,6 +111,40 @@ def test_fully_measured_data_still_reports_a_p_value():
     assert "-- significant at 0.05" in text
 
 
+def test_the_guard_suite_is_reported_in_the_direction_that_can_see_a_leak():
+    """
+    The two suites point in opposite directions, and reporting the guard in the
+    false-refusal unit hides a partial leak. Ten out-of-corpus questions; one arm
+    answers four of them at least once, which is invented medical content. In the
+    "ever refused" unit that arm still scores 9/10 and p = 1.0000 -- a clean pass.
+    Counting questions that ever ANSWERED puts the four failures in the 2x2.
+    """
+    trials = {
+        f"q{i}": {"cot": _cell(3, 3), "leaky": _cell(3 if i >= 4 else 2, 3)}
+        for i in range(10)
+    }
+    variants = ("leaky", "cot")
+
+    default_unit = report(analyse(trials, variants), variants)
+    assert "questions ever refusing 10/10" in default_unit
+    assert "(unit: ever-refused): [[10, 0], [10, 0]]" in default_unit
+    assert "p = 1.0000" in default_unit
+
+    guard_unit = report(analyse(trials, variants), variants, unit="ever-answered")
+    assert "ever answering 4/10  <- tested" in guard_unit
+    assert "(unit: ever-answered): [[4, 6], [0, 10]]" in guard_unit
+    assert "p = 0.0867" in guard_unit
+    # Both counts stay visible whichever unit is tested, so the familiar line does
+    # not silently change meaning between the two reports.
+    assert "questions ever refusing 10/10" in guard_unit
+
+
+def test_an_unknown_unit_is_refused_rather_than_guessed():
+    with pytest.raises(ValueError):
+        report(analyse({"q": {"baseline": _cell(1, 3), "cot": _cell(0, 3)}}),
+               unit="ever-hedged")
+
+
 def test_trial_totals_still_count_every_recorded_trial():
     """
     Excluding a question from the 2x2 must not hide the calls that were spent on

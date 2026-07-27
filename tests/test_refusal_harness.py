@@ -65,15 +65,31 @@ def test_a_trailing_caveat_is_not_a_refusal():
 
 def test_the_partial_answer_from_audit_f9_is_not_a_refusal():
     """
-    The closest call in the F9 hand-validation, kept verbatim: it opens by
-    declining to *define* the term, then supplies causes and symptoms anyway.
-    "not a refusal" is the correct label.
+    The closest call in the F9 hand-validation: it opens by declining to *define*
+    the term, then supplies causes and symptoms anyway. "not a refusal" is the
+    correct label.
+
+    Now genuinely verbatim -- 603 chars, of which 380 survive the absence strip.
+    It previously claimed to be verbatim while quoting a shortened paraphrase
+    whose surviving content was only 97 chars, under MIN_SUBSTANCE_CHARS. That
+    passed for the wrong reason: the narrow marker gate never opened on "does not
+    explicitly define", so the substance rule was never consulted. Widening the
+    gate on 2026-07-27 made the fixture fail, correctly -- the paraphrase really
+    is too thin to count as an answer. The instrument was right and the shortened
+    quote was wrong, which is only visible against the stored trial.
     """
     answer = (
         "The provided context does not explicitly define what bursitis is, so I "
         "cannot give a formal definition based on it. However, the text notes that "
-        "it can flare up after repetitive motion, and that rest and ice help."
+        "it can flare up for no known reason or be caused by repeated physical "
+        "activity, trauma, rheumatoid arthritis, gout, and acute or chronic "
+        "infection. Common symptoms include pain and tenderness, limited and "
+        "painful movement, and—if the affected joint is close to the skin like "
+        "the shoulder, knee, elbow, or Achilles tendon—swelling, redness, and "
+        "warmth. Please consult a qualified healthcare provider for a proper "
+        "definition and information regarding bursitis."
     )
+    assert len(rt.delivered_content(answer)) > rt.MIN_SUBSTANCE_CHARS
     assert not rt.is_refusal(answer)
 
 
@@ -88,9 +104,211 @@ def test_cannot_give_and_unable_to_are_deliberately_not_markers():
 
 
 def test_detection_is_limited_to_the_opening_window():
+    """
+    The window rule, isolated from the substance rule that now follows it.
+
+    The tail here is kept under MIN_SUBSTANCE_CHARS deliberately. This test used
+    to pad with a full window's worth of filler, which the substance rule (added
+    2026-07-27) correctly reads as an answer that happens to open with a hedge --
+    so the padding, not the window, would decide the outcome and the test would
+    no longer be testing what it names.
+    """
     lead = "x" * rt.REFUSAL_WINDOW_CHARS
     assert not rt.is_refusal(lead + " I don't know.")
-    assert rt.is_refusal("I don't know. " + lead)
+
+    short_tail = "x" * (rt.MIN_SUBSTANCE_CHARS - 20)
+    assert rt.is_refusal("I don't know. " + short_tail)
+
+
+# --- the substance rule (added 2026-07-27 after the 5-trial re-run) --------
+
+def test_few_shot_contamination_is_not_scored_as_a_refusal():
+    """
+    The pattern the 5-trial run exposed: the model declines a question from its
+    own exemplar, then answers the real one. Verbatim shape of the stored
+    baseline trial for "How should burns be treated?", which the window rule
+    alone scored as a false refusal.
+
+    It is still a defect -- it is a contamination defect, and counting it as a
+    declined question attributes it to the wrong bug and inflates the baseline
+    arm the CoT result is measured against.
+    """
+    answer = (
+        "I don't know the answer to your question about bee stings based on the "
+        "provided context. However, regarding how burns should be treated, the "
+        "information outlines several methods depending on the type of burn. "
+        "Minor burns should be cooled with running water and covered with a "
+        "sterile dressing, while deep or extensive burns need urgent medical care."
+    )
+    assert not rt.is_refusal(answer)
+
+
+def test_a_leading_hedge_before_a_full_answer_is_not_a_refusal():
+    """
+    Trailing caveats were already handled by the window; this is the same thing
+    at the front, and it was the single CoT hit in the 5-trial run.
+    """
+    answer = (
+        'The context does not provide a single, straightforward list labeled '
+        '"symptoms of alcoholism," but it describes numerous health problems '
+        "and withdrawal effects associated with the condition. Mild withdrawal "
+        "symptoms include nausea, achiness, diarrhea, difficulty sleeping, "
+        "sweatiness, anxiety, and trembling. More severe effects can include "
+        "hallucinations, seizures, confusion, fever and a fast heart rate."
+    )
+    assert not rt.is_refusal(answer)
+
+
+def test_a_refusal_that_lists_what_the_corpus_covers_instead_is_still_a_refusal():
+    """
+    The reason length alone cannot be the test, and the case that makes the
+    out-of-corpus guard work. This runs well past any length threshold while
+    delivering nothing about the question asked -- naming adjacent entries is
+    not answering.
+    """
+    answer = (
+        "I don't know based on the provided context. The context contains "
+        "information on treating acne, bedsores, and atopic dermatitis, but it "
+        "does not mention psoriasis or how it is treated."
+    )
+    assert rt.is_refusal(answer)
+
+
+def test_the_question_term_appearing_in_an_absence_clause_does_not_flip_it():
+    """
+    Pins the fix that was tried and rejected during calibration. Matching the
+    question's own terms looks reasonable until you notice that refusals end
+    "...does not mention psoriasis" -- so a term check flips precisely the
+    out-of-corpus refusals the hallucination guard depends on.
+    """
+    assert rt.is_refusal(
+        "I do not know based on the provided context. The text discusses what "
+        "causes diabetes and how it is diagnosed and tested, but it does not "
+        "list the symptoms of diabetes anywhere in the material provided."
+    )
+
+
+def test_absence_phrases_tolerate_inserted_adverbs():
+    """
+    Both of these were mislabelled by fixed-string matching during calibration:
+    the adverb and the object break "does not define" / "does not support".
+    """
+    assert rt.ABSENCE_RE.search("the text does not explicitly define bursitis")
+    assert rt.ABSENCE_RE.search("the context does not support an answer to your question")
+
+
+def test_delivered_content_drops_only_the_absence_sentences():
+    kept = rt.delivered_content(
+        "I don't know based on the provided context. "
+        "Bursitis is inflammation of a bursa. "
+        "The text does not mention risk factors."
+    )
+    assert kept == "Bursitis is inflammation of a bursa."
+
+
+def test_the_out_of_corpus_guard_survives_the_substance_rule():
+    """
+    The direction this instrument must never fail in. A rule that lets invented
+    answers pass as refusals is worse than the false-positive bug it fixes, so
+    the shipped guard data is re-scored here on every run: all 60 trials of
+    Sprint 4's out-of-corpus suite must still be refusals.
+    """
+    import json
+    import os
+
+    path = os.path.join(rt.RESULTS_DIR, "sprint4_overanswer_trials.json")
+    data = json.load(open(path, encoding="utf-8"))
+    scored = [(q, arm, i, t["text"])
+              for q, arms in data.items()
+              for arm, trials in arms.items()
+              for i, t in enumerate(trials, 1)]
+    assert len(scored) == 60, "the guard dataset changed; re-check this pin"
+
+    leaked = [(q, arm, i) for q, arm, i, text in scored if not rt.is_refusal(text)]
+    assert not leaked, f"substance rule let out-of-corpus answers through: {leaked}"
+
+
+# --- the candidate gate (widened 2026-07-27, third-arm phrasing gap) ------
+
+def test_the_third_arm_refusal_phrasing_is_detected():
+    """
+    Verbatim from the instruction-only ablation run. The marker list was
+    calibrated on baseline and cot trials, which say "I don't know" or "does not
+    mention"; this arm says "there is no mention", which matched nothing, so the
+    gate stayed shut and six flat refusals were scored as invented ANSWERS on
+    out-of-corpus questions -- a false alarm in the worst possible direction.
+    """
+    assert rt.is_refusal(
+        "Based on the provided context, there is no mention of the symptoms of "
+        "shingles. Therefore, the context does not support an answer to this question."
+    )
+    assert rt.is_refusal(
+        "Based on the provided context, there is no mention of mumps or its "
+        "symptoms. Therefore, the context does not support an answer to this question."
+    )
+    assert rt.is_refusal(
+        "Based on the provided context, there is no mention of the symptoms of "
+        "schizophrenia. (The context does mention psychotic symptoms and "
+        "hallucinations in the context of extreme mania related to bipolar "
+        "disorder, but it does not address schizophrenia.)"
+    )
+
+
+def test_the_gate_is_the_union_of_the_marker_list_and_the_absence_regex():
+    """
+    Why the fix is a union and not a replacement: neither reader contains the
+    other. Pinned so that "ABSENCE_RE covers everything, drop the list" is not
+    tried -- it would reopen the marker-only hole.
+    """
+    marker_only = "The context cannot answer that."
+    regex_only = "There is no mention of measles here."
+
+    assert any(m in marker_only.lower() for m in rt.REFUSAL_MARKERS)
+    assert not rt.ABSENCE_RE.search(marker_only)
+
+    assert not any(m in regex_only.lower() for m in rt.REFUSAL_MARKERS)
+    assert rt.ABSENCE_RE.search(regex_only)
+
+    assert rt.opens_with_absence_language(marker_only)
+    assert rt.opens_with_absence_language(regex_only)
+
+
+def test_the_wider_gate_still_needs_the_substance_test():
+    """
+    A wider gate can only add *candidates*. This answer opens with the phrasing
+    the gate now catches and then answers anyway, so it must stay an answer --
+    otherwise widening the gate would trade one false-positive bug for another.
+    """
+    answer = (
+        "There is no mention of a single labelled list of bursitis risk factors. "
+        "Bursitis is inflammation of a bursa, the fluid-filled sac cushioning a "
+        "joint, and the context attributes it to repeated physical activity, "
+        "trauma, rheumatoid arthritis, gout, and acute or chronic infection."
+    )
+    assert rt.opens_with_absence_language(answer)
+    assert not rt.is_refusal(answer)
+
+
+def test_the_instruction_only_guard_data_is_fully_armed():
+    """
+    The ablation arm gets the same treatment as the shipped one: if the exemplars
+    are ever dropped on the strength of this ablation, instruction-only becomes
+    the shipped prompt, so its out-of-corpus behaviour is load-bearing evidence
+    and is re-scored on every test run.
+    """
+    import json
+    import os
+
+    path = os.path.join(rt.RESULTS_DIR, "ablation_t5_overanswer_trials.json")
+    data = json.load(open(path, encoding="utf-8"))
+    trials = [(q, i, t["text"])
+              for q, arms in data.items()
+              for arm, ts in arms.items() if arm == "instruction-only"
+              for i, t in enumerate(ts, 1)]
+    assert len(trials) == 30, "the instruction-only guard dataset changed; re-check this pin"
+
+    leaked = [(q, i) for q, i, text in trials if not rt.is_refusal(text)]
+    assert not leaked, f"instruction-only invented answers out of corpus: {leaked}"
 
 
 # --- resume: finishing a quota-killed run ---------------------------------

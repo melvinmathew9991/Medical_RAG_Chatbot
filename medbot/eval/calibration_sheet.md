@@ -21,6 +21,17 @@ bias this exercise is trying to measure, so please do not let it sway the count.
 
 Do not open `calibration_key.json` until this sheet is filled in.
 
+## When you are done
+
+```
+.venv-gemini/Scripts/python.exe -m medbot.eval.calibration_score
+```
+
+It reads this file and the key, and prints the differential bias (cot − baseline),
+which is the number the exercise exists for. Costs no quota and calls no model.
+A partly-filled sheet is fine: unlabelled items are listed and excluded, so you can
+stop halfway, score what you have, and come back to the rest.
+
 ---
 
 ## 1. What are the symptoms of a brain tumor?

@@ -94,23 +94,23 @@
   "What is bursitis?": {
     "instruction-only": [
       {
-        "refusal": true,
+        "refusal": false,
         "text": "Based on the provided context, the text does not contain information about why people get nosebleeds. \n\nRegarding what bursitis is, the context notes that it is a condition that can flare up for no known reason or be caused by repeated physical activity, trauma, rheumatoid arthritis, gout, and acute or chronic infection. Its common symptoms include pain and tenderness, as well as swelling, redness, and warmth if the affected joint is close to the skin (such as the shoulder, knee, elbow, or Achilles tendon). Movement may be limited and painful. It can be acute (appearing suddenly) or chronic (where pain, tenderness, and limited movement reappear after exercise or strain). The text also defines arthritis (an inflammation of a joint that may lead to changes in its structure and causes pain and swelling) in its key terms, but it does not provide a direct definition sentence for bursitis itself."
       },
       {
-        "refusal": true,
+        "refusal": false,
         "text": "Based on the provided context, the text does not contain any information about nosebleeds or why people get them. Therefore, the provided context does not support an answer to your question. \n\n*(Note: The provided context does, however, contain information on bursitis, which is an inflammation of a bursa caused most commonly by repeated physical activity, trauma, rheumatoid arthritis, gout, or acute/chronic infection.)*"
       },
       {
-        "refusal": true,
+        "refusal": false,
         "text": "Based on the provided context, the text does not contain information to answer why people get nosebleeds. \n\nRegarding the question \"What is bursitis?\" (which is the condition covered in the provided text): The context states that bursitis involves pain and tenderness (with symptoms appearing suddenly in acute bursitis, or reappearing after exercise or strain in chronic bursitis). When the affected joint is close to the skin, swelling and redness are seen and the area may feel warm to the touch, while deeper bursa (such as around the hip joint) have less obvious swelling. Movement may be limited and painful. It can also be related to inflammatory conditions like arthritis or gout, or caused by an infection (septic bursitis)."
       },
       {
-        "refusal": true,
+        "refusal": false,
         "text": "Based on the provided context, the text does not contain any information explaining why people get nosebleeds. \n\nRegarding what bursitis is, the context states that it is a condition that causes pain and tenderness, and notes that it is related to an inflammatory condition like arthritis or gout. (Note: The provided text does not contain a formal direct definition of bursitis, such as \"bursitis is...\", but it discusses its causes, symptoms, and diagnosis.)"
       },
       {
-        "refusal": true,
+        "refusal": false,
         "text": "Based on the provided context, the text does not contain information about why people get nosebleeds. However, regarding the question \"What is bursitis?\" (which is covered in the context), bursitis is a condition that involves inflammation of a bursa (often caused by repeated physical activity, trauma, rheumatoid arthritis, gout, or infection), with common symptoms including pain, tenderness, swelling, and redness around the affected joint, as well as limited and painful movement."
       }
     ],

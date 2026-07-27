@@ -165,6 +165,17 @@ not, and only together do they reach 0/20.
 Caveat carried over from F1: this is still 4 questions. The attribution is clean, but the sample is
 small, and "bursitis is hard, breast cancer is easy" is a claim about two questions.
 
+> ⚠️ **WITHDRAWN 2026-07-27.** Everything in this section rests on `is_refusal`, and the
+> instrument was wrong: all five instruction-only "refusals" on bursitis were few-shot
+> contamination — the model declined a question about *nosebleeds*, drawn from its own selected
+> exemplar, and then answered bursitis correctly in the same reply. So "the instruction rewrite
+> does nothing for the hard case" is the opposite of what the data says. Re-measured on all 24
+> questions at 5 trials: **instruction-only 1/24 refusing questions vs cot 0/24, Fisher exact
+> p = 1.0000** — no measurable difference. The real token cost is **~2,770 per query**, not
+> ~2,400. The exemplars are still shipped, but on different grounds: instruction-only's
+> claim-level groundedness has never been measured, and it contaminates 5/5 on bursitis. See
+> `results_sprint4.md` §7 (the instrument) and §8 (the re-run).
+
 ## How the A/B was run
 
 Both arms were run fresh, in the same session, at `temperature=0`, against the same 24-question

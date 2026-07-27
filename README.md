@@ -51,7 +51,7 @@ rebuilding it.
 ## Tests
 
 ```
-pytest              # 99 offline tests, ~6s, no network and no API quota
+pytest              # 112 offline tests, ~6s, no network and no API quota
 pytest -m live      # 4 end-to-end tests against the real app (needs GOOGLE_API_KEY)
 pytest -m ""        # everything
 ```
@@ -90,6 +90,10 @@ Two tools worth knowing about, both free to run since they use only local retrie
 - `python -m medbot.eval.calibration_score` — scores a filled-in `calibration_sheet.md`
   against the judge. Reports differential bias (cot − baseline), which is what would
   undermine the groundedness comparison; a bias equal in both arms cancels out of it.
+- `python -m medbot.eval.relabel` — re-derives the stored `refusal` booleans from the stored
+  answer text (dry run; `--write` to apply). Run it after any change to `is_refusal`: the
+  booleans are derived data, and `test_refusal_labels_match_the_heuristic` fails on purpose
+  until the recorded trials are re-scored with the instrument that now ships.
 
 Note `medbot/data_processing.py` does **not** load the index on import — call
 `create_vector_database()` explicitly. Importing it used to build the index when absent,
