@@ -5,7 +5,13 @@ Run with: .venv-gemini/Scripts/python.exe -m medbot.eval.run_eval
 
 For each question in dataset.EVAL_QUESTIONS: retrieves top-K chunks and scores
 Precision@K, then runs the real answer-generation chain and scores groundedness
-via an LLM-judge. Writes results.json and results.md next to this file.
+via an LLM-judge.
+
+Writes `results_<variant>.json` and `results_<variant>.md` next to this file --
+always suffixed, resolving an omitted `--variant` to the app default rather than
+writing the unsuffixed names, which would overwrite Sprint 2's recorded run (see
+`results_sprint4.md` §6). This docstring said "results.json and results.md" until
+the 2026-07-27 audit; that is what the code did before that fix, not after.
 """
 
 import argparse

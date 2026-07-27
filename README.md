@@ -51,7 +51,7 @@ rebuilding it.
 ## Tests
 
 ```
-pytest              # 112 offline tests, ~6s, no network and no API quota
+pytest              # 123 offline tests, ~10s, no network and no API quota
 pytest -m live      # 4 end-to-end tests against the real app (needs GOOGLE_API_KEY)
 pytest -m ""        # everything
 ```

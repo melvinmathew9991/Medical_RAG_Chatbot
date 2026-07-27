@@ -1,9 +1,13 @@
 """
 Question-level significance test on the refusal trial data.
 
-    .venv-gemini/Scripts/python.exe -m medbot.eval.refusal_stats --prefix sprint4_
+    .venv-gemini/Scripts/python.exe -m medbot.eval.refusal_stats
 
-Reads the stored trials, so it costs nothing to re-run.
+Reads the stored trials, so it costs nothing to re-run. Defaults to the 5-trial
+`sprint4_t5_` run, which is the one the standing headline comes from; every report
+prints the filename it was computed from. `--prefix sprint4_` inspects the retired
+3-trial run, and `--prefix ablation_t5_ --variants baseline,instruction-only,cot`
+the ablation.
 
 Why a question-level test rather than counting trials: Sprint 3's draft reported
 "10/20 vs 0/20 false refusals" and computed p=0.00044 from it. Those 20 trials
@@ -247,25 +251,51 @@ def row_hits(row, variant):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--prefix", default="sprint4_")
+    # Defaults to the 5-trial run, which is the one that stands. It defaulted to
+    # `sprint4_` (3 trials) until the 2026-07-27 audit, so running this tool the
+    # obvious way -- no arguments -- printed p = 0.2340, NOT significant, from the
+    # superseded dataset, while the documented headline is p = 0.0094 and needs
+    # `--prefix sprint4_t5_`. A checker reproducing the sprint would have concluded
+    # the result had evaporated. Pass `--prefix sprint4_` deliberately to inspect
+    # the retired 3-trial run.
+    parser.add_argument("--prefix", default="sprint4_t5_")
     parser.add_argument("--variants", default="baseline,cot")
     args = parser.parse_args()
     variants = tuple(v.strip() for v in args.variants.split(",") if v.strip())
 
     out = []
+    refusal_name = f"{args.prefix}refusal_trials.json"
     refusal = load(args.prefix, "refusal_trials.json")
+    # Every report names the file it was computed from. Two prefixes hold refusal
+    # data for the same 24 questions at different trial counts, one of them
+    # superseded, so a table without its provenance is a number waiting to be
+    # misattributed.
     out.append(report(analyse(refusal, variants), variants,
-                      "False refusals on questions the corpus DOES answer (lower is better)"))
+                      f"False refusals on questions the corpus DOES answer "
+                      f"(lower is better) [{refusal_name}]"))
 
-    path = os.path.join(RESULTS_DIR, f"{args.prefix}overanswer_trials.json")
-    if os.path.exists(path):
-        over = load(args.prefix, "overanswer_trials.json")
+    # The guard was recorded once, under the `sprint4_` prefix, and is not re-run
+    # per refusal-trial-count. Falling back is stated rather than silent: reporting
+    # a guard the caller did not ask for without saying so is how the wrong dataset
+    # gets quoted.
+    over_name = f"{args.prefix}overanswer_trials.json"
+    if not os.path.exists(os.path.join(RESULTS_DIR, over_name)):
+        fallback = "sprint4_overanswer_trials.json"
+        if os.path.exists(os.path.join(RESULTS_DIR, fallback)):
+            print(f"note: no {over_name}; reporting the guard from {fallback}\n")
+            over_name = fallback
+        else:
+            over_name = None
+
+    if over_name:
+        with open(os.path.join(RESULTS_DIR, over_name), encoding="utf-8") as f:
+            over = json.load(f)
         # unit="ever-answered": here the answer is the failure, so the 2x2 has to
         # count questions that ever answered. Counting "ever refused" on this
         # suite reads a partial leak as a pass -- see the note above UNITS.
         out.append(report(analyse(over, variants), variants,
-                          "Invented answers on out-of-corpus questions (lower is better - "
-                          "the corpus has no entry for any of these)",
+                          f"Invented answers on out-of-corpus questions (lower is better - "
+                          f"the corpus has no entry for any of these) [{over_name}]",
                           unit="ever-answered"))
 
     text = "\n".join(out)
