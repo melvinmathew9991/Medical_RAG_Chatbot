@@ -421,6 +421,39 @@ def build_instruction_only_prompt(question):
     return PromptTemplate(input_variables=["context", "question"], template=template)
 
 
+def build_no_examples_prompt():
+    """
+    The arm §8 of results_sprint4.md identified as missing, and the cheapest one:
+    the new guidance with NO examples at all.
+
+    Why it matters. `instruction-only` is a misnomer inherited from Sprint 3 -- it
+    is the new instruction plus baseline's legacy semantically-selected 1-shot
+    example, not the instruction alone. The 2026-07-27 ablation found that arm at
+    refusal parity with `cot` (1/24 vs 0/24 questions, Fisher p = 1.0000) while
+    costing ~2,770 fewer tokens per query, so the exemplars are unjustified on
+    refusals. What stopped them being dropped was that `instruction-only`
+    substitutes a neighbouring example's question on 5/5 bursitis trials -- it
+    answers about *nosebleeds*, drawn from its own selected exemplar. That defect
+    belongs to the legacy 1-shot format, and both arms that use it show it.
+
+    This arm removes the mechanism rather than the symptom: with no example in the
+    prompt there is no other question for the model to answer, so contamination is
+    impossible by construction rather than by measurement. At ~150 tokens it is
+    also the cheapest arm in the set.
+
+    Unmeasured until quota allows. Nothing ships on it yet; the app default stays
+    `cot` (DEFAULT_PROMPT_VARIANT) until the refusal suite, the out-of-corpus guard
+    and the claim-level judge have all been run against this variant.
+    """
+    template = (
+        f"{INSTRUCTION_ONLY_DISCLAIMER}\n\n"
+        "Context:\n{context}\n\n"
+        "Question: {question}\n"
+        "Answer:"
+    )
+    return PromptTemplate(input_variables=["context", "question"], template=template)
+
+
 def build_examples_only_prompt():
     """
     Ablation arm: the six CoT exemplars, but under the ORIGINAL disclaimer - the
@@ -449,11 +482,19 @@ def build_examples_only_prompt():
 # semantic-selector arms) or uses a fixed set (the CoT arms). Declared explicitly
 # rather than inferred by catching TypeError, which would swallow genuine
 # TypeErrors raised from inside a builder.
+#
+# "instruction-only" is a misnomer kept for continuity with the recorded Sprint 3
+# and Sprint 4 numbers: it is the new instruction with baseline's legacy 1-shot
+# example, NOT the instruction on its own. "no-examples" is the arm that actually
+# has no examples. Renaming the older one now would orphan every recorded result
+# filed under it, so the trap is documented instead.
 PROMPT_VARIANTS = {
     "baseline":         {"builder": build_baseline_prompt,
                          "needs_question": True,  "emits_reasoning": False},
     "instruction-only": {"builder": build_instruction_only_prompt,
                          "needs_question": True,  "emits_reasoning": False},
+    "no-examples":      {"builder": build_no_examples_prompt,
+                         "needs_question": False, "emits_reasoning": False},
     "examples-only":    {"builder": build_examples_only_prompt,
                          "needs_question": False, "emits_reasoning": True},
     "cot":              {"builder": build_cot_prompt,

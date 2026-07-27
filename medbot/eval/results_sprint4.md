@@ -21,29 +21,37 @@ eval set the baseline falsely refuses **7** questions and the CoT arm refuses **
 
 ## 1. Test suite
 
-110 tests: **106 offline** (~6s, no network, no quota) and **4 live**.
+127 tests: **123 offline** (~10s, no network, no quota) and **4 live**.
 
 | File | n | What it protects |
 |---|---|---|
-| `test_prompt_variants.py` | 6 | `strip_reasoning`; sha256 pin of the rendered CoT prompt (Sprint 3) |
+| `test_prompt_variants.py` | 9 | `strip_reasoning`; sha256 pin of the rendered CoT prompt (Sprint 3); the `no-examples` arm (§10) |
 | `test_config.py` | 9 | The `or`-fallback at `config.py:16`; LangSmith tracing gating |
 | `test_external_search.py` | 14 | All three sources: happy path, malformed payload, raising client, `lru_cache` |
 | `test_format_external_results.py` | 14 | `<span>` stripping, per-source caps, `None`-when-empty |
 | `test_eval_regression.py` | 11 | The gates below |
-| `test_refusal_harness.py` | 16 | `is_refusal`'s rules; `--resume`; quota preflight (§6) |
-| `test_refusal_stats.py` | 11 | The Fisher implementation; missing-data handling (§6) |
+| `test_refusal_harness.py` | 27 | `is_refusal`'s rules and both gate readers; `--resume`; quota preflight (§6–§8) |
+| `test_refusal_stats.py` | 13 | The Fisher implementation; missing-data handling; the reporting unit (§6, §8) |
 | `test_calibration_score.py` | 12 | The judge-vs-human arithmetic (§6) |
 | `test_out_of_corpus_selection.py` | 6 | The guard's questions are still absent from the corpus (§6) |
+| `test_expansion_selection.py` | 8 | The screened expansion questions still retrieve their entries, both directions (§10) |
 | `test_app_smoke.py` | 4 (live) | The real streamlit app end to end |
 
-The suite runs in ~6s, down from ~33s: `data_processing.py` used to load the FAISS
+*(This table row-summed to 99 while the headline said 106, because the third audit
+round's 7 new tests were never added to the `test_refusal_harness.py` row. Both
+figures are now recomputed from `pytest --collect-only` whenever they change, and
+they agree: 123.)*
+
+The suite runs in ~10s, down from ~33s: `data_processing.py` used to load the FAISS
 index at *import* time, so every test file that imported anything two hops away paid
-a 25s index load (§6, A8).
+a 25s index load (§6, A8). It was ~6s until §10 added index-backed selection tests;
+those share a single retrieval pass through a module fixture, which is what keeps the
+figure at 10s rather than 14s.
 
 *(An earlier draft of this file said "57 tests: 53 offline". That was wrong twice
 over: `test_format_external_results.py` has 14 tests and not 13, and the count
 omitted the one skipping test. The figure was 58/54 before this sprint's audit
-round added 29 more.)*
+round added 29 more, 106/4 after §7, and 112/4 after §8 and §9.)*
 
 `pytest.ini` sets `addopts = -m "not live"`, so the default run is offline, free and
 deterministic. Sprint 5's CI has no API key and wants exactly that.
@@ -235,10 +243,14 @@ audited, so my labels would not be independent evidence.
 - The suite is the whole eval set, so selection bias in the question list is gone.
 - Out-of-corpus candidates are now verified by retrieval, not by reasoning about topic —
   and re-verified automatically on every test run, not once by hand.
-- The hallucination guard is armed: 60/60 across all 10 questions (§3).
-- 106 offline tests, and the network guard makes a whole class of fake test impossible.
-- The measurement instrument itself is now tested against the two patterns that defeated
-  it, and re-scoring is a tool rather than a manual pass (§7).
+- The hallucination guard is armed: 60/60 across all 10 questions (§3), 90/90 once the
+  ablation arm is included (§8) — and the gate asserting it can now actually fail (§9).
+- 112 offline tests, and the network guard makes a whole class of fake test impossible —
+  verified by probe, not assumed (§9).
+- The measurement instrument itself is now tested against the patterns that defeated it
+  twice, and re-scoring is a tool rather than a manual pass (§7, §8).
+- Every documented number in this file has been re-derived from the stored answer text
+  under all three historical instruments, and reconciles exactly (§9).
 
 **Still open:**
 - **The judge is still uncalibrated.** Length bias ruled out; hedging bias untested.
@@ -625,3 +637,215 @@ That is the arm to run next, not `examples-only`.
 **Open, unchanged:** blinded human calibration of the groundedness judge (F6). The sheet, key
 and scoring loop are complete and verified end-to-end against a synthetic fill; the labels have
 to come from a human, since the judge is the model being audited.
+
+---
+
+## 9. Fourth audit round (2026-07-27) — the gates, not the numbers
+
+The three previous rounds each corrected a *number*. This one recomputed every number
+and found them all correct, then audited the thing that had never been audited: whether
+the tests protecting them can fail.
+
+**Method, chosen from §6's mistake.** §6 "recomputed from the raw JSON" and missed a
+broken instrument, because it recomputed statistics from the stored `refusal` booleans —
+which the instrument itself had produced. So here every refusal figure is re-derived from
+the stored **answer text** under all three historical instruments, reimplemented
+side-by-side:
+
+| | gate | substance rule |
+|---|---|---|
+| **v0** (as shipped in `e869c33`) | marker in `head[:200]` | none |
+| **v1** (first correction, §7) | marker in `head[:200]` | yes |
+| **v2** (current, §8) | marker ∪ `ABSENCE_RE` | yes |
+
+### Every documented number reconciles
+
+| claim | documented | recomputed |
+|---|---|---|
+| 3-trial run, as recorded (v0) | 6/24 vs 0/24, 13/72 vs 0/72, p = 0.0219 | ✅ identical |
+| 3-trial run, re-scored (v2) | 3/24 vs 0/24, p = 0.2340 | ✅ identical |
+| 5-trial run, as recorded (v0) | `[[8,16],[1,23]]`, p = 0.0226 | ✅ identical |
+| **5-trial run, corrected (v2) — the headline** | **7/24 vs 0/24, 20/120, p = 0.0094** | ✅ **identical** |
+| Fragility: drop the three 1-of-5 refusers | p = 0.1092 | ✅ identical |
+| Ablation (§8): instruction-only | 1/24, 1/120, p = 1.0000 vs cot, 0.0479 vs baseline | ✅ identical |
+| Sprint 3 ablation file, v0 → v2 | instruction-only 5 → 0, examples-only 1 → 1 | ✅ identical |
+| Out-of-corpus guard | 60/60 (`sprint4_`), 90/90 (with instruction-only) | ✅ identical |
+| Claim-level groundedness | 0.841 → 0.997 | ✅ 0.841, 0.997 (n=24 each) |
+| Precision@4, both arms | 0.8333 | ✅ identical, and per-question equal across arms |
+| Judge length bias | 781 / 995 chars, 7.71 / 9.54 claims, 101 / 104 per claim | ✅ identical |
+| Coverage screen | 25 screened, 15 rejected, 10 kept | ✅ re-ran: 10 absent, 15 contaminated |
+| Calibration sheet | 25 items, 15 baseline / 10 cot | ✅ identical, 7 scored below 1.00 |
+
+Three checks that go beyond recomputation:
+
+- **Blind-spot scan.** Every one of the **1,022** stored trials was checked for the class
+  the gate structurally cannot see: an answer scored *answered* whose content is thin once
+  absence-asserting sentences are stripped. **0 suspects.** This is the scan that would
+  have caught §8's defect before it was found by accident.
+- **Inverse invariant.** Trials scored *refusal* while delivering substance: **0**, as the
+  substance rule requires by construction.
+- **Label drift.** Stored booleans vs the current instrument across all 10 trial files:
+  **0 of 1,022** disagree.
+
+### The socket guard was tested rather than believed
+
+`conftest.py`'s network guard is the reason a whole class of fake test is impossible, and
+nothing had ever verified it fires. A throwaway probe test that opens a real socket was
+run and deleted: both `connect` and `connect_ex` were blocked, each naming the offending
+test and host. It works.
+
+### Findings: five gates that could not fail, and one environment trap
+
+**A1 — every headline gate was pointing at the retired dataset.** `test_eval_regression.py`
+read `sprint4_refusal_trials.json` — the **3-trial** run this file marks *"do not quote
+these numbers"* — in all four of its refusal gates. The 5-trial run the standing headline
+comes from, and both ablation files, had **no gate at all**. Re-pointed at
+`sprint4_t5_refusal_trials.json` via a named constant, with the trial count per cell now
+asserted too (a rate over 2 trials is not the measurement the headline claims).
+
+**A2 — the label-drift test covered 2 of 10 trial files.** It named `sprint4_refusal` and
+`sprint4_overanswer`, so drift in the eight others — including both files behind the
+current headline and the ablation conclusion — would not have failed anything. Now globs
+`*trials.json` and asserts it found at least 8.
+
+**A3 — `test_out_of_corpus_gate_is_fully_armed` asserted nothing.** It was written to
+`pytest.skip` while the guard data was incomplete. Once §3 completed the data, `missing`
+became empty and the body fell through with **no assertion**: a test named "fully armed"
+that could not fail, and that would have gone back to *skipping* — not failing — if the
+guard data were truncated. It now asserts completeness and that all 60 trials refused.
+
+**A4 — `python -m medbot.eval.refusal_stats` printed the superseded result.** The default
+`--prefix sprint4_` reported **p = 0.2340, NOT significant** from the 3-trial data, while
+the documented headline is p = 0.0094 from `sprint4_t5_`. Anyone re-checking this sprint
+the obvious way — no arguments — would have concluded the result had evaporated. Default
+is now `sprint4_t5_`, every report prints the filename it came from, and the guard's
+fallback to `sprint4_overanswer_trials.json` is printed rather than silent.
+
+**A5 — a vacuous assertion.** `test_every_variant_renders_with_both_placeholders` did
+`assert "Q" in rendered` to check the `{question}` placeholder survived. Every template
+contains the literal word "Question:", so the assertion held whether or not the
+placeholder did. Now filled with sentinels that cannot occur in prompt prose, kept
+separate from `_render` so the sha256 pin still hashes the string that was measured.
+*(Same family as §8's truncated fixture: a test that agrees with you for a reason you did
+not intend.)*
+
+**A6 — 38 stale `.pyc` files made every traceback cite a path that does not exist.** The
+repo moved from `D:\Medbot\` to `D:\Medical_RAG_Chatbot\`, and the bytecode caches came
+with it. Source mtime and size still match, so Python reuses them, and `co_filename` is
+baked in at compile time — so pytest failures pointed at
+`D:\Medbot\Medical_RAG_Chatbot\tests\conftest.py:51`. The executed code was correct; only
+the reported location was fiction, which is a debugging tax paid at exactly the wrong
+moment. Caches cleared; they regenerate with correct paths. Worth knowing before Sprint 5
+wires CI, where a phantom path in a failure log is much more expensive.
+
+**A7 (documentation) — the test-count table row-summed to 99 while the headline said 106.**
+The `test_refusal_harness.py` row was never updated when §7 added 7 tests. Both are now
+recomputed from `pytest --collect-only`; §1 also had `run_eval.py`'s docstring still
+claiming it writes `results.json`/`results.md`, which is what it did *before* the §6 fix.
+
+### The new gates were mutation-tested, not assumed
+
+Every fix above is a claim that a test now fails when something is wrong, which is the
+same kind of claim A3 got wrong. So each was verified by breaking the artefact and
+watching the gate fail, then reverting:
+
+| mutation | expected | result |
+|---|---|---|
+| flip one out-of-corpus cot trial to an answer | guard fails | ✅ 2 tests failed |
+| truncate one cot cell from 5 trials to 2 | completeness fails | ✅ failed |
+| flip a stored label in `ablation_t5_` (a file the old test ignored) | drift fails | ✅ failed |
+
+All 112 offline tests pass after the reverts, in ~6s.
+
+### What this round did not do
+
+- It did not re-measure anything against the live model: no quota was spent, by design.
+  Every figure here comes from committed artefacts.
+- `preflight`'s "fails in 6.5s instead of 32s" (§6) is not verifiable offline; it needs a
+  quota-dead key to reproduce.
+- The judge is still uncalibrated (F6). Nothing in this round changes that, and nothing
+  in it can: the sheet needs a human labeller.
+
+---
+
+## 10. Prepared, not yet measured (2026-07-27)
+
+Two pieces of work that cost **no quota** and that the next measuring run needs. Both are
+deliberately inert: the code and the selection are committed, the numbers are not, and
+nothing shipped changes until they are run.
+
+### The `no-examples` prompt arm
+
+§8 concluded that the CoT exemplars buy no measurable refusal improvement over the
+instruction rewrite (p = 1.0000 against `instruction-only` on all 24 questions) but kept
+them anyway, because `instruction-only` substitutes a neighbouring example's question on
+5/5 bursitis trials — it answers about *nosebleeds*. That contamination belongs to the
+legacy semantic 1-shot format, which both non-CoT arms use.
+
+`no-examples` removes the mechanism instead of the symptom: the new instruction with no
+example in the prompt, so there is no other question available to answer.
+
+| variant | template | est. tokens |
+|---|---|---|
+| baseline | 567 chars | ~141 |
+| **no-examples** | **865 chars** | **~216** |
+| instruction-only | 1,064 chars | ~266 |
+| examples-only | 11,122 chars | ~2,780 |
+| cot (shipped) | 12,151 chars | ~3,037 |
+
+**14× cheaper than the shipped prompt.** If it holds refusals near zero and the
+out-of-corpus guard at 10/10, it dominates every arm measured so far on cost — and it is
+the arm to run before `examples-only`, which answers a question nobody is asking.
+
+Pinned by three tests: that no legacy example's question text can appear in it (checked
+against all 27, so adding a 28th cannot leak in), that it stays decisively cheaper than
+`cot`, and that `DEFAULT_PROMPT_VARIANT` is still `cot` — shipping an unmeasured prompt is
+the mistake Sprint 3 exists to have avoided.
+
+Naming trap, documented rather than fixed: **`instruction-only` is a misnomer.** It is the
+new instruction *plus* baseline's legacy 1-shot example, not the instruction alone.
+Renaming it now would orphan every recorded result filed under that name.
+
+### 22 screened expansion questions
+
+The binding constraint on the refusal headline is the number of questions (§7). Screening
+and keyword grounding are free; only the trials cost quota. So the selection is done now:
+
+- **34 candidates screened** by the new `medbot/eval/verify_entry.py` — local retrieval,
+  no quota, re-runnable.
+- **10 auto-rejected, 2 rejected by hand, 22 kept.**
+- `expected_keywords` read out of actually-retrieved chunks. **Every keyword appears in at
+  least one retrieved chunk**, and **mean Precision@4 = 0.8523** (1.00 ×12, 0.75 ×7,
+  0.50 ×3) against **0.8333** for the current 24 — comparable difficulty, and a *higher*
+  floor, since the existing set has two questions at 0.25.
+
+**`verify_entry.py` exists because `verify_coverage.py`'s rule cannot be reused here.**
+That rule asks "is this topic absent?", so one loose hit is a useful rejection. Inverted to
+*accept* eval questions it accepted 35 of 36 candidates, including:
+
+| candidate | what retrieval actually returned |
+|---|---|
+| "What causes back pain?" | the **bursitis** and arthritis entries — matched on "pain" |
+| "What causes bad breath?" | the anoxia/hypoxia entry — matched on "breath" |
+| "What is Barrett's esophagus?" | **acetaminophen** |
+| "What is a biopsy?" | *breast biopsy* and *bone biopsy* — two entries, no general one |
+
+The stricter rule requires the distinctive term in ≥2 of the top-4 chunks **and** one chunk
+that looks like the entry itself (an encyclopedia "Definition" heading, or a copular
+sentence about the term). An eval question that fails this turns every correct refusal into
+a recorded bug and its Precision@4 into a measurement of corpus coverage — audit F8's error,
+pointing the other way.
+
+Two of its own rules were wrong on first run and were fixed by looking at the rejections,
+not the acceptances: a `\W{0,40}` gap could not span "Atrial fibrillation **and flutter**
+Definition", and an enumerated list of permitted copulas rejected "the major symptom of
+Bell's palsy **is one** side of the face". Both were false negatives on real entries.
+
+`test_expansion_selection.py` (8 tests) re-checks all of it against the live index every
+run, in both directions — the 22 must still retrieve their entries, and five of the
+rejected candidates must still be rejected, or the screen has stopped discriminating.
+
+**Held back on purpose:** `EXPANSION_QUESTIONS` is a separate list, not appended to
+`EVAL_QUESTIONS`. Merging redefines `REFUSAL_QUESTIONS` from 24 to 46, which invalidates
+every recorded trial file at a stroke. The merge belongs in the same change as the ~336
+calls that re-measure the suite, and a test pins that sequencing until then.

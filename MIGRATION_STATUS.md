@@ -375,6 +375,65 @@ questions with prompt, index and model unchanged. Full write-up in `medbot/eval/
     interaction with the substance test, the instruction-only guard data, and the reporting unit
     are all pinned.
 
+**Sprint 4 fourth audit round (2026-07-27) — the gates, not the numbers.** The three earlier
+rounds each corrected a number. This one recomputed every number from the stored answer text
+under all three historical instruments (as-shipped, first correction, current) — **every
+documented figure reconciles exactly**, including the superseded ones — and then audited what
+had never been audited: whether the tests protecting them can fail. Full write-up in
+`medbot/eval/results_sprint4.md` §9. Six findings, all fixed:
+
+  - **Every headline gate was reading the retired dataset.** `test_eval_regression.py` gated on
+    the 3-trial `sprint4_` run — the one the file marks "do not quote" — while the 5-trial run
+    the standing p = 0.0094 comes from, and both ablation files, had **no gate at all**.
+  - **The label-drift test covered 2 of 10 trial files**, excluding both files the current
+    headline and the ablation conclusion rest on. Now globs them all.
+  - **`test_out_of_corpus_gate_is_fully_armed` asserted nothing.** Written to skip while the
+    guard data was incomplete; once completed, the body fell through with no assertion — a test
+    named "fully armed" that could not fail, and that would have gone back to *skipping* rather
+    than failing if the data were truncated.
+  - **`python -m medbot.eval.refusal_stats` with no arguments printed p = 0.2340, NOT
+    significant** — the superseded run — so anyone re-checking the sprint the obvious way would
+    have concluded the result had evaporated. Default is now the run that stands, and every
+    report prints the file it came from.
+  - **A vacuous assertion:** `assert "Q" in rendered` cannot detect a dropped `{question}`
+    placeholder, because every template contains the word "Question:".
+  - **38 stale `.pyc` files** from the repo's old `D:\Medbot\` location made every pytest
+    traceback cite a path that does not exist (`co_filename` is baked in at compile time, and
+    source mtime/size still matched). Executed code was correct; the reported location was
+    fiction. Cleared — worth knowing before Sprint 5 wires CI.
+  - **Each fix was mutation-tested**: flip an out-of-corpus trial to an answer, truncate a cell
+    from 5 trials to 2, flip a stored label in a previously-unguarded file — every gate failed
+    as intended, then the mutations were reverted. The socket guard was probe-tested too:
+    `connect` and `connect_ex` both blocked, naming the test.
+  - No quota spent: every figure came from committed artefacts.
+
+**Prepared for the next measuring run (2026-07-27, no quota spent).** Both items are inert on
+purpose — code and selection committed, numbers not, nothing shipped changed. `results_sprint4.md` §10.
+
+  - **A `no-examples` prompt arm.** The new instruction with no exemplar at all: **865 chars,
+    ~216 tokens — 14× cheaper than the shipped `cot` prompt** (~3,037). §8 found the exemplars
+    buy no measurable refusal improvement over `instruction-only` (p = 1.0000) but kept them
+    because `instruction-only` substitutes a neighbouring example's question 5/5 on bursitis.
+    This arm removes the *mechanism*: with no example in the prompt there is no other question
+    to answer, so contamination is impossible by construction. It is the arm to run before
+    `examples-only`. Pinned by tests that no legacy example text can leak into it, that it stays
+    decisively cheaper than `cot`, and that the shipped default is still `cot` —
+    unmeasured prompts do not ship. *(Naming trap documented, not fixed: `instruction-only` is a
+    misnomer — it keeps baseline's legacy 1-shot example. Renaming would orphan recorded results.)*
+  - **22 screened question-set expansion candidates**, via a new `medbot/eval/verify_entry.py`
+    (local retrieval, no quota). 34 screened, 10 auto-rejected, 2 rejected by hand; every
+    `expected_keywords` phrase verified present in real retrieved chunks; **mean Precision@4
+    0.8523** vs 0.8333 for the current 24, with a higher floor. Held in a separate
+    `EXPANSION_QUESTIONS` list — merging it redefines `REFUSAL_QUESTIONS` from 24 to 46 and
+    invalidates every recorded trial file, so the merge belongs with the ~336 calls that
+    re-measure the suite. A test pins that sequencing.
+  - **Why a second screening tool:** `verify_coverage`'s rule proves *absence* for the guard, so
+    one loose hit is a useful rejection. Inverted to accept eval questions it passed 35 of 36 —
+    including "What causes back pain?" (top chunks: the **bursitis** entry, matched on "pain")
+    and "What is Barrett's esophagus?" (top chunk: **acetaminophen**). Accepting those would turn
+    every correct refusal into a recorded bug: audit F8's error pointing the other way.
+  - Offline suite now **123 tests, ~10s**.
+
 ---
 
 ## 3. What we're going to do (Sprints 2–9)

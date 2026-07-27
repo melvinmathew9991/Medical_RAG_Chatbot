@@ -70,3 +70,98 @@ EVAL_QUESTIONS = [
     {"question": "What are the symptoms of angina?",
      "expected_keywords": ["angina", "chest", "pressing pain"]},
 ]
+
+
+# ---------------------------------------------------------------------------
+# Question-set expansion, screened 2026-07-27 — NOT YET PART OF THE EVAL SET
+# ---------------------------------------------------------------------------
+#
+# Why this exists. Sprint 4 established that the binding constraint on the
+# refusal result is the number of QUESTIONS, not trials per question: at 24
+# questions the significance test survives (p = 0.0094) but three of the seven
+# refusing questions refuse on exactly one trial of five, and dropping those puts
+# p at 0.1092. Going 3 -> 5 trials cost 240 calls and moved the raw p-value by
+# 0.0007 (see results_sprint4.md §7). More questions is the fix.
+#
+# Why it is a separate list rather than appended to EVAL_QUESTIONS. Merging would
+# immediately redefine REFUSAL_QUESTIONS from 24 to 46 questions, which:
+#   - invalidates every recorded trial file (they cover 24), and
+#   - fails `test_recorded_refusal_trials_cover_the_whole_suite` by design.
+# The merge is the *second* step, taken together with running the trials — about
+# 336 calls against a 500/day quota. Screening and keyword grounding cost nothing,
+# so they are done and committed first; the numbers follow when quota allows.
+#
+# How these were selected — the same discipline as the list above, with a tool:
+#   - 34 candidates screened by `python -m medbot.eval.verify_entry`, which
+#     requires the distinctive term in >= 2 of the top-4 chunks AND at least one
+#     chunk that looks like the entry itself rather than a cross-reference.
+#   - 10 auto-rejected. Notably "What causes back pain?" (top chunks were the
+#     BURSITIS entry — "pain" appears throughout a medical encyclopedia) and
+#     "What is Barrett's esophagus?" (top chunk was ACETAMINOPHEN). The loose rule
+#     used for the out-of-corpus guard accepted 35 of 36; that rule is right for
+#     proving ABSENCE and wrong for proving presence.
+#   - 2 rejected by hand after reading the retrieved text: "What is a biopsy?" and
+#     "What is an antibody test?". Both pass the screen, but the corpus has no
+#     general entry for either — it has *breast biopsy* / *bone biopsy* and
+#     *antimyocardial* / *antinuclear antibody test*. The question would be scored
+#     against whichever specific entry retrieval happened to surface.
+#   - Topics used by the CoT exemplars in medbot/prompt.py (aortic aneurysm,
+#     anxiety disorders, bronchoscopy, anemia blood tests, arthroscopy, anorexia
+#     nervosa) are excluded, so the eval stays held out from the prompt.
+#
+# `expected_keywords` were read out of the actually-retrieved chunks, never from
+# general medical knowledge. Verified 2026-07-27 against the live index: **every
+# keyword appears in at least one retrieved chunk for its question**, and
+# Precision@4 is 1.00 x12, 0.75 x7, 0.50 x3 — **mean 0.8523**, against 0.8333 for
+# the current 24 (whose distribution is 1.00 x12, 0.75 x10, 0.25 x2, so this set
+# is comparable in difficulty and its floor is higher, not lower).
+# `tests/test_expansion_selection.py` re-checks all of that on every test run.
+EXPANSION_QUESTIONS = [
+    {"question": "What causes anemia?",
+     "expected_keywords": ["anemia", "folic acid", "pernicious"]},
+    {"question": "What is angioplasty?",
+     "expected_keywords": ["angioplasty", "widen vessels narrowed", "stenoses"]},
+    {"question": "What is an arrhythmia?",
+     "expected_keywords": ["arrhythmia", "heartbeat pattern", "abnormality in the heart"]},
+    {"question": "What causes asbestosis?",
+     "expected_keywords": ["asbestosis", "occupational exposure", "asbestos fiber"]},
+    {"question": "What is astigmatism?",
+     "expected_keywords": ["astigmatism", "cornea", "blurred image"]},
+    {"question": "What are the symptoms of atrial fibrillation?",
+     "expected_keywords": ["atrial fibrillation", "out of sync", "shortness of breath"]},
+    {"question": "What is an audiometry test?",
+     "expected_keywords": ["audiometry", "sound frequencies", "audiogram"]},
+    {"question": "What is aphasia?",
+     "expected_keywords": ["aphasia", "ability to communicate", "written words"]},
+    {"question": "What causes atopic dermatitis?",
+     "expected_keywords": ["atopic dermatitis", "itchy", "eczema"]},
+    {"question": "What is arteriography?",
+     "expected_keywords": ["arteriography", "angiography", "blood vessels visible"]},
+    {"question": "What causes alopecia?",
+     "expected_keywords": ["alopecia", "hair loss", "thyroid"]},
+    {"question": "What is amblyopia?",
+     "expected_keywords": ["amblyopia", "decrease in vision", "one or both eyes"]},
+    {"question": "What are the symptoms of anthrax?",
+     "expected_keywords": ["anthrax", "inhalation", "spores"]},
+    # "palsy" and not "bell's palsy": the PDF uses a curly apostrophe (Bell’s), so
+    # an ASCII-quoted keyword matches nothing. Two more such traps are avoided the
+    # same way across this list.
+    {"question": "What are the symptoms of Bell's palsy?",
+     "expected_keywords": ["palsy", "facial weakness", "hsv infection"]},
+    {"question": "What is a barium enema?",
+     "expected_keywords": ["barium enema", "screening", "colorectal cancer"]},
+    {"question": "What causes bronchiectasis?",
+     "expected_keywords": ["bronchiectasis", "bronchial tubes", "obstructed"]},
+    {"question": "What is a bone marrow transplant?",
+     "expected_keywords": ["bone marrow transplant", "stem cells", "sponge-like tissue"]},
+    {"question": "What causes byssinosis?",
+     "expected_keywords": ["byssinosis", "brown lung", "textile worker"]},
+    {"question": "What causes bad breath?",
+     "expected_keywords": ["bad breath", "halitosis", "unpleasant odor"]},
+    {"question": "What are the symptoms of berylliosis?",
+     "expected_keywords": ["berylliosis", "beryllium", "lung inflammation"]},
+    {"question": "What is balloon valvuloplasty?",
+     "expected_keywords": ["valvuloplasty", "heart valve", "stretched open"]},
+    {"question": "What causes bruises?",
+     "expected_keywords": ["bruises", "ecchymoses", "purpura senilis"]},
+]

@@ -43,8 +43,29 @@ COT_PROMPT_SHA256 = "50d24c4858744560"
 
 
 def _render(variant):
+    """
+    The exact string the A/B was run on. `COT_PROMPT_SHA256` is a hash of this, so
+    the fill values are part of the pin and must not be changed casually -- use
+    `_render_with_sentinels` for anything that needs to *find* the placeholders.
+    """
     return build_context_prompt("What is bursitis?", variant=variant).format(
         context="CTX", question="Q"
+    )
+
+
+# Distinctive fill values for the placeholder test. `assert "Q" in rendered` was
+# vacuous: every template contains the literal word "Question:", so it held whether
+# or not the {question} placeholder survived. Found by the 2026-07-27 audit. These
+# cannot occur in prompt prose, so their absence really does mean a dropped
+# placeholder. Kept separate from `_render` so the sha256 pin above still describes
+# the string that was measured.
+CONTEXT_SENTINEL = "CTX_SENTINEL_7f3a"
+QUESTION_SENTINEL = "Q_SENTINEL_91c4"
+
+
+def _render_with_sentinels(variant):
+    return build_context_prompt("What is bursitis?", variant=variant).format(
+        context=CONTEXT_SENTINEL, question=QUESTION_SENTINEL
     )
 
 
@@ -64,9 +85,9 @@ def test_cot_prompt_matches_the_string_that_was_evaluated():
 
 def test_every_variant_renders_with_both_placeholders():
     for variant in PROMPT_VARIANTS:
-        rendered = _render(variant)
-        assert "CTX" in rendered, f"{variant} dropped the context placeholder"
-        assert "Q" in rendered, f"{variant} dropped the question placeholder"
+        rendered = _render_with_sentinels(variant)
+        assert CONTEXT_SENTINEL in rendered, f"{variant} dropped the context placeholder"
+        assert QUESTION_SENTINEL in rendered, f"{variant} dropped the question placeholder"
         assert "{" not in rendered, f"{variant} left an unescaped brace"
 
 
@@ -86,6 +107,51 @@ def test_unknown_variant_raises():
     except ValueError:
         return
     raise AssertionError("unknown variant should raise ValueError")
+
+
+def test_the_no_examples_arm_contains_no_example_at_all():
+    """
+    The property the arm exists for, asserted rather than assumed: with no example
+    in the prompt there is no other question for the model to answer, so the
+    few-shot contamination seen on 5/5 bursitis trials under `instruction-only`
+    (results_sprint4.md §8) is impossible by construction.
+
+    Checked against every legacy example's question text, not just a sample, so
+    adding a 28th example to `MEDICAL_EXAMPLES` cannot quietly leak into this arm.
+    """
+    from medbot.prompt import lazy_loader
+
+    rendered = _render_with_sentinels("no-examples")
+    for example in lazy_loader.load_medical_examples():
+        assert example["question"] not in rendered, (
+            f"no-examples arm contains the example question {example['question']!r}"
+        )
+    assert "nosebleed" not in rendered.lower()
+    assert "Question:" in rendered  # the user's own question is still labelled
+    assert CONTEXT_JUDGEMENT_GUIDANCE in rendered
+
+
+def test_the_no_examples_arm_is_the_cheapest():
+    """
+    Its whole case is cost: it must stay far below the exemplar arms, or there is
+    no reason to prefer it over `cot`. Measured on the template, before context.
+    """
+    sizes = {v: len(_render_with_sentinels(v)) for v in PROMPT_VARIANTS}
+    assert sizes["no-examples"] < sizes["instruction-only"] < sizes["cot"]
+    assert sizes["no-examples"] * 5 < sizes["cot"], (
+        f"no-examples ({sizes['no-examples']} chars) is not decisively cheaper than "
+        f"cot ({sizes['cot']} chars); the arm's only argument is token cost"
+    )
+
+
+def test_no_examples_is_not_the_shipped_default():
+    """
+    It is unmeasured. Shipping an unmeasured prompt is the mistake Sprint 3 exists
+    to have avoided, so this fails if the default moves before the numbers do.
+    """
+    from medbot.prompt import DEFAULT_PROMPT_VARIANT
+
+    assert DEFAULT_PROMPT_VARIANT == "cot"
 
 
 def test_strip_reasoning():
