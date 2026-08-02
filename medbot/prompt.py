@@ -1,7 +1,8 @@
-from langchain_core.example_selectors import SemanticSimilarityExampleSelector
-from langchain_community.vectorstores import FAISS
 from langchain_community.embeddings import FastEmbedEmbeddings
+from langchain_community.vectorstores import FAISS
+from langchain_core.example_selectors import SemanticSimilarityExampleSelector
 from langchain_core.prompts import PromptTemplate
+
 from medbot.config import LOCAL_EMBEDDING_MODEL
 
 DISCLAIMER = (

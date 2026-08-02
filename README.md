@@ -21,10 +21,14 @@ Medical_RAG_Chatbot/
 ├── tests/                  # pytest suite (see "Tests" below)
 ├── data/                   # source documents ingested into the vector index
 ├── vectorstore/            # committed FAISS index (index.faiss, index.pkl)
+├── .github/workflows/ci.yml  # lint + offline test suite on every push and PR
 ├── .devcontainer/          # GitHub Codespaces / VS Code dev container
 ├── .env.example            # required environment variables
+├── .pre-commit-config.yaml
+├── ruff.toml
 ├── pytest.ini
-└── requirements.txt
+├── requirements.txt        # runtime
+└── requirements-dev.txt    # runtime + pytest, ruff, pre-commit
 ```
 
 ## Setup
@@ -33,7 +37,8 @@ Requires **Python 3.11** — the pinned LangChain 0.2.x stack needs `numpy<2`, w
 prebuilt wheel for Python 3.13.
 
 1. Create a Python 3.11 virtual environment (e.g. `.venv-gemini`) and activate it.
-2. `pip install -r requirements.txt`
+2. `pip install -r requirements.txt` — or `pip install -r requirements-dev.txt` to get the
+   test and lint tooling as well.
 3. Copy `.env.example` to `.env` and fill in `GOOGLE_API_KEY` (required — free key from
    [Google AI Studio](https://aistudio.google.com/apikey), no credit card) and `SERPAPI_API_KEY`
    (optional, needed for Google search corroboration).
@@ -51,8 +56,8 @@ rebuilding it.
 ## Tests
 
 ```
-pytest              # 123 offline tests, ~10s, no network and no API quota
-pytest -m live      # 4 end-to-end tests against the real app (needs GOOGLE_API_KEY)
+pytest              # 128 offline tests, ~7s warm, no network and no API quota
+pytest -m live      # 5 end-to-end tests against the real app (needs GOOGLE_API_KEY)
 pytest -m ""        # everything
 ```
 
@@ -63,12 +68,53 @@ free-tier quota must be marked `@pytest.mark.live`.
 `tests/conftest.py` enforces that: a non-`live` test that opens an outbound socket fails with
 the offending test and host named. This exists because a mock pointed at the wrong module
 once let a test hit PubMed, Wikipedia and SerpAPI for real *while still passing* — a mock that
-misses looks exactly like a mock that works, only slower.
+misses looks exactly like a mock that works, only slower. The guard is installed by
+`pytest_runtest_setup`, not an autouse fixture, so that it covers module- and session-scoped
+fixture setup too; `tests/test_network_guard.py` pins that. See "Continuous integration".
+
+**First run needs the embedding model on disk.** Two test modules load the FAISS index through
+`fastembed`, and the network guard will refuse to let them download it. If a run fails with a
+socket-guard error naming `huggingface.co`, warm the cache once:
+
+```
+python -c "from langchain_community.embeddings import FastEmbedEmbeddings; from medbot.config import LOCAL_EMBEDDING_MODEL; FastEmbedEmbeddings(model_name=LOCAL_EMBEDDING_MODEL).embed_query('warm the cache')"
+```
+
+That is a ~130MB download, once. It lands in the system temp directory unless
+`FASTEMBED_CACHE_PATH` points elsewhere (CI sets it so the model can be cached between runs).
 
 Note `tests/test_eval_regression.py` reads the committed JSON artefacts in `medbot/eval/`
 rather than calling the model. It catches someone committing worse numbers; it does not
 detect live model drift. Regenerating those artefacts is a deliberate, quota-spending act —
 see `medbot/eval/results_sprint4.md`.
+
+## Continuous integration
+
+`.github/workflows/ci.yml` runs on every push and every pull request: install, `ruff check .`,
+then the offline pytest suite on Python 3.11 / `windows-latest`. It needs no secrets and spends
+no Gemini quota — no `GOOGLE_API_KEY` is set, so `live` tests stay deselected. If a test ever
+starts needing the network or a key, CI fails rather than quietly billing a quota it does not own.
+
+Windows, because that is where this project is developed and run; the repo is public, so runner
+minutes are free and there was no cost reason to prefer Linux. One gap worth naming:
+`.devcontainer/` pins a Debian image, so the Codespaces path is not covered by CI.
+
+The workflow warms the fastembed model cache in its own step, before pytest. That step is
+load-bearing, not an optimisation: the network guard makes an in-test download a hard failure,
+which is the whole point — the alternative is a "unit" test silently pulling 130MB.
+
+Linting is `ruff check` only; `ruff format` is deliberately not used. Prompt templates in
+`medbot/prompt.py` are pinned by content hash, and every recorded eval number is only
+comparable while the rendered prompt is byte-identical, so a reformatter that re-wraps a string
+literal can silently invalidate a measurement. `ruff.toml` documents the rule selection and the
+two rules that were trialled and dropped.
+
+Optional locally, same checks minus the test suite:
+
+```
+pre-commit install      # then hooks run on every commit
+pre-commit run --all-files
+```
 
 ## Evaluation
 

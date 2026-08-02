@@ -56,7 +56,7 @@ def question_counts(path):
     with open(path, encoding="utf-8") as f:
         data = json.load(f)
     out = {}
-    for question, by_variant in data.items():
+    for _question, by_variant in data.items():
         for variant, attempts in by_variant.items():
             ever = any(is_refusal(a.get("text", "")) for a in attempts)
             out.setdefault(variant, [0, 0])

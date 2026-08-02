@@ -1,0 +1,11 @@
+# Development and CI dependencies. Installing this gets the runtime too:
+#
+#     pip install -r requirements-dev.txt
+#
+# Pinned exactly, same as the runtime file. A floating linter is a build that
+# breaks on a day nobody changed anything -- new ruff releases add rules.
+-r requirements.txt
+
+pytest==8.2.2
+ruff==0.16.1
+pre-commit==4.6.1

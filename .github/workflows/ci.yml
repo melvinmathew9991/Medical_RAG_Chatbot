@@ -1,0 +1,86 @@
+name: CI
+
+# Every push and every PR. Sprint 4 built 128 offline tests and a socket guard;
+# this is what makes them run without someone remembering to.
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+
+permissions:
+  contents: read
+
+# A second push to the same branch makes the first run's answer irrelevant.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # One job, not a lint job plus a test job. Splitting them would either
+  # duplicate the ruff version pin or install the full LangChain/FAISS stack
+  # twice to lint with it -- both worse than the ~30s that fast-failing on lint
+  # would have saved.
+  check:
+    # Windows, because Windows is where this project is actually developed and
+    # run. A green Linux run would not have told us the app works on the only
+    # machine it runs on. The repo is public, so runner minutes are free and
+    # there was no cost reason to prefer ubuntu either.
+    #
+    # Known gap, stated rather than papered over: .devcontainer/ pins a Debian
+    # bullseye image, so the Codespaces/dev-container path is not covered by CI.
+    runs-on: windows-latest
+    timeout-minutes: 30
+
+    env:
+      # fastembed defaults its cache to the system temp dir, which is thrown
+      # away between jobs and cannot be restored by actions/cache. Pinning it
+      # into the workspace is what makes the model cacheable at all.
+      FASTEMBED_CACHE_PATH: ${{ github.workspace }}/.fastembed_cache
+
+    steps:
+      - uses: actions/checkout@v4
+
+      # 3.11 is not a preference: the pinned LangChain 0.2.x stack needs
+      # numpy<2, which has no wheel for 3.13. See MIGRATION_STATUS.md.
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+          cache-dependency-path: requirements-dev.txt
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements-dev.txt
+
+      - name: Lint
+        run: ruff check .
+
+      - name: Restore fastembed model cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.FASTEMBED_CACHE_PATH }}
+          # fastembed's on-disk layout is version-dependent, so the pin is part
+          # of the key; requirements.txt covers a model change too, since
+          # LOCAL_EMBEDDING_MODEL's default lives in medbot/config.py alongside
+          # deps that would move with it.
+          key: fastembed-${{ runner.os }}-${{ hashFiles('requirements.txt', 'medbot/config.py') }}
+
+      # This step is load-bearing, not an optimisation. tests/conftest.py fails
+      # any non-`live` test that opens an outbound socket, so if the model is
+      # not already on disk, fastembed's download attempt inside the test raises
+      # instead of fetching -- test_expansion_selection.py and
+      # test_out_of_corpus_selection.py would fail with a socket-guard error
+      # naming huggingface.co. Downloading here, outside pytest, is the only
+      # place the network is allowed. Kept as a single `python -c` so it runs
+      # under the Windows runner's default shell, and so it stays copy-pasteable
+      # into a terminal -- README documents the same command for a cold clone.
+      - name: Warm the fastembed model cache
+        run: python -c "from langchain_community.embeddings import FastEmbedEmbeddings; from medbot.config import LOCAL_EMBEDDING_MODEL; v = FastEmbedEmbeddings(model_name=LOCAL_EMBEDDING_MODEL).embed_query('warm the cache'); print(f'{LOCAL_EMBEDDING_MODEL} ready, {len(v)} dims')"
+
+      # No GOOGLE_API_KEY is set, and that is the point: pytest.ini deselects
+      # `-m live`, so this run spends none of the 500/day free-tier quota and
+      # touches no network. If a test ever starts needing either, it fails here
+      # rather than quietly billing a quota CI does not own.
+      - name: Test
+        run: pytest -q

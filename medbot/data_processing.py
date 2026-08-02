@@ -1,12 +1,19 @@
-import os
-import traceback
-import time
 import concurrent.futures
-from langchain_community.document_loaders import TextLoader, DirectoryLoader, PyPDFLoader
+import os
+import time
+import traceback
+
 from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain_community.vectorstores import FAISS
+from langchain_community.document_loaders import (
+    DirectoryLoader,
+    PyPDFLoader,
+    TextLoader,
+)
 from langchain_community.embeddings import FastEmbedEmbeddings
-from medbot.config import PERSIST_DIR, DATA_DIR, LOCAL_EMBEDDING_MODEL
+from langchain_community.vectorstores import FAISS
+
+from medbot.config import DATA_DIR, LOCAL_EMBEDDING_MODEL, PERSIST_DIR
+
 
 def load_documents(loader):
     """
@@ -78,10 +85,15 @@ def create_vector_database():
                     print(f"Progress saved: {already_embedded + i}/{len(data)} chunks. Re-run later to resume.")
                     break
 
+                # strict=True: if the embedder ever returns fewer vectors than
+                # texts, the default zip truncates silently and the index is
+                # written with chunks missing but no error -- the exact failure
+                # shape that had this store sitting at 900/1225 while the docs
+                # claimed it was complete. Better to raise here.
                 if vectordb is None:
-                    vectordb = FAISS.from_embeddings(list(zip(batch, vectors)), embeddings)
+                    vectordb = FAISS.from_embeddings(list(zip(batch, vectors, strict=True)), embeddings)
                 else:
-                    vectordb.add_embeddings(list(zip(batch, vectors)))
+                    vectordb.add_embeddings(list(zip(batch, vectors, strict=True)))
                 vectordb.save_local(PERSIST_DIR)
                 print(f"Embedded batch {batch_num}/{total_batches} ({vectordb.index.ntotal}/{len(data)} total)")
 
@@ -91,7 +103,7 @@ def create_vector_database():
         print("Time taken for create_vector_database():", end_time - start_time, "seconds")
 
         return vectordb
-    except Exception as e:
+    except Exception:
         print("Error occurred during vector database creation:")
         print(traceback.format_exc())
         return None

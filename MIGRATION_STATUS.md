@@ -434,6 +434,61 @@ purpose — code and selection committed, numbers not, nothing shipped changed. 
     every correct refusal into a recorded bug: audit F8's error pointing the other way.
   - Offline suite now **123 tests, ~10s**.
 
+**Sprint 5 (CI/CD) — done (2026-08-02, branch `sprint-5-ci-cd`).** GitHub Actions on every push
+and PR, ruff lint, pre-commit, and dev dependencies split out of `requirements.txt`. No quota
+spent, no eval number recomputed, and no prompt text altered — every source diff in this sprint
+is import ordering, whitespace, or an unused name, verified by reading the diff of
+`medbot/prompt.py` specifically before trusting the autofixer.
+
+  - **The sprint's real finding is that Sprint 4's socket guard did not guard.** It was an
+    autouse fixture, and autouse fixtures are function-scoped: pytest instantiates
+    higher-scoped fixtures *first*, so anything set up in a `scope="module"` fixture ran before
+    the guard existed. `test_expansion_selection.py` and `test_out_of_corpus_selection.py` build
+    their FAISS retriever in exactly such a fixture, and **both carry a comment stating the
+    guard would stop an uncached fastembed model from downloading.** It would not. Measured, not
+    reasoned: pointed `FASTEMBED_CACHE_PATH` at an empty directory and ran them — 8 passed in
+    23s having silently pulled ~130MB from HuggingFace. Rewritten as `pytest_runtest_setup` /
+    `pytest_runtest_teardown` hooks (`tryfirst` / `trylast`), which run before fixtures of any
+    scope. The same cold-cache run now fails with 8 socket-guard errors naming the host.
+  - **It survived three sprints because the probe that "verified" it was itself the easy case.**
+    Sprint 4's fourth audit round probe-tested `connect` and `connect_ex` and recorded them as
+    passing — with a plain function-scoped test, the one arrangement that always worked, and
+    the probe was never committed. `tests/test_network_guard.py` now commits it, and its first
+    test is the module-scoped-fixture case that would have caught this.
+  - **This is what makes CI's cache-warming step load-bearing rather than decorative.** The
+    workflow downloads the model in its own step, outside pytest, because the guard now makes
+    an in-test download a hard failure. Written before the guard was fixed, that step was
+    justified by a guarantee that did not hold; it is true now.
+  - **Lint: 41 findings, 29 autofixed, 4 fixed by hand**, of which one was a real defect class —
+    `zip(batch, vectors)` in `data_processing.py` truncates silently on a length mismatch, which
+    is precisely the shape of "index written with chunks missing but no error" that had this
+    store at 900/1225 while the docs claimed complete. Now `strict=True`.
+  - **`ruff format` is deliberately not used, and E501 is off.** Prompt templates are pinned by
+    content hash and the recorded numbers only compare while the rendered prompt is
+    byte-identical, so a reformatter re-wrapping an implicitly-concatenated string can
+    invalidate a measurement with no test failing at the time. `ruff.toml` records this, plus
+    the two rule families trialled and dropped (SIM fired on
+    `assert cfg.DATA_DIR == os.path.join(...)` as a Yoda condition — a rule that cries wolf gets
+    the whole linter ignored).
+  - **pre-commit's first run tried to rewrite recorded evidence.** `trailing-whitespace` wanted
+    12 lines of `medbot/eval/calibration_sheet.md`, where the trailing spaces are part of model
+    answers pasted verbatim for the human groundedness labelling. Excluded from the two hooks
+    that *rewrite* files and deliberately not from the ones that only read, so `check-json` still
+    validates the trial artefacts.
+  - Offline suite now **128 tests, ~7s warm** (5 new guard tests); live suite 4 → 5.
+  - **CI runs on `windows-latest`, not ubuntu.** The first draft used ubuntu-latest out of
+    convention; Melvin's call, and the better one — Windows is the only platform this project is
+    developed or run on, and a green Linux run would not have said anything about it. The repo is
+    public, so runner minutes are free and cost did not favour either. Known gap, recorded rather
+    than papered over: `.devcontainer/` pins a Debian bullseye image, so the Codespaces path is
+    not covered by CI.
+  - **The whole pipeline was mirrored locally, not assumed.** A clean Python 3.11 venv,
+    `pip install -r requirements-dev.txt` from scratch (every pin resolves — numpy 1.26.4,
+    faiss-cpu 1.14.3, fastembed 0.8.0), then lint → warm → pytest against an empty
+    `FASTEMBED_CACHE_PATH`: **128 passed in 11.15s**. Same OS family as the runner, so nothing
+    about the install is left for the first CI run to discover. (Had CI stayed on ubuntu this
+    would have been unverifiable here — there is no Docker and no WSL distro on this machine.)
+
 ---
 
 ## 3. What we're going to do (Sprints 2–9)
@@ -452,7 +507,7 @@ harder later.
 | **2** | Evaluation harness | Build the measurement tool everything after this depends on: Precision@K retrieval metric (reused from the AML fraud project) against a 20–30 question test set with known-correct source passages, plus a faithfulness/groundedness check (NLI-based or documented manual rubric) on generated answers. Report numbers honestly, weak spots included. |
 | **3** ✅ | Chain-of-thought few-shot upgrade | Done — see §2. Implemented as six new held-out CoT exemplars used as a fixed set, rather than rewriting 5–8 of the existing 27 in place: with the selector at `k=1` only one example reaches the prompt, so rewriting a minority of 27 would have left ~70% of queries seeing no CoT demonstration at all, and would have diluted the A/B. |
 | **4** ✅ | Automated testing foundation | Scoped as "add pytest"; became mostly a measurement sprint once the tests found that both the refusal suite and the out-of-corpus guard were selecting the wrong questions. 106 offline tests + 4 live, a socket guard that makes silently-fake mocks impossible, and three audit rounds. The out-of-corpus guard is closed at 60/60 across all 10 questions. The third round found that `is_refusal` itself — the instrument behind every refusal number in Sprints 2–4 — was scoring few-shot contamination as refusal; fixing it withdrew the sprint's own p=0.0219 headline and replaced it with **7/24 vs 0/24, p=0.0094** from a 5-trial re-run. |
-| **5** | CI/CD pipeline | Tests nobody runs automatically aren't a safety net — GitHub Actions on push/PR, lint + pre-commit. |
+| **5** ✅ | CI/CD pipeline | Done — see §2. GitHub Actions on push/PR, `windows-latest` (lint + the 128 offline tests, no secrets, no quota), ruff, pre-commit, dev deps split out. Scoped as plumbing; the sprint's actual result was discovering that Sprint 4's socket guard never covered module-scoped fixture setup, so two test modules had been downloading a 130MB model from the internet while their own comments said they could not. |
 | **6** | Retrieval quality improvements | Use Sprint 2's findings to act on them: chunk metadata, a relevance threshold, source citations. (Building the harness itself moved to Sprint 2 — this is now about using it.) |
 | **7** | Observability & UX polish | Replace `print()` logging with structured logging, finish wiring the now-live LangSmith key, implement real token streaming. |
 | **8** | Safety & hardening | Add refuse/redirect logic for diagnosis/dosing/emergency questions beyond the general disclaimer — validated against Sprint 2's groundedness baseline, not an unmeasured one. |

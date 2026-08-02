@@ -17,8 +17,8 @@ string that was measured. Both are cheap to pin down and expensive to get wrong.
 import hashlib
 
 from medbot.prompt import (
-    COT_DISCLAIMER,
     CONTEXT_JUDGEMENT_GUIDANCE,
+    COT_DISCLAIMER,
     INSTRUCTION_ONLY_DISCLAIMER,
     PROMPT_VARIANTS,
     build_context_prompt,

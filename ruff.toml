@@ -1,0 +1,46 @@
+# Ruff config — lint only, deliberately no formatter.
+#
+# `ruff format` is NOT part of this project's checks, and that is a decision
+# rather than an omission. Two things in this repo are hostile to a
+# reformatter:
+#
+#   * Prompt templates in `medbot/prompt.py` are pinned by content hash in
+#     `tests/test_prompt_variants.py`, and the recorded eval numbers
+#     (p = 0.0094 and the ablation table) are only comparable while the
+#     rendered prompt text is byte-identical. A reformatter that re-wraps an
+#     implicitly-concatenated string changes the prompt, silently invalidating
+#     every measurement it was compared against.
+#   * Eval datasets and exemplars are long single-line literals — 39 lines
+#     exceed 100 characters and the longest is 385. Reflowing them is churn
+#     with no reader benefit.
+#
+# The same reasoning is why E501 (line length) is not enabled: the long lines
+# are data, not code, and there is no wrapping of them that reads better.
+
+target-version = "py311"
+
+# `.gitignore` already excludes the venv and ruff respects it by default; this
+# is belt-and-braces so a CI run does not start linting site-packages if that
+# file ever changes.
+extend-exclude = [".venv-gemini", "vectorstore", "data"]
+
+[lint]
+# A deliberately small set. Each entry is here because it catches a class of
+# real defect or keeps diffs boring — not because it was available:
+#   E/W  pycodestyle — whitespace and syntax-adjacent slips
+#   F    pyflakes — unused imports/variables, undefined names
+#   I    import sorting, so import blocks stop showing up in unrelated diffs
+#   B    flake8-bugbear — genuine traps (mismatched zip, lost exception chains)
+#   UP   pyupgrade — keeps syntax at the 3.11 floor the venv already requires
+#
+# SIM and C4 were trialled and dropped: SIM300 fired on
+# `assert cfg.DATA_DIR == os.path.join(...)` in tests/test_config.py, which is
+# not a Yoda condition, and the rest were style preference with no defect
+# behind them. A rule that cries wolf gets the whole linter ignored.
+select = ["E", "F", "W", "I", "B", "UP"]
+ignore = ["E501"]
+
+[lint.per-file-ignores]
+# Tests import fixtures and modules for their side effects, and pytest's
+# assertion rewriting makes some "unused" names load-bearing.
+"tests/conftest.py" = ["F401"]

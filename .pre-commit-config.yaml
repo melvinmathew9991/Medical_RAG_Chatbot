@@ -1,0 +1,60 @@
+# Pre-commit hooks. Optional for contributors, not a gate -- CI is the gate.
+# Install once with:  pre-commit install
+#
+# These are only the checks that are fast enough to run on every commit. pytest
+# is deliberately NOT here: the offline suite is ~7s warm but ~45s cold, because
+# two test modules load the FAISS index and the fastembed model. A hook that
+# stalls a commit for the better part of a minute gets bypassed with --no-verify,
+# and a check people routinely skip is worse than no check. CI runs the suite.
+#
+# Note the two file-rewriting hooks below carry an identical `exclude` for
+# recorded artefacts, spelled out twice because pre-commit's config schema
+# rejects unknown top-level keys, so there is nowhere to hang a YAML anchor.
+# They are NOT excluded globally: `check-json` should still be able to reject a
+# truncated trial file, and `check-added-large-files` should still weigh them.
+repos:
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.16.1  # keep in step with the ruff pin in requirements-dev.txt
+    hooks:
+      - id: ruff-check
+        # No --fix: the hook reports exactly what CI reports, so a green commit
+        # means a green pipeline. Auto-fixing here would let the two disagree.
+
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      # `medbot/eval/*.json` are machine-written trial files; `calibration_sheet.md`
+      # holds model answers pasted verbatim for the human groundedness labelling.
+      # This fixer genuinely wanted to edit 12 lines of that sheet on its first
+      # run: trailing spaces the model emitted are part of what was labelled, so
+      # trimming them quietly rewrites the evidence behind a recorded number.
+      # `legacy/` is dead code kept as a record of the pre-migration build -- its
+      # .py files are still linted, only its prose is left alone.
+      - id: trailing-whitespace
+        exclude: |
+          (?x)^(
+            medbot/eval/.*\.json
+            |medbot/eval/calibration_sheet\.md
+            |medbot/legacy/speech\.txt
+          )$
+      - id: end-of-file-fixer
+        exclude: |
+          (?x)^(
+            medbot/eval/.*\.json
+            |medbot/eval/calibration_sheet\.md
+            |medbot/legacy/speech\.txt
+          )$
+      - id: check-merge-conflict
+      - id: check-yaml       # the CI workflow itself is the main beneficiary
+      - id: check-json
+        # `.vscode/settings.json` and `.devcontainer/devcontainer.json` are
+        # JSONC -- comments are valid there and a strict parser rejects them.
+        exclude: ^\.(vscode|devcontainer)/
+      - id: check-added-large-files
+        args: [--maxkb=1024]
+        # The corpus PDF (16MB) and the FAISS index (4.5MB) are tracked on
+        # purpose -- the index is what makes the offline tests runnable without
+        # a rebuild, and the PDF is the corpus. They are exempt so that the
+        # limit still protects against accidental large files everywhere else,
+        # including a rebuilt index landing outside vectorstore/.
+        exclude: ^(data/.*\.pdf|vectorstore/.*)$

@@ -20,9 +20,9 @@ import os
 import statistics
 
 from medbot.data_processing import create_vector_database
-from medbot.model_handler import initialize_model
 from medbot.eval.groundedness import judge_groundedness_claims
-from medbot.eval.run_eval import call_with_backoff, RESULTS_DIR, TOP_K
+from medbot.eval.run_eval import RESULTS_DIR, TOP_K, call_with_backoff
+from medbot.model_handler import initialize_model
 
 
 def rejudge(variant, retriever, model):
