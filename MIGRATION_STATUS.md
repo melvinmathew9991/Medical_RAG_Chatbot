@@ -497,6 +497,67 @@ is import ordering, whitespace, or an unused name, verified by reading the diff 
     about the install is left for the first CI run to discover. (Had CI stayed on ubuntu this
     would have been unverifiable here — there is no Docker and no WSL distro on this machine.)
 
+**Sprint 6 (retrieval quality) — source citations done (2026-08-02, branch `sprint-6-retrieval-quality`).**
+The sprint has two halves and only the first is done. Citations and chunk metadata are shipped;
+the **relevance threshold is deliberately not started**, because it changes what retrieval returns
+and therefore changes answers, so it cannot be shipped without re-measuring the eval suite — which
+costs quota. This half costs none and invalidates no recorded number.
+
+  - **The metadata was being thrown away one line after it was created.** `process_documents`
+    ended in `[c.page_content for c in chunks]`, discarding the `source` and `page` the loaders
+    had already attached. All 1225 chunks sat in the docstore with `metadata == {}` — verified on
+    disk, not inferred — so no answer could say where it came from. `RetrievalQA` was also built
+    without `return_source_documents`, so the retrieved chunks were discarded a second time inside
+    the chain.
+  - **The rebuild was proved identical rather than assumed identical.** The claim the whole sprint
+    rests on is that adding metadata cannot affect retrieval, since the embedded text is unchanged.
+    That was checked by rebuilding into a scratch directory and comparing against the shipped index
+    row by row before overwriting anything: **1225/1225 bit-identical rows, max absolute difference
+    0.000e+00, zero text mismatches.** Independently corroborated by git, which does not list
+    `vectorstore/index.faiss` in the diff at all — only `index.pkl` changed (2,861,119 → 2,942,744
+    bytes). So **Precision@4 0.8333, the p = 0.0094 refusal headline and the 0.841 → 0.997
+    claim-level scores all stand unre-measured**, and no eval trial file is invalidated.
+  - **`page` is 0-based, checked against the PDF instead of against convention.** `format_sources`
+    renders `page + 1`, and an off-by-one in a citation is a bad failure — it points a user
+    checking a medical claim at the wrong page, and nothing surfaces it unless someone opens the
+    file. The decisive evidence is the last chunk: the PDF has **637 pages and the highest stored
+    `page` is 636**. Two probed chunks also matched at exactly their recorded page and nowhere
+    else; three matched on adjacent pages too, because the probe strings ("Treatment", "TheGALE")
+    are not unique — weak probes, not counter-evidence.
+  - **The block is labelled "Retrieved from", not "Sources".** These are the four chunks the model
+    was *given*, which is a weaker claim than the chunks it *used*. Calling them sources would let
+    a passage the answer contradicts read as a citation supporting it — the wrong direction to be
+    wrong in for a medical tool. Citations are deduplicated on (source, page) because
+    `chunk_size=3000`/`overlap=300` routinely puts two retrieved chunks on one page, and listing it
+    twice reads as two corroborating sources.
+  - **`source` is stored as a bare filename, and a test enforces it.** The loaders return absolute
+    paths and `index.pkl` is a committed artefact, so the unnormalised version would have published
+    this machine's directory layout into the repo — the same class of mistake as the prototype's
+    hardcoded `E:/brototype/Langchain/...`.
+  - **An index built before this sprint is detected and rebuilt on load.** It holds correct vectors
+    with empty metadata, so it retrieves perfectly and the only symptom is a missing citation block
+    that `format_sources` renders as nothing by design. The resume check would have called such an
+    index complete forever. Keyed on `chunk_index` rather than `source`, since a `.txt` chunk
+    legitimately has no source-bearing page metadata.
+  - **A live test had quietly stopped testing what it named.** `test_app_smoke` split the answer on
+    `"\n---\n**Related external sources**"` to isolate the model's text; the new citation block is
+    inserted *above* that heading, so the split kept succeeding while feeding the citation block to
+    the refusal check and the reasoning-leak check as if it were answer text. No test would have
+    failed. Now splits on the first `---`.
+  - **Red before green:** the three new index-metadata tests were written first and confirmed
+    failing against the shipped pre-Sprint-6 index (`KeyError: 'source'`), then passing after the
+    swap — so they are known to be capable of failing, not merely observed passing.
+  - Offline suite **131 → 162 tests, ~13s** (14 for `format_sources`, 12 for the metadata helpers,
+    5 for the index artefact); live suite 5 → 6, the new one asserting the shipped app actually
+    passes `source_documents` to the renderer — the unit tests and the index tests both pass if
+    `app.py` drops that argument. **Live suite run and green, 6/6 in 61s (one Gemini call):** the
+    real app loaded the rebuilt index from disk, answered bursitis without refusing, leaked no
+    reasoning trace, and rendered a page-numbered citation. Asserted on the block's shape, not on
+    which page — which chunks retrieval returns is the eval harness's business, and pinning it
+    here would fail on an unrelated index change.
+  - **Not done, and next:** the relevance threshold and chunk-metadata *filtering*. Both change
+    retrieval, so both need the eval suite re-run against them.
+
 ---
 
 ## 3. What we're going to do (Sprints 2–9)
@@ -516,7 +577,7 @@ harder later.
 | **3** ✅ | Chain-of-thought few-shot upgrade | Done — see §2. Implemented as six new held-out CoT exemplars used as a fixed set, rather than rewriting 5–8 of the existing 27 in place: with the selector at `k=1` only one example reaches the prompt, so rewriting a minority of 27 would have left ~70% of queries seeing no CoT demonstration at all, and would have diluted the A/B. |
 | **4** ✅ | Automated testing foundation | Scoped as "add pytest"; became mostly a measurement sprint once the tests found that both the refusal suite and the out-of-corpus guard were selecting the wrong questions. 106 offline tests + 4 live, a socket guard that makes silently-fake mocks impossible, and three audit rounds. The out-of-corpus guard is closed at 60/60 across all 10 questions. The third round found that `is_refusal` itself — the instrument behind every refusal number in Sprints 2–4 — was scoring few-shot contamination as refusal; fixing it withdrew the sprint's own p=0.0219 headline and replaced it with **7/24 vs 0/24, p=0.0094** from a 5-trial re-run. |
 | **5** ✅ | CI/CD pipeline | Done — see §2. GitHub Actions on push/PR, `windows-latest` (lint + the 131 offline tests, no secrets, no quota), ruff, pre-commit, dev deps split out. Scoped as plumbing; the sprint's actual result was discovering that Sprint 4's socket guard never covered module-scoped fixture setup, so two test modules had been downloading a 130MB model from the internet while their own comments said they could not. |
-| **6** | Retrieval quality improvements | Use Sprint 2's findings to act on them: chunk metadata, a relevance threshold, source citations. (Building the harness itself moved to Sprint 2 — this is now about using it.) |
+| **6** ◑ | Retrieval quality improvements | Half done — see §2. Chunk metadata and source citations shipped: the chunker was discarding the loaders' `source`/`page` one line after they were attached, so all 1225 chunks had empty metadata and no answer could cite anything. The index was rebuilt and proved bit-identical row by row before being swapped in, so no recorded eval number moved. The **relevance threshold is deliberately still open** — it changes what retrieval returns, so it needs the eval suite re-run against it, which costs quota. |
 | **7** | Observability & UX polish | Replace `print()` logging with structured logging, finish wiring the now-live LangSmith key, implement real token streaming. |
 | **8** | Safety & hardening | Add refuse/redirect logic for diagnosis/dosing/emergency questions beyond the general disclaimer — validated against Sprint 2's groundedness baseline, not an unmeasured one. |
 | **9** (stretch) | Persistence & scale | Only if scope grows past a single-user local tool: persistent chat history, wider corpus, optional auth. |

@@ -25,6 +25,7 @@ Two incidents in this repo's history are what the assertions are pinned to:
 """
 
 import os
+import pickle
 
 import faiss
 
@@ -55,6 +56,22 @@ def _read_index():
     return faiss.read_index(INDEX_PATH)
 
 
+def _read_docstore():
+    """
+    Return the persisted chunks in FAISS row order.
+
+    Unpickles `index.pkl` directly rather than going through
+    `FAISS.load_local`, which would construct an embeddings object and, on a
+    cold cache, download the model -- exactly what this module avoids.
+    """
+    assert os.path.isfile(DOCSTORE_PATH), (
+        f"no docstore at {DOCSTORE_PATH} -- see test_the_index_files_are_present"
+    )
+    with open(DOCSTORE_PATH, "rb") as fh:
+        docstore, index_to_id = pickle.load(fh)
+    return [docstore.search(index_to_id[i]) for i in range(len(index_to_id))]
+
+
 def test_the_index_files_are_present():
     """
     Deliberately not a skip.
@@ -80,6 +97,77 @@ def test_the_index_holds_every_chunk():
         "index is the failure this project has already had once: retrieval keeps "
         "working, it just cannot find what was never embedded."
     )
+
+
+def test_every_chunk_can_be_cited():
+    """
+    Sprint 6's whole premise. `process_documents` returned bare strings until
+    then, so all 1225 chunks sat in the docstore with `metadata == {}` and no
+    answer could say where it came from.
+
+    The failure mode this guards is silent: a rebuild that drops metadata
+    retrieves exactly as well as one that keeps it, and the only symptom is a
+    missing citation block that `format_sources` renders as nothing at all,
+    by design, so an old index does not crash.
+    """
+    docs = _read_docstore()
+    missing = [i for i, d in enumerate(docs) if not d.metadata.get("source")]
+    assert not missing, (
+        f"{len(missing)} of {len(docs)} chunks have no source metadata "
+        f"(rows {missing[:5]}...). The index predates Sprint 6, or a rebuild "
+        "dropped metadata -- see medbot/data_processing.py::_with_citation_metadata."
+    )
+
+
+def test_no_chunk_carries_a_filesystem_path():
+    """
+    `index.pkl` is a committed artefact, so a full path in it publishes whoever
+    built it. Not hypothetical: the original prototype shipped a hardcoded
+    `E:/brototype/Langchain/...` in config.py, and removing it was part of the
+    2026-07-06 restructure. The loaders hand back absolute paths, so this stays
+    correct only for as long as something reduces them to a basename.
+    """
+    offenders = sorted(
+        {d.metadata["source"] for d in _read_docstore()
+         if any(c in d.metadata.get("source", "") for c in ("/", "\\", ":"))}
+    )
+    assert not offenders, f"source metadata contains filesystem paths: {offenders}"
+
+
+def test_chunk_index_matches_faiss_row_order():
+    """
+    `chunk_index` is only useful for debugging retrieval if it means what it
+    says. It is assigned from split order and FAISS rows are appended in that
+    same order, so any divergence means the index was assembled out of order --
+    which would also mean the row a similarity search returns is not the chunk
+    the metadata describes.
+    """
+    docs = _read_docstore()
+    wrong = [(i, d.metadata.get("chunk_index")) for i, d in enumerate(docs)
+             if d.metadata.get("chunk_index") != i]
+    assert not wrong, f"chunk_index diverges from row order at {wrong[:5]}"
+
+
+def test_pdf_chunks_carry_a_usable_page_number():
+    """
+    `format_sources` renders `page + 1`, so a non-int page silently drops the
+    citation to a bare filename and a negative one would cite page 0.
+    """
+    docs = _read_docstore()
+    pdf_docs = [d for d in docs if d.metadata["source"].lower().endswith(".pdf")]
+    assert pdf_docs, "no PDF-sourced chunks; the corpus is a single PDF"
+    bad = [(d.metadata["chunk_index"], d.metadata.get("page")) for d in pdf_docs
+           if not isinstance(d.metadata.get("page"), int) or d.metadata["page"] < 0]
+    assert not bad, f"chunks with an unusable page number: {bad[:5]}"
+
+
+def test_the_docstore_and_the_vectors_agree_on_length():
+    """
+    The two files are written together but read separately. A mismatch means a
+    lookup by FAISS row can miss or point at the wrong chunk, and retrieval
+    keeps working while citing the wrong page.
+    """
+    assert len(_read_docstore()) == _read_index().ntotal
 
 
 def test_the_index_matches_the_embedding_model():

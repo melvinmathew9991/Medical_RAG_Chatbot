@@ -5,6 +5,7 @@ from medbot.model_handler import initialize_model
 from medbot.query_handler import (
     create_query_chain,
     format_external_results,
+    format_sources,
     run_query,
     search_external_sources,
 )
@@ -66,6 +67,16 @@ if prompt:
         external_summary = format_external_results(external_results)
 
     answer = response['result']
+
+    # "Retrieved from", not "Sources": these are the chunks the model was given,
+    # which is a weaker claim than the chunks it used. See format_sources.
+    citations = format_sources(response.get('source_documents'))
+    if citations:
+        answer = (
+            f"{answer}\n\n---\n**Retrieved from** *(the corpus passages given to the "
+            f"model; page numbers are PDF pages)*\n\n{citations}"
+        )
+
     if external_summary:
         answer = f"{answer}\n\n---\n**Related external sources**\n\n{external_summary}"
 
