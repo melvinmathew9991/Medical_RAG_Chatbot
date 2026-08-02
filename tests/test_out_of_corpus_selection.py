@@ -39,6 +39,10 @@ from medbot.eval.verify_coverage import CANDIDATES, check
 def vectordb():
     index_path = os.path.join(PERSIST_DIR, "index.faiss")
     if not os.path.exists(index_path):
+        # Ergonomics, not a gate: skipping keeps a contributor mid-rebuild from
+        # reading a wall of failures. Absence itself is caught as a *failure* by
+        # tests/test_vector_index.py, so this cannot make the suite green on
+        # nothing.
         pytest.skip(f"no FAISS index at {index_path}")
 
     # Built here rather than imported: `create_vector_database` constructs its
