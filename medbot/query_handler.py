@@ -43,6 +43,12 @@ def create_query_chain(model, vectordb, question, variant=None):
             retriever=retriever,
             llm=model,
             chain_type_kwargs={"prompt": prompt},
+            # Additive: the response gains a "source_documents" key and every
+            # existing consumer reads only "result". Without this the chunks the
+            # answer was built from are discarded inside the chain, so the app
+            # cannot cite them and a wrong answer cannot be traced to what it
+            # was given.
+            return_source_documents=True,
         )
         return document_chain
     except Exception:
@@ -63,6 +69,47 @@ def run_query(chain, question, variant=None):
         response = dict(response)
         response["result"] = strip_reasoning(response.get("result", ""))
     return response
+
+def format_sources(source_documents, max_sources=4):
+    """
+    Render retrieved chunks as a deduplicated source list, or None if empty.
+
+    Says where the retrieved *context* came from, which is not the same claim as
+    where the answer came from -- the model is handed four chunks and may lean on
+    one. The app labels this "Retrieved from" for that reason. Overstating it as
+    "Sources" would let a chunk that the answer contradicts read as a citation
+    supporting it, which is the wrong direction to be wrong in for a medical tool.
+
+    Deduplicates on (source, page) while keeping retrieval order, because
+    `chunk_size=3000` with `chunk_overlap=300` routinely puts two neighbouring
+    chunks on the same PDF page, and listing that page twice suggests two pieces
+    of corroborating evidence where there is one.
+
+    Returns None rather than an empty string when there is nothing citable,
+    matching `format_external_results` so callers can use one truthiness check.
+    """
+    seen = []
+    for doc in source_documents or []:
+        metadata = getattr(doc, "metadata", None) or {}
+        source = metadata.get("source")
+        if not source:
+            # Pre-Sprint-6 indexes carry no metadata at all. Skipping keeps a
+            # stale index citation-free rather than crashing the answer.
+            continue
+        key = (source, metadata.get("page"))
+        if key not in seen:
+            seen.append(key)
+
+    if not seen:
+        return None
+
+    lines = []
+    for source, page in seen[:max_sources]:
+        # PyPDFLoader numbers pages from 0; readers and PDF viewers number from 1.
+        label = f"{source}, p. {page + 1}" if isinstance(page, int) else source
+        lines.append(f"- {label}")
+    return "\n".join(lines)
+
 
 def search_external_sources(query):
     try:

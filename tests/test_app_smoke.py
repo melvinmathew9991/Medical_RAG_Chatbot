@@ -70,6 +70,19 @@ def _assistant_markdown(app):
     return blocks[-1]
 
 
+def _answer_body(app):
+    """
+    The model's answer with the appended blocks removed.
+
+    Splits on the first `---` rather than on a named heading. The named-heading
+    version silently stopped working in Sprint 6, when the "Retrieved from"
+    block was inserted *above* "Related external sources": the split still
+    succeeded, so no test failed, but the citation block was quietly being fed
+    to the refusal check and the reasoning-leak check as if it were answer text.
+    """
+    return _assistant_markdown(app).split("\n---\n")[0]
+
+
 def test_app_starts_and_answers(answered_app):
     answer = _assistant_markdown(answered_app)
     assert answer.strip(), "assistant turn was empty"
@@ -83,10 +96,9 @@ def test_no_reasoning_trace_reaches_the_user(answered_app):
     to `chain.invoke` added directly to app.py would leak the trace and pass every
     other test in the suite.
     """
-    answer = _assistant_markdown(answered_app)
-    # Split off the external-sources block, which legitimately contains article
-    # titles that could include these words.
-    body = answer.split("\n---\n**Related external sources**")[0]
+    # The appended blocks are split off: external-source article titles
+    # legitimately contain these words.
+    body = _answer_body(answered_app)
     for marker in REASONING_LEAKS:
         assert marker not in body, f"reasoning trace leaked {marker!r} into the answer:\n{body}"
 
@@ -100,8 +112,32 @@ def test_answer_is_not_a_refusal(answered_app):
     """
     from medbot.eval.refusal_trials import is_refusal
 
-    body = _assistant_markdown(answered_app).split("\n---\n**Related external sources**")[0]
+    body = _answer_body(answered_app)
     assert not is_refusal(body), f"app refused the bursitis question:\n{body[:400]}"
+
+
+def test_the_answer_cites_the_corpus(answered_app):
+    """
+    Sprint 6's citation path, end to end through the shipped app.
+
+    `format_sources` is unit-tested against hand-built metadata, and the index
+    is checked for metadata directly -- but neither proves `app.py` passes the
+    chain's `source_documents` to the renderer. Dropping that argument breaks
+    citations everywhere while every other test in the suite still passes.
+
+    Asserted on the *shape* (a heading and a page-numbered PDF line), not on
+    which page: which chunks retrieval returns is the eval harness's business
+    and would make this fail on an unrelated index change.
+    """
+    answer = _assistant_markdown(answered_app)
+    assert "**Retrieved from**" in answer, (
+        "no citation block in the answer -- check app.py passes "
+        "response['source_documents'] to format_sources"
+    )
+    citations = answer.split("**Retrieved from**")[1].split("\n---\n")[0]
+    assert ".pdf, p. " in citations, (
+        f"citation block has no page-numbered source line:\n{citations}"
+    )
 
 
 def test_disclaimer_is_shown(answered_app):

@@ -53,6 +53,12 @@ On first run, `medbot/data_processing.py` builds a FAISS index from every PDF/te
 and saves it to `vectorstore/`. On subsequent runs it loads the existing index instead of
 rebuilding it.
 
+Each chunk carries its source filename and page number, and answers show a **Retrieved from**
+list of the passages the model was given. Page numbers are PDF pages (1-based, as a PDF reader
+shows them), not the encyclopedia's printed page numbers. An index built before Sprint 6 has no
+such metadata; it is detected on load and rebuilt automatically, which is local, costs no API
+quota, and produces identical vectors — the chunk text is unchanged, so retrieval is unaffected.
+
 ## Tests
 
 ```
