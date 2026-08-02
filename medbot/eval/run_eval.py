@@ -23,12 +23,12 @@ import time
 from google.api_core.exceptions import ResourceExhausted
 
 from medbot.data_processing import create_vector_database
-from medbot.model_handler import initialize_model
-from medbot.query_handler import create_query_chain, run_query
-from medbot.prompt import DEFAULT_PROMPT_VARIANT, PROMPT_VARIANTS
 from medbot.eval.dataset import EVAL_QUESTIONS
-from medbot.eval.retrieval_metrics import precision_at_k
 from medbot.eval.groundedness import judge_groundedness
+from medbot.eval.retrieval_metrics import precision_at_k
+from medbot.model_handler import initialize_model
+from medbot.prompt import DEFAULT_PROMPT_VARIANT, PROMPT_VARIANTS
+from medbot.query_handler import create_query_chain, run_query
 
 RESULTS_DIR = os.path.dirname(os.path.abspath(__file__))
 TOP_K = 4

@@ -182,6 +182,7 @@ def test_the_real_sheet_and_key_line_up(tmp_path):
     entry, or a filled-in sheet would silently score against the wrong answers.
     """
     import os
+
     from medbot.eval.calibration_score import RESULTS_DIR
 
     sheet = os.path.join(RESULTS_DIR, "calibration_sheet.md")

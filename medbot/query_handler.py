@@ -1,7 +1,9 @@
 import re
 import traceback
+
 from langchain.chains import RetrievalQA
-from medbot.external_search import search_pubmed, search_wikipedia, search_serpapi
+
+from medbot.external_search import search_pubmed, search_serpapi, search_wikipedia
 from medbot.prompt import build_context_prompt, emits_reasoning
 
 # The chain-of-thought prompt makes the model emit "Reasoning: ... Answer: ...".
@@ -43,7 +45,7 @@ def create_query_chain(model, vectordb, question, variant=None):
             chain_type_kwargs={"prompt": prompt},
         )
         return document_chain
-    except Exception as e:
+    except Exception:
         print("Error occurred during query chain creation:")
         print(traceback.format_exc())
         return None
@@ -75,7 +77,7 @@ def search_external_sources(query):
         }
 
         return results
-    except Exception as e:
+    except Exception:
         print("Error occurred during external source search:")
         print(traceback.format_exc())
         return {}
@@ -111,4 +113,3 @@ def format_external_results(results, max_per_source=5):
     if not sections:
         return None
     return "\n\n".join(sections)
-

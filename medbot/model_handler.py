@@ -1,9 +1,11 @@
-import os
 import functools
 import time
+
 from langchain_google_genai import ChatGoogleGenerativeAI
+
 from medbot.config import GEMINI_CHAT_MODEL
- 
+
+
 # Define a cache decorator to cache responses
 def cache(func):
     """
@@ -50,7 +52,7 @@ def initialize_model():
 
         end_time = time.time()
         elapsed_time = end_time - start_time
-        print(f"Time taken for Gemini model initialization:", elapsed_time, "seconds")
+        print("Time taken for Gemini model initialization:", elapsed_time, "seconds")
         return model
     except Exception as e:
         print("Error occurred during model initialization:", e)

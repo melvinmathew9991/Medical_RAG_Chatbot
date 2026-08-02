@@ -5,6 +5,9 @@ venv
 .devcontainer
 __pycache__/
 *.pyc
+# CI pins fastembed's model cache into the workspace so actions/cache can
+# restore it (see .github/workflows/ci.yml); locally it defaults to temp.
+.fastembed_cache/
 vectorstore-openai-backup/
 vectorstore-corrupted-backup/
 vectorstore-old-chunking-backup/

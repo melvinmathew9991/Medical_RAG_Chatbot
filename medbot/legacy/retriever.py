@@ -1,11 +1,12 @@
-from langchain_community.document_loaders import TextLoader
+import os
+import time
+import traceback
+
+from dotenv import load_dotenv
 from langchain.text_splitter import RecursiveCharacterTextSplitter
+from langchain_community.document_loaders import TextLoader
 from langchain_community.vectorstores import FAISS
 from langchain_openai import OpenAIEmbeddings
-import traceback
-import os
-from dotenv import load_dotenv
-import time
 
 load_dotenv()
 
@@ -31,7 +32,7 @@ class DocumentRetriever:
             end_time = time.time()
             print("Time taken for document query:", end_time - start_time, "seconds")
             return results
-        except Exception as e:
+        except Exception:
             print("Error occurred during document query:")
             print(traceback.format_exc())
             return []

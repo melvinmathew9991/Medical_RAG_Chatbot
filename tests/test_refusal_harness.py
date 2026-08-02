@@ -25,12 +25,10 @@ put the socket guard in conftest in the first place.
 """
 
 import json
-from unittest import mock
 
 import pytest
 
 from medbot.eval import refusal_trials as rt
-
 
 # --- is_refusal: the measurement instrument -------------------------------
 
@@ -427,6 +425,7 @@ def _resource_exhausted(message):
 
 def test_preflight_passes_when_the_model_answers():
     from unittest.mock import Mock
+
     from medbot.eval.run_eval import preflight
 
     assert preflight(Mock()) is None
@@ -439,6 +438,7 @@ def test_preflight_reports_the_daily_cap_and_says_when_it_resets():
     had not reset, and why it stalled instead of failing.
     """
     from unittest.mock import Mock
+
     from medbot.eval.run_eval import preflight
 
     model = Mock()
@@ -461,6 +461,7 @@ def test_preflight_lets_a_per_minute_limit_through_to_the_backoff():
     have succeeded. Only the daily cap cannot be waited out.
     """
     from unittest.mock import Mock
+
     from medbot.eval.run_eval import preflight
 
     model = Mock()

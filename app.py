@@ -1,11 +1,12 @@
 import streamlit as st
-from medbot.model_handler import initialize_model
+
 from medbot.data_processing import create_vector_database
+from medbot.model_handler import initialize_model
 from medbot.query_handler import (
     create_query_chain,
+    format_external_results,
     run_query,
     search_external_sources,
-    format_external_results,
 )
 
 # Add a header for your chatbot

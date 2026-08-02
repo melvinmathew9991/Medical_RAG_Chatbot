@@ -21,7 +21,6 @@ import pytest
 
 from medbot.eval.refusal_stats import analyse, fisher_exact_two_sided, report
 
-
 # --- the test itself -------------------------------------------------------
 
 def test_tea_tasting_matches_the_textbook_value():

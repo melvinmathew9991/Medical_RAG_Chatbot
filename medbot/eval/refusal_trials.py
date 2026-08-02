@@ -23,10 +23,10 @@ import os
 import re
 
 from medbot.data_processing import create_vector_database
-from medbot.model_handler import initialize_model
-from medbot.query_handler import create_query_chain, run_query
 from medbot.eval.dataset import EVAL_QUESTIONS
 from medbot.eval.run_eval import call_with_backoff, preflight
+from medbot.model_handler import initialize_model
+from medbot.query_handler import create_query_chain, run_query
 
 RESULTS_DIR = os.path.dirname(os.path.abspath(__file__))
 

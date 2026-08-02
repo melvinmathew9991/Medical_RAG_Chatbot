@@ -14,7 +14,6 @@ faiss-cpu==1.14.3
 pypdf==4.2.0
 fastembed==0.8.0
 pip-system-certs==5.3
-# Test-only. Kept in the single requirements file rather than split into a
-# requirements-dev.txt because the CI job (Sprint 5) installs one file and this
-# is the only dev-only dependency so far.
-pytest==8.2.2
+# Runtime only. Test and lint tooling moved to requirements-dev.txt in Sprint 5
+# once pytest stopped being the sole dev dependency -- `pip install -r
+# requirements.txt` should get you a runnable app, not a toolchain.

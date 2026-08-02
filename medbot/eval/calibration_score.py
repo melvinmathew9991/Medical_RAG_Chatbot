@@ -73,7 +73,10 @@ def _int(raw, number, field):
     try:
         return int(raw)
     except ValueError:
-        raise SystemExit(f"Item {number}: {field}={raw!r} is not a whole number.")
+        # `from None`: this is a CLI-facing message about a hand-edited sheet.
+        # The chained ValueError traceback tells the person filling in the sheet
+        # nothing they can act on.
+        raise SystemExit(f"Item {number}: {field}={raw!r} is not a whole number.") from None
 
 
 def score(labels, key):

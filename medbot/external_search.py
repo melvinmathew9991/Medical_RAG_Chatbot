@@ -1,10 +1,13 @@
+import asyncio
+import time
+from functools import lru_cache
+
+import aiohttp
 from langchain_community.document_loaders import PubMedLoader
 from serpapi import GoogleSearch
+
 from medbot.config import SERPAPI_API_KEY
-import time
-import asyncio
-import aiohttp  
-from functools import lru_cache
+
 
 # Implement a threaded version of PubMed search
 def threaded_search_pubmed(query):
@@ -62,7 +65,7 @@ def search_wikipedia(query):
         end_time = time.time()
         print("Time taken for Wikipedia search:", end_time - start_time, "seconds")
         return documents
-    except Exception as e: 
+    except Exception as e:
         print("Error occurred during Wikipedia search:", e)
         return []
 
@@ -79,7 +82,7 @@ def search_serpapi(query):
         results = search.get_dict()
         end_time = time.time()
         print("Time taken for SERPAPI request:", end_time - start_time, "seconds")
-        
+
         # Extract organic results if available
         if 'organic_results' in results:
             return results['organic_results']
