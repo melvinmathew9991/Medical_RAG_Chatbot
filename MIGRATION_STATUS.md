@@ -475,7 +475,15 @@ is import ordering, whitespace, or an unused name, verified by reading the diff 
     answers pasted verbatim for the human groundedness labelling. Excluded from the two hooks
     that *rewrite* files and deliberately not from the ones that only read, so `check-json` still
     validates the trial artefacts.
-  - Offline suite now **128 tests, ~7s warm** (5 new guard tests); live suite 4 → 5.
+  - **A green build could still have tested nothing, and now cannot.** Both retrieval test
+    modules `pytest.skip()` when `index.faiss` is absent, so a checkout that lost the index
+    would have gone green on 8 skips — the same shape as audit finding F3. `tests/
+    test_vector_index.py` asserts presence, **1225 vectors** and **384 dimensions**, reading the
+    index directly with `faiss` so it needs neither the embedding model nor a warm cache, and
+    it never skips. Mutation-tested three ways: absent → 3 failures; truncated to 900 → only
+    the count test fails; rebuilt at 128 dimensions → only the dimensionality test fails.
+    The skips stay for ergonomics, now backstopped rather than load-bearing.
+  - Offline suite now **131 tests, ~7s warm** (5 guard tests, 3 index tests); live suite 4 → 5.
   - **CI runs on `windows-latest`, not ubuntu.** The first draft used ubuntu-latest out of
     convention; Melvin's call, and the better one — Windows is the only platform this project is
     developed or run on, and a green Linux run would not have said anything about it. The repo is
@@ -507,7 +515,7 @@ harder later.
 | **2** | Evaluation harness | Build the measurement tool everything after this depends on: Precision@K retrieval metric (reused from the AML fraud project) against a 20–30 question test set with known-correct source passages, plus a faithfulness/groundedness check (NLI-based or documented manual rubric) on generated answers. Report numbers honestly, weak spots included. |
 | **3** ✅ | Chain-of-thought few-shot upgrade | Done — see §2. Implemented as six new held-out CoT exemplars used as a fixed set, rather than rewriting 5–8 of the existing 27 in place: with the selector at `k=1` only one example reaches the prompt, so rewriting a minority of 27 would have left ~70% of queries seeing no CoT demonstration at all, and would have diluted the A/B. |
 | **4** ✅ | Automated testing foundation | Scoped as "add pytest"; became mostly a measurement sprint once the tests found that both the refusal suite and the out-of-corpus guard were selecting the wrong questions. 106 offline tests + 4 live, a socket guard that makes silently-fake mocks impossible, and three audit rounds. The out-of-corpus guard is closed at 60/60 across all 10 questions. The third round found that `is_refusal` itself — the instrument behind every refusal number in Sprints 2–4 — was scoring few-shot contamination as refusal; fixing it withdrew the sprint's own p=0.0219 headline and replaced it with **7/24 vs 0/24, p=0.0094** from a 5-trial re-run. |
-| **5** ✅ | CI/CD pipeline | Done — see §2. GitHub Actions on push/PR, `windows-latest` (lint + the 128 offline tests, no secrets, no quota), ruff, pre-commit, dev deps split out. Scoped as plumbing; the sprint's actual result was discovering that Sprint 4's socket guard never covered module-scoped fixture setup, so two test modules had been downloading a 130MB model from the internet while their own comments said they could not. |
+| **5** ✅ | CI/CD pipeline | Done — see §2. GitHub Actions on push/PR, `windows-latest` (lint + the 131 offline tests, no secrets, no quota), ruff, pre-commit, dev deps split out. Scoped as plumbing; the sprint's actual result was discovering that Sprint 4's socket guard never covered module-scoped fixture setup, so two test modules had been downloading a 130MB model from the internet while their own comments said they could not. |
 | **6** | Retrieval quality improvements | Use Sprint 2's findings to act on them: chunk metadata, a relevance threshold, source citations. (Building the harness itself moved to Sprint 2 — this is now about using it.) |
 | **7** | Observability & UX polish | Replace `print()` logging with structured logging, finish wiring the now-live LangSmith key, implement real token streaming. |
 | **8** | Safety & hardening | Add refuse/redirect logic for diagnosis/dosing/emergency questions beyond the general disclaimer — validated against Sprint 2's groundedness baseline, not an unmeasured one. |

@@ -52,6 +52,10 @@ REJECTED_BY_THE_SCREEN = [
 def vectordb():
     index_path = os.path.join(PERSIST_DIR, "index.faiss")
     if not os.path.exists(index_path):
+        # Ergonomics, not a gate: skipping keeps a contributor mid-rebuild from
+        # reading twelve failures. Absence itself is caught as a *failure* by
+        # tests/test_vector_index.py, so this cannot make the suite green on
+        # nothing.
         pytest.skip(f"no FAISS index at {index_path}")
 
     # Loaded directly, not via create_vector_database(), which BUILDS the index
