@@ -12,7 +12,7 @@ Medical_RAG_Chatbot/
 │   ├── data_processing.py  # document loading, chunking, FAISS index build/load
 │   ├── external_search.py  # PubMed / Wikipedia / SerpAPI search
 │   ├── model_handler.py    # ChatGoogleGenerativeAI (Gemini) initialization + caching
-│   ├── prompt.py           # few-shot prompt template + example selector
+│   ├── prompt.py           # prompt variants (app ships `no-examples`) + example selector
 │   ├── query_handler.py    # RetrievalQA chain + external search orchestration
 │   ├── eval/               # evaluation harness, results, and audits
 │   └── legacy/             # experimental code not wired into app.py
