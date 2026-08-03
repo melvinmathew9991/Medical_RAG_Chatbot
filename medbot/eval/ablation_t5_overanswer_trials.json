@@ -41,6 +41,20 @@
         "refusal": true,
         "text": "After actually checking the provided context, I found that it does not contain information about how psoriasis is treated. Therefore, based strictly on the provided text, I cannot answer the question."
       }
+    ],
+    "no-examples": [
+      {
+        "refusal": true,
+        "text": "Based on the provided context, there is no information about how psoriasis is treated. The context addresses the treatment of other conditions (such as acne, bedsores, and atopic dermatitis), but it does not mention psoriasis at all."
+      },
+      {
+        "refusal": true,
+        "text": "Based on the provided context, there is no information about how psoriasis is treated. The context covers treatments for acne, bedsores, and atopic dermatitis, but does not address psoriasis."
+      },
+      {
+        "refusal": true,
+        "text": "Based on the provided context, there is no information about how psoriasis is treated. The context covers treatments for acne, bedsores, and atopic dermatitis, but does not address psoriasis."
+      }
     ]
   },
   "What are the symptoms of schizophrenia?": {
@@ -84,6 +98,20 @@
       {
         "refusal": true,
         "text": "Based on the provided context, there is no information regarding the symptoms of schizophrenia. Therefore, the context does not support an answer to this question."
+      }
+    ],
+    "no-examples": [
+      {
+        "refusal": true,
+        "text": "Based on the provided context, there is no information regarding the symptoms of schizophrenia. (The context does discuss symptoms of bipolar disorder, autism, and various other conditions, but it does not mention schizophrenia.)"
+      },
+      {
+        "refusal": true,
+        "text": "Based on the provided context, there is no information regarding the symptoms of schizophrenia. (The context does provide information on the symptoms of bipolar disorder, autism, and several other specific conditions, but it does not address schizophrenia.)"
+      },
+      {
+        "refusal": true,
+        "text": "Based on the provided context, there is no information regarding the symptoms of schizophrenia. (The context does discuss symptoms of bipolar disorder, autism, and various other conditions, but it does not cover schizophrenia.)"
       }
     ]
   },
@@ -129,6 +157,20 @@
         "refusal": true,
         "text": "Based on the provided context, there is no mention of the symptoms of shingles. Therefore, the context does not support an answer to this question."
       }
+    ],
+    "no-examples": [
+      {
+        "refusal": true,
+        "text": "Based on the provided context, there is no mention of shingles or its symptoms; therefore, the context does not support an answer to this question."
+      },
+      {
+        "refusal": true,
+        "text": "Based on the provided context, there is no mention of shingles or its symptoms; the text addresses autoimmune disorders, atopic dermatitis, anemias, and Bell's palsy. Therefore, the context does not support an answer to your question."
+      },
+      {
+        "refusal": true,
+        "text": "Based on the provided context, there is no mention of shingles or its symptoms; the text only discusses conditions such as Grave\u2019s disease, Hashimoto\u2019s thyroiditis, pemphigus vulgaris, myasthenia gravis, scleroderma, autoimmune hemolytic anemia, autoimmune thrombocytopenic purpura, polymyositis, dermatomyositis, pernicious anemia, atopic dermatitis, anemia, and Bell's palsy."
+      }
     ]
   },
   "How is glaucoma treated?": {
@@ -172,6 +214,20 @@
       {
         "refusal": true,
         "text": "Based on the provided context, there is no information addressing the treatment of glaucoma. The context discusses treatments for amblyopia, Bell's palsy, blepharoplasty, and various birthmarks, but it does not mention glaucoma. Therefore, the context does not support an answer to this question."
+      }
+    ],
+    "no-examples": [
+      {
+        "refusal": true,
+        "text": "Based on the provided context, there is no information about how glaucoma is treated. The context addresses treatments for amblyopia, Bell's palsy, blepharoplasty, and birthmarks, but does not mention glaucoma."
+      },
+      {
+        "refusal": true,
+        "text": "Based on the provided context, there is no information about how glaucoma is treated. The context discusses treatments for other conditions (such as amblyopia, Bell's palsy, blepharoplasty, and birthmarks), but it does not address glaucoma."
+      },
+      {
+        "refusal": true,
+        "text": "Based on the provided context, there is no information about how glaucoma is treated. The context covers amblyopia, Bell's palsy, blepharoplasty, and birthmarks, but does not address glaucoma."
       }
     ]
   },
@@ -217,6 +273,20 @@
         "refusal": true,
         "text": "Based on the provided context, there is no mention of the symptoms of measles. The context does not support an answer to this question."
       }
+    ],
+    "no-examples": [
+      {
+        "refusal": true,
+        "text": "Based on the provided context, there is no mention of the symptoms of measles, as the text does not contain information about measles."
+      },
+      {
+        "refusal": true,
+        "text": "Based on the provided context, there is no mention of measles or its symptoms; therefore, the context does not support an answer to this question."
+      },
+      {
+        "refusal": true,
+        "text": "Based on the provided context, there is no mention of measles or its symptoms; therefore, the context does not support an answer to this question."
+      }
     ]
   },
   "How is scabies treated?": {
@@ -260,6 +330,20 @@
       {
         "refusal": true,
         "text": "Based on the provided context, there is no information about how scabies is treated. Therefore, the context does not support an answer to this question."
+      }
+    ],
+    "no-examples": [
+      {
+        "refusal": true,
+        "text": "Based on the provided context, there is no information addressing how scabies is treated. The context covers treatments for bedsores, boils and carbuncles, anal warts, and various stings/bites (such as stingrays), but it does not mention scabies."
+      },
+      {
+        "refusal": true,
+        "text": "Based on the provided context, there is no information regarding the treatment of scabies. The context does not address scabies at all."
+      },
+      {
+        "refusal": true,
+        "text": "Based on the provided context, there is no information about how scabies is treated. The context addresses the treatment of bedsores, boils and carbuncles, anal warts, and various stings, bites, and marine animal wounds, but it does not mention scabies."
       }
     ]
   },
@@ -305,6 +389,20 @@
         "refusal": true,
         "text": "Based on the provided context, there is no information addressing the treatment for ringworm (the context covers atopic dermatitis, balantidiasis, blastomycosis, and bedsores, but does not mention ringworm)."
       }
+    ],
+    "no-examples": [
+      {
+        "refusal": true,
+        "text": "Based on the provided context, there is no information about how ringworm is treated."
+      },
+      {
+        "refusal": true,
+        "text": "Based on the provided context, there is no information about how ringworm is treated."
+      },
+      {
+        "refusal": true,
+        "text": "Based on the provided context, there is no information about how ringworm is treated."
+      }
     ]
   },
   "What are the symptoms of mumps?": {
@@ -348,6 +446,20 @@
       {
         "refusal": true,
         "text": "Based on the provided context, there is no mention of mumps or its symptoms. Therefore, the context does not support an answer to this question."
+      }
+    ],
+    "no-examples": [
+      {
+        "refusal": true,
+        "text": "Based on the provided context, there is no mention of mumps or its symptoms. Therefore, the provided text does not contain an answer to your question."
+      },
+      {
+        "refusal": true,
+        "text": "Based on the provided context, there is no mention of mumps or its symptoms. Therefore, the provided text does not support an answer to your question."
+      },
+      {
+        "refusal": true,
+        "text": "Based on the provided context, there is no mention of mumps or its symptoms. Therefore, the context does not support an answer to your question."
       }
     ]
   },
@@ -393,6 +505,20 @@
         "refusal": true,
         "text": "Based on the provided context, there is no information addressing how sciatica is treated. Therefore, the provided context does not support an answer to this question."
       }
+    ],
+    "no-examples": [
+      {
+        "refusal": true,
+        "text": "Based on the provided context, there is no information addressing how sciatica is treated. The text covers the treatment of bedsores, bursitis, achondroplasia, and brain tumors, but it does not mention sciatica."
+      },
+      {
+        "refusal": true,
+        "text": "Based on the provided context, there is no information addressing how sciatica is treated. The context covers treatments for bedsores, bursitis, achondroplasia, and brain tumors, but it does not mention sciatica."
+      },
+      {
+        "refusal": true,
+        "text": "Based on the provided context, there is no information addressing how sciatica is treated. The text covers treatments for bedsores, bursitis, achondroplasia, and brain tumors, but it does not mention sciatica."
+      }
     ]
   },
   "What causes plantar fasciitis?": {
@@ -436,6 +562,20 @@
       {
         "refusal": true,
         "text": "Based on the provided context, there is no information addressing what causes plantar fasciitis (the context discusses bunions, bursitis, and allergic rhinitis, but does not mention plantar fasciitis). Therefore, the context does not support an answer to this question."
+      }
+    ],
+    "no-examples": [
+      {
+        "refusal": true,
+        "text": "Based on the provided context, there is no information addressing the causes of plantar fasciitis. (Note: The context provides information on the causes of bunions, bursitis, and perennial allergic rhinitis, but does not mention plantar fasciitis.)"
+      },
+      {
+        "refusal": true,
+        "text": "Based on the provided context, there is no information addressing the causes of plantar fasciitis. Therefore, the context does not support an answer to your question."
+      },
+      {
+        "refusal": true,
+        "text": "Based on the provided context, there is no information addressing the causes of plantar fasciitis. (Note: The context provides information on the causes of bunions, bursitis, and allergic rhinitis, but does not mention plantar fasciitis.)"
       }
     ]
   }
