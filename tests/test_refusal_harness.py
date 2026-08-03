@@ -390,6 +390,77 @@ def test_resume_does_not_discard_the_cells_it_skips(harness):
     assert len(on_disk["Q1"]["baseline"]) == 3, "skipped cell was lost from the checkpoint"
 
 
+def test_a_crash_partway_does_not_truncate_the_unreached_questions(harness, monkeypatch):
+    """
+    The companion to the test above, and the case it did not cover: that one
+    resumes and finishes, this one resumes and DIES.
+
+    `run` checkpoints by rewriting the whole file after every variant. While
+    `out` was accumulated question by question, a run that died at question 2
+    wrote back a file containing question 1 only -- silently deleting every
+    other arm's recorded cells for the questions it had not reached yet. The
+    completed-run test could not see it, because by the end `out` holds
+    everything either way. Only a crash separates the two.
+
+    Not hypothetical: adding the `no-examples` arm on 2026-08-03 ran 120 calls
+    over a file holding 72 already-paid-for cells, on a free tier that does not
+    refill until the next Pacific rollover. They were copied out by hand first.
+    """
+    tmp_path, _ = harness
+    paid_for = {"refusal": False, "text": "A recorded answer that cost quota."}
+    _write_trials(tmp_path, "t.json", {
+        q: {"baseline": [paid_for] * 3, "cot": [paid_for] * 3}
+        for q in ("Q1", "Q2", "Q3")
+    })
+
+    def die_on_the_second_question(chain, question, variant=None):
+        if question == "Q2":
+            raise RuntimeError("simulated quota exhaustion")
+        return {"result": f"A new answer to {question}."}
+
+    monkeypatch.setattr(rt, "run_query", die_on_the_second_question)
+
+    with pytest.raises(RuntimeError):
+        rt.run(3, ["new-arm"], ["Q1", "Q2", "Q3"], "t.json", resume=True)
+
+    on_disk = json.loads((tmp_path / "t.json").read_text(encoding="utf-8"))
+    assert set(on_disk) == {"Q1", "Q2", "Q3"}, (
+        "the crash truncated the file to the questions the run reached; "
+        f"Q3's recorded arms are gone. On disk: {sorted(on_disk)}"
+    )
+    for question in ("Q1", "Q2", "Q3"):
+        for arm in ("baseline", "cot"):
+            assert len(on_disk[question][arm]) == 3, (
+                f"{question}[{arm}] lost recorded trials to a crash in another arm"
+            )
+
+
+def test_questions_outside_this_run_are_carried_through(harness):
+    """
+    A narrower re-run must not shrink the record either. Measuring one question
+    with --resume rewrites the same file, so anything already in it and not in
+    `questions` has to survive.
+
+    The arm measured here is deliberately a NEW one. Re-running an arm that is
+    already complete makes `run` skip the cell and return before writing
+    anything, so the file survives for the trivial reason that it was never
+    touched -- a test that passes against the bug it is meant to catch. This
+    version forces a real checkpoint.
+    """
+    tmp_path, _ = harness
+    paid_for = {"refusal": False, "text": "A recorded answer that cost quota."}
+    _write_trials(tmp_path, "t.json", {
+        "Q1": {"baseline": [paid_for] * 3},
+        "Q2": {"baseline": [paid_for] * 3},
+    })
+
+    rt.run(3, ["new-arm"], ["Q1"], "t.json", resume=True)
+
+    on_disk = json.loads((tmp_path / "t.json").read_text(encoding="utf-8"))
+    assert set(on_disk) == {"Q1", "Q2"}, "a single-question re-run dropped Q2"
+    assert len(on_disk["Q2"]["baseline"]) == 3
+
+
 def test_a_partially_filled_cell_is_rerun_not_topped_up(harness):
     """
     A cell is the unit the rate is computed over. Topping one up would blend
@@ -485,6 +556,72 @@ def test_run_aborts_before_spending_calls_when_preflight_fails(harness, monkeypa
         rt.run(3, ["cot"], ["Q1"], "t.json")
 
     assert not calls, "spent model calls despite a failed preflight"
+
+
+def test_run_eval_aborts_before_loading_the_index_when_preflight_fails(monkeypatch):
+    """
+    `run_eval` spends 48 calls and had no preflight at all until 2026-08-03,
+    though §6 added one here for exactly this reason. Pinned so it cannot be
+    refactored back out silently.
+
+    Asserts the ORDER as well as the abort: `create_vector_database` must not
+    have been called. Loading the FAISS index and the fastembed model costs ~30s,
+    and a preflight that runs after it saves the quota but not the wait.
+    """
+    from medbot.eval import run_eval as re_mod
+
+    loaded = []
+    monkeypatch.setattr(re_mod, "initialize_model", lambda: object())
+    monkeypatch.setattr(re_mod, "preflight", lambda model: "Daily free-tier quota is exhausted.")
+    monkeypatch.setattr(re_mod, "create_vector_database", lambda: loaded.append(1) or object())
+
+    with pytest.raises(SystemExit, match="Preflight failed"):
+        re_mod.run(variant="cot")
+
+    assert not loaded, "loaded the index before checking the quota"
+
+
+def test_rejudge_aborts_before_loading_the_index_when_preflight_fails(monkeypatch):
+    """
+    Same contract as run_eval's, and the reason `main` exists as a function: in
+    the __main__ block this preflight was unreachable from pytest, so it could
+    have been dropped again with every test still green.
+    """
+    from medbot.eval import rejudge as rj_mod
+
+    loaded = []
+    monkeypatch.setattr(rj_mod, "initialize_model", lambda: object())
+    monkeypatch.setattr(rj_mod, "preflight", lambda model: "Daily free-tier quota is exhausted.")
+    monkeypatch.setattr(rj_mod, "create_vector_database", lambda: loaded.append(1) or object())
+
+    with pytest.raises(SystemExit, match="Preflight failed"):
+        rj_mod.main(["cot"])
+
+    assert not loaded, "loaded the index before checking the quota"
+
+
+def test_rejudge_progress_and_run_eval_progress_are_flushed():
+    """
+    Both print per-item progress while piped to a file. Without flush=True the
+    buffer holds it until exit, so a quota-dead run is indistinguishable from a
+    slow one -- the failure §6 spent a session diagnosing, then fixed in only one
+    of the three scripts. Observed again on 2026-08-03: run_eval's output file was
+    empty while 13 of 24 questions had completed.
+
+    Asserted on the source because the alternative is capturing stdout from a run
+    that needs a model and an index.
+    """
+    import inspect
+
+    from medbot.eval import rejudge as rj_mod
+    from medbot.eval import run_eval as re_mod
+
+    for mod, marker in ((re_mod, "] {question}"), (rj_mod, "{variant}: {question}")):
+        src = inspect.getsource(mod)
+        line = next(ln for ln in src.splitlines() if marker in ln and "print(" in ln)
+        assert "flush=True" in line, (
+            f"{mod.__name__} progress print is unflushed: {line.strip()}"
+        )
 
 
 def test_labels_are_recomputed_from_the_text(harness):

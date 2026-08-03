@@ -37,12 +37,19 @@ jobs:
       # into the workspace is what makes the model cacheable at all.
       FASTEMBED_CACHE_PATH: ${{ github.workspace }}/.fastembed_cache
 
+    # Action majors are pinned one step above the versions GitHub flagged as
+    # Node-20-based on 2026-08-03 (checkout@v4, setup-python@v5, cache@v4), which
+    # were being force-run on Node 24 with a deprecation annotation on every run.
+    # One major each, not the newest available (checkout v7, setup-python v7,
+    # cache v6): the runtime change is what this bump is for, and skipping two
+    # majors adds unrelated breaking changes to a build whose green result is
+    # load-bearing for the socket guard and the index gate.
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       # 3.11 is not a preference: the pinned LangChain 0.2.x stack needs
       # numpy<2, which has no wheel for 3.13. See MIGRATION_STATUS.md.
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v6
         with:
           python-version: "3.11"
           cache: pip
@@ -57,7 +64,7 @@ jobs:
         run: ruff check .
 
       - name: Restore fastembed model cache
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ${{ env.FASTEMBED_CACHE_PATH }}
           # fastembed's on-disk layout is version-dependent, so the pin is part

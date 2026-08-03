@@ -318,6 +318,11 @@ def run(trials, variants, questions, out_filename, resume=False):
     The trade resume makes: cells recorded by different runs are combined, so if
     the prompt changed in between, the arms are no longer comparable. The caller
     warns about this. Use a fresh --out-prefix, not --resume, after a prompt edit.
+
+    Every checkpoint written by this function is a superset of what it resumed
+    from: no cell recorded before this run can be removed by it, including on a
+    crash partway through. See the comment on `out` below for what went wrong
+    before that was true.
     """
     existing = load_existing(out_filename) if resume else {}
     if existing:
@@ -343,9 +348,28 @@ def run(trials, variants, questions, out_filename, resume=False):
     if vectordb is None:
         raise RuntimeError("Need a working vectordb; check vectorstore/.")
 
-    out = {}
+    # Seeded with EVERY recorded question up front, not accumulated as the run
+    # reaches them. The checkpoint below rewrites the whole file after each
+    # variant, so an `out` built up question by question means a run that dies at
+    # question 5 writes back a file containing questions 1-5 only -- silently
+    # deleting the other arms' recorded cells for questions 6-24.
+    #
+    # That is not hypothetical. Adding the `no-examples` arm on 2026-08-03 put 72
+    # already-paid-for cells (baseline, instruction-only and cot, 24 questions
+    # each) behind exactly this failure, and they survived only because they were
+    # copied out by hand first. Quota spent on a cell cannot be re-spent until the
+    # next Pacific rollover, so losing recorded cells to a crash costs a day.
+    #
+    # Note the shape of the bug: --resume exists to PRESERVE recorded cells, and
+    # it read the very file it could truncate. The guarantee and the hazard were
+    # the same code path.
+    #
+    # Questions in the file but not in `questions` are carried through untouched
+    # rather than dropped, so a narrower re-run cannot quietly shrink the record.
+    out = {q: {v: list(attempts) for v, attempts in by_variant.items()}
+           for q, by_variant in existing.items()}
     for question in questions:
-        out[question] = dict(existing.get(question, {})) if existing else {}
+        out.setdefault(question, {})
         for variant in variants:
             done = out[question].get(variant, [])
             if len(done) >= trials:

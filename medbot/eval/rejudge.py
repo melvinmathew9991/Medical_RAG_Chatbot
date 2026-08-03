@@ -21,7 +21,7 @@ import statistics
 
 from medbot.data_processing import create_vector_database
 from medbot.eval.groundedness import judge_groundedness_claims
-from medbot.eval.run_eval import RESULTS_DIR, TOP_K, call_with_backoff
+from medbot.eval.run_eval import RESULTS_DIR, TOP_K, call_with_backoff, preflight
 from medbot.model_handler import initialize_model
 
 
@@ -33,7 +33,7 @@ def rejudge(variant, retriever, model):
     out = []
     for i, row in enumerate(stored["results"], start=1):
         question, answer = row["question"], row.get("answer")
-        print(f"[{i}/{len(stored['results'])}] {variant}: {question}")
+        print(f"[{i}/{len(stored['results'])}] {variant}: {question}", flush=True)
         if not answer:
             out.append({**row, "claim_score": None, "claims": None, "supported": None,
                         "claim_rationale": "no stored answer"})
@@ -69,18 +69,40 @@ def summarize(variant, rows):
     }
 
 
+def main(variants):
+    """
+    Set up, preflight, and re-judge every variant in `variants`.
+
+    A function rather than the body of `if __name__ == "__main__"` so the quota
+    preflight below can be tested. It lived in the __main__ block until
+    2026-08-03, which made it unreachable from pytest and therefore removable
+    without any test noticing -- the same shape as the gates §9 found that could
+    not fail.
+    """
+    # Model, then quota, then index -- see the note in run_eval.run. One judge
+    # call per stored answer, so a full re-judge of two arms is ~48 requests
+    # against the 500/day cap and is worth one preflight call.
+    model = initialize_model()
+    if model is None:
+        raise RuntimeError("Need a working model; check GOOGLE_API_KEY.")
+
+    blocked = preflight(model)
+    if blocked:
+        raise SystemExit(f"\nPreflight failed, nothing was re-judged.\n\n{blocked}\n")
+
+    vectordb = create_vector_database()
+    if vectordb is None:
+        raise RuntimeError("Need a working vectordb; check vectorstore/.")
+    retriever = vectordb.as_retriever(search_kwargs={"k": TOP_K})
+
+    return [summarize(v, rejudge(v, retriever, model)) for v in variants]
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--variants", default="baseline,cot")
     args = parser.parse_args()
-    variants = [v.strip() for v in args.variants.split(",") if v.strip()]
 
-    vectordb = create_vector_database()
-    model = initialize_model()
-    if vectordb is None or model is None:
-        raise RuntimeError("Need a working vectordb and model; check GOOGLE_API_KEY.")
-    retriever = vectordb.as_retriever(search_kwargs={"k": TOP_K})
-
-    summaries = [summarize(v, rejudge(v, retriever, model)) for v in variants]
+    summaries = main([v.strip() for v in args.variants.split(",") if v.strip()])
     print()
     print(json.dumps(summaries, indent=2))
