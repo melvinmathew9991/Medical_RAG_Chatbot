@@ -776,8 +776,12 @@ nothing shipped changes until they are run.
 
 ### The `no-examples` prompt arm
 
-> **MEASURED 2026-08-03 — see §11.** 0/24 refusals, guard 30/30, Precision@4 0.8333,
-> claim-level 0.9917. Parity with `cot` at 1/14th the tokens. Still not shipped.
+> **MEASURED AND SHIPPED 2026-08-03 — see §11.** 0/24 refusals, guard 30/30,
+> Precision@4 0.8333, claim-level 0.9917. Parity with `cot` at 1/14th the tokens.
+> `DEFAULT_PROMPT_VARIANT` moved to `no-examples` after these numbers existed, so the
+> third test named below — "the shipped default is still `cot`" — has been replaced by a
+> gate on the *property* rather than the name: whatever ships must have recorded
+> claim-level results and must not falsely refuse.
 
 §8 concluded that the CoT exemplars buy no measurable refusal improvement over the
 instruction rewrite (p = 1.0000 against `instruction-only` on all 24 questions) but kept
@@ -971,11 +975,29 @@ refusal-suite trial to REFUSED, flip a guard trial to an invented answer, trunca
 5 to 2, drop an arm from a guard question — every mutation failed exactly the intended test
 and the data restored bit-identical afterwards.
 
-### Not shipped
+### Shipped, on Melvin's call, after the numbers existed
 
-`DEFAULT_PROMPT_VARIANT` is still `cot`. Changing what the app serves is a separate
-decision from measuring it, and it is Melvin's to make. The evidence for making it is
-above; the argument against is that parity rests on a null result at n=24.
+`DEFAULT_PROMPT_VARIANT` moved from `cot` to `no-examples` on 2026-08-03. The ordering is
+the point: measured first, shipped second. Sprint 3 exists to have avoided the reverse.
+
+The decision was made on the cost difference, not on out-performing `cot` — nothing here
+shows it is better, and parity rests on a null result at n=24. What it shows is
+equivalence on every axis measured plus a 14× token saving, and that the one reason §8
+gave for keeping the exemplars no longer applies.
+
+**The test that enforced "unmeasured prompts do not ship" was rewritten rather than
+flipped.** It asserted `DEFAULT_PROMPT_VARIANT == "cot"`, which detects a change but not
+the mistake — it would pass on any rename and fail on a well-measured replacement. It now
+asserts the property: whatever the app serves must (1) have recorded claim-level results
+covering the whole eval set, and (2) never falsely refuse a question the corpus answers.
+(2) is load-bearing on its own — `baseline` has complete recorded results and refuses
+7/24, so (1) alone would wave it through. Mutation-tested against `baseline` (fails on the
+refusals), `examples-only` (fails as unmeasured, with the command to measure it), and
+`cot` (passes, still a legitimate alternative).
+
+The residual risk, stated plainly: the arms are equivalent *as measured*, and the measuring
+instrument is 24 questions. If the expansion to 46 shows `cot` ahead, this decision should
+be revisited — the recorded artefacts for both arms make that a re-read, not a re-run.
 
 ### Two harness defects found while running this, not fixed here
 

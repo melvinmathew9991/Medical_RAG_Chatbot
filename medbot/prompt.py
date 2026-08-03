@@ -348,10 +348,29 @@ class LazyLoader:
 
 lazy_loader = LazyLoader()
 
-# Which prompt the app ships with. "cot" is Sprint 3's default; "baseline" is the
-# Sprint 2 prompt, kept runnable so the two can be A/B'd on the same harness
-# rather than compared against numbers from an older run.
-DEFAULT_PROMPT_VARIANT = "cot"
+# Which prompt the app ships with. Every other variant stays runnable so any two
+# can be A/B'd on the same harness rather than compared against numbers from an
+# older run.
+#
+# "no-examples" since 2026-08-03, replacing Sprint 3's "cot". It was measured
+# first and shipped second, in that order (results_sprint4.md §11): 0/24 questions
+# refusing across 120 trials, identical to cot; p = 0.0094 against baseline's
+# 7/24, reproducing the standing headline; the out-of-corpus guard at 30/30 with
+# zero invented answers; Precision@4 0.8333, identical to every arm, since
+# retrieval is untouched by the prompt; claim-level groundedness 0.9917 against
+# baseline's 0.8413 and cot's 0.9974.
+#
+# Why it wins on the tie: ~216 tokens against cot's ~3,037, a 14x saving on every
+# query. §8 had already found the exemplars buying no measurable refusal
+# improvement and kept them only because the other cheap arm, "instruction-only",
+# answers a question about *nosebleeds* on 5/5 bursitis trials -- contamination
+# from its own selected exemplar. This arm has no exemplar to be contaminated by,
+# which is a structural property rather than a measured one.
+#
+# The honest weakness, recorded so it is not lost: cot-vs-no-examples parity is a
+# null result at n=24 and cannot distinguish equivalence from an underpowered
+# test. The question-set expansion is what would settle it.
+DEFAULT_PROMPT_VARIANT = "no-examples"
 
 
 def _escape_braces(text):
@@ -442,9 +461,11 @@ def build_no_examples_prompt():
     impossible by construction rather than by measurement. At ~150 tokens it is
     also the cheapest arm in the set.
 
-    Unmeasured until quota allows. Nothing ships on it yet; the app default stays
-    `cot` (DEFAULT_PROMPT_VARIANT) until the refusal suite, the out-of-corpus guard
-    and the claim-level judge have all been run against this variant.
+    Measured 2026-08-03 and shipped on the strength of it -- in that order. The
+    refusal suite, the out-of-corpus guard and the claim-level judge were all run
+    against this variant before DEFAULT_PROMPT_VARIANT moved: 0/24 questions
+    refusing, guard 30/30, Precision@4 0.8333, claim-level 0.9917. See the note on
+    DEFAULT_PROMPT_VARIANT above and results_sprint4.md §11.
     """
     template = (
         f"{INSTRUCTION_ONLY_DISCLAIMER}\n\n"

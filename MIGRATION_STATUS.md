@@ -87,7 +87,9 @@ Run via `python -m medbot.eval.run_eval`; full numbers and per-question results 
   of the two weakest retrieval cases, in `medbot/eval/results.md`.
 
 **Sprint 3 (chain-of-thought prompting) — also done (2026-07-25):** the false-refusal bug Sprint 2
-found is fixed and measured. `medbot/prompt.py` gained a `cot` prompt variant (now the default):
+found is fixed and measured. `medbot/prompt.py` gained a `cot` prompt variant (the default
+from 2026-07-25 until **2026-08-03, when `no-examples` replaced it** — see the entry at the
+end of this section; `cot` remains supported and its recorded numbers all stand):
 six worked examples in question → context → reasoning → answer form, each built from chunks
 actually retrieved from this corpus, on A–B topics deliberately held out of the eval set. The
 reasoning trace is stripped before the user sees it (`strip_reasoning`/`run_query` in
@@ -608,8 +610,21 @@ Full write-up in `medbot/eval/results_sprint4.md` §11.
     and left these, though the exemplar decision rests on them. Now gated, and each gate
     mutation-tested (flip a refusal, flip a guard trial to an invented answer, truncate a
     cell, drop an arm) with the data restored bit-identical after.
-  - **Not shipped.** `DEFAULT_PROMPT_VARIANT` is still `cot`; what the app serves is a
-    separate decision from what has been measured.
+  - **Shipped the same day, after the numbers existed.** `DEFAULT_PROMPT_VARIANT` moved
+    from `cot` to `no-examples` — measured first, shipped second, which is the ordering
+    Sprint 3 exists to have avoided reversing. The call was made on cost, not on
+    out-performing `cot`: nothing here shows it is better, and the parity is a null result
+    at n=24. What it shows is equivalence on every measured axis plus a 14× token saving,
+    with §8's one remaining reason to keep the exemplars no longer applying. If the
+    expansion to 46 questions puts `cot` ahead, this is a decision to revisit — both arms'
+    artefacts are recorded, so that would be a re-read rather than a re-run.
+  - **The gate that enforced "unmeasured prompts do not ship" was rewritten, not
+    flipped.** It asserted `DEFAULT_PROMPT_VARIANT == "cot"` — which detects a change but
+    not the mistake, passing on any rename and failing on a well-measured replacement. It
+    now asserts the property: whatever ships must have recorded claim-level results over
+    the whole eval set **and** must never falsely refuse. The second half is load-bearing
+    by itself, since `baseline` is fully measured and refuses 7/24. Mutation-tested
+    against `baseline`, `examples-only` and `cot`.
   - **Two harness defects found in passing, recorded not fixed:** `refusal_trials.run()`
     rebuilds its output dict from scratch and checkpoints per variant, so a mid-run failure
     writes back only the questions it reached and silently drops every other arm's cells

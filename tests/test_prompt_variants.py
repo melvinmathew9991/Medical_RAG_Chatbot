@@ -144,14 +144,33 @@ def test_the_no_examples_arm_is_the_cheapest():
     )
 
 
-def test_no_examples_is_not_the_shipped_default():
+def test_the_shipped_default_is_no_examples():
     """
-    It is unmeasured. Shipping an unmeasured prompt is the mistake Sprint 3 exists
-    to have avoided, so this fails if the default moves before the numbers do.
+    Records the decision itself: `no-examples` replaced `cot` on 2026-08-03, after
+    being measured rather than before (results_sprint4.md §11).
+
+    This asserted `== "cot"` while the arm was unmeasured. The substantive gate --
+    that whatever ships has recorded results and does not falsely refuse -- lives
+    in test_eval_regression.py, because it reads the eval artefacts. This one is
+    here so the fast, data-free module still fails on an accidental change.
     """
     from medbot.prompt import DEFAULT_PROMPT_VARIANT
 
-    assert DEFAULT_PROMPT_VARIANT == "cot"
+    assert DEFAULT_PROMPT_VARIANT == "no-examples"
+
+
+def test_the_shipped_default_emits_no_reasoning_trace():
+    """
+    `emits_reasoning` drives whether query_handler strips a "Reasoning: ..."
+    preamble before the user sees the answer. `no-examples` does not produce one,
+    so stripping must stay off for it -- and `strip_reasoning` falls back to
+    returning the whole text when no marker is found, which means a wrong value
+    here would not fail loudly, it would just silently ship raw output.
+    """
+    from medbot.prompt import DEFAULT_PROMPT_VARIANT, emits_reasoning
+
+    assert emits_reasoning(DEFAULT_PROMPT_VARIANT) is False
+    assert emits_reasoning("cot") is True
 
 
 def test_strip_reasoning():

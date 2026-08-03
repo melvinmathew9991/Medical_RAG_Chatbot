@@ -292,6 +292,49 @@ def test_ablation_arms_are_completely_recorded():
             )
 
 
+def test_the_shipped_default_has_been_measured_and_does_not_falsely_refuse():
+    """
+    "Unmeasured prompts do not ship" was enforced by asserting the default equalled
+    the string "cot". That detects a change but not the mistake: it would have gone
+    green on any rename, and red on a perfectly well-measured replacement.
+
+    So the gate is now the property. Whatever `DEFAULT_PROMPT_VARIANT` names must:
+
+      1. have recorded claim-level results covering the whole eval set, and
+      2. never falsely refuse a question the corpus answers.
+
+    (2) is what stops a *measured but bad* prompt shipping — `baseline` has full
+    recorded results and refuses 7/24, so requirement (1) alone would wave it
+    through. Both current qualifiers are `cot` and `no-examples`.
+    """
+    from medbot.prompt import DEFAULT_PROMPT_VARIANT as shipped
+
+    claims_path = os.path.join(EVAL_DIR, f"results_{shipped}_claims.json")
+    assert os.path.exists(claims_path), (
+        f"the app ships {shipped!r} but there are no recorded claim-level results "
+        f"for it ({os.path.basename(claims_path)}). Measure it before shipping it: "
+        f"python -m medbot.eval.run_eval --variant {shipped} && "
+        f"python -m medbot.eval.rejudge --variants {shipped}"
+    )
+    with open(claims_path, encoding="utf-8") as f:
+        scored = [r for r in json.load(f)["results"] if r.get("claim_score") is not None]
+    assert len(scored) == len(EVAL_QUESTIONS), (
+        f"{shipped} has {len(scored)} scored answers, not {len(EVAL_QUESTIONS)} — "
+        "a partial measurement is not a measurement"
+    )
+
+    trials = _load(ABLATION_REFUSAL)
+    counts = _refusal_counts(trials, shipped)
+    assert any(n for _, n in counts.values()), (
+        f"no recorded refusal trials for the shipped variant {shipped!r} in "
+        f"{ABLATION_REFUSAL}; it cannot be shown not to refuse"
+    )
+    offenders = {q: c for q, (c, _) in counts.items() if c}
+    assert not offenders, (
+        f"the app ships {shipped!r}, which falsely refuses {offenders}"
+    )
+
+
 def test_refusal_labels_match_the_heuristic():
     """
     The stored `refusal` booleans must still be what `is_refusal` says about the
