@@ -123,12 +123,26 @@ def result_paths(variant):
 
 
 def run(variant=None):
-    vectordb = create_vector_database()
+    # Model first, then the quota check, then the index -- the ordering
+    # `refusal_trials.run` already uses. Loading the FAISS index and the fastembed
+    # model costs ~30s and is pure waste if the daily cap is already spent, so the
+    # cheap fatal check goes ahead of the expensive setup.
+    #
+    # This module had no preflight at all until 2026-08-03, though §6 added one to
+    # refusal_trials specifically because a quota-dead run was indistinguishable
+    # from a slow one and sat silent for 12 minutes. This run costs 48 calls, so
+    # it deserves the same one-call check before committing to them.
     model = initialize_model()
-    if vectordb is None or model is None:
-        raise RuntimeError(
-            "Eval harness needs a working vectordb and model; check GOOGLE_API_KEY and vectorstore/."
-        )
+    if model is None:
+        raise RuntimeError("Eval harness needs a working model; check GOOGLE_API_KEY.")
+
+    blocked = preflight(model)
+    if blocked:
+        raise SystemExit(f"\nPreflight failed, nothing was run.\n\n{blocked}\n")
+
+    vectordb = create_vector_database()
+    if vectordb is None:
+        raise RuntimeError("Eval harness needs a working vectordb; check vectorstore/.")
 
     retriever = vectordb.as_retriever(search_kwargs={"k": TOP_K})
     results = []
@@ -136,7 +150,11 @@ def run(variant=None):
     for i, case in enumerate(EVAL_QUESTIONS, start=1):
         question = case["question"]
         expected_keywords = case["expected_keywords"]
-        print(f"[{i}/{len(EVAL_QUESTIONS)}] {question}")
+        # flush: piped to a file this line otherwise sits in the stdout buffer,
+        # so the run shows no progress at all until it exits -- the same defect
+        # §6 fixed on the backoff notice in call_with_backoff. Observed on
+        # 2026-08-03: the output file was empty while 13 questions had completed.
+        print(f"[{i}/{len(EVAL_QUESTIONS)}] {question}", flush=True)
 
         retrieved_docs = retriever.invoke(question)
         retrieved_texts = [d.page_content for d in retrieved_docs]
