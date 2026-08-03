@@ -632,6 +632,49 @@ Full write-up in `medbot/eval/results_sprint4.md` §11.
     And `run_eval` still has no `preflight()` and an unflushed progress `print`, both of
     which §6 fixed in `refusal_trials` only.
 
+**Question-set expansion — merged and measured (2026-08-03, branch `expand-question-set`).**
+The §10 selection, merged into `EVAL_QUESTIONS` together with the 330 calls that
+re-measured the refusal suite over all 46 questions. Full write-up in
+`medbot/eval/results_sprint4.md` §12.
+
+  - **The eval set is now 46 questions** (the frozen original 24 plus the 22 screened on
+    2026-07-27). At 5 trials × 3 arms: baseline **18/46** questions ever refusing, cot
+    **0/46**, no-examples **0/46**. Trial-level 55/230 vs 0/230 vs 0/230.
+    **Fisher exact p = 0.0000** for either candidate arm against baseline.
+  - **The fragility warning is resolved — this is the point of the run.** It qualified
+    every refusal number from Sprint 4 onward. At n=24, dropping the three questions that
+    refused on exactly one trial took p from 0.0094 to **0.1092, not significant**. At
+    n=46, six questions refuse once and dropping all six still leaves **p = 0.0002**. §7
+    predicted more questions was the fix and more trials was not; that is now tested.
+  - **The n=24 caveat on the ship decision is substantially discharged.** Doubling the set
+    found more than twice the baseline refusals (7 → 18) and still zero in either
+    candidate arm. `cot` vs `no-examples` is still a null (p = 1.0000) — nothing shows
+    `no-examples` is *better* — but the specific worry that n=24 was too small to reveal a
+    difference has been tested and did not materialise.
+  - **The new questions are harder, and legitimately so.** Four refuse 5/5 under baseline
+    (bad breath, bone marrow transplant, barium enema, alopecia). Baseline declines in 54
+    characters where `no-examples` answers correctly in 717, from the same context. The new
+    22 refuse at 50% under baseline against the original set's 29%, despite a *higher*
+    recorded Precision@4 (0.8523 vs 0.8333) — the screen selected entries that exist,
+    without selecting for the paraphrase-friendliness the original set happened to have.
+  - **The instrument was re-validated on all 22 new questions**, because 220 trials with
+    zero refusals on text the instrument had never seen is exactly what a third
+    `is_refusal` failure would look like. 0 label disagreements across 330 new trials; the
+    short tail read by hand (cot's shortest new answer is 74 characters and is correct and
+    complete — the byssinosis entry is simply terse).
+  - **The pre-merge trial files are not retroactively "truncated."** The original 24 are
+    frozen as `EVAL_QUESTIONS_V1`, and every historical file's coverage gate is pinned to
+    that list rather than to the live suite. They are complete records of the suite as it
+    stood. A test pins that the original 24 stay first and in order, since trial files are
+    keyed by question text.
+  - **Not measured, and stated rather than implied:** claim-level groundedness over the 22
+    new questions. `run_eval` has no subset filter and no resume, so extending it costs 138
+    calls to re-derive 24 values already recorded. The shipped-default gate asserts claim
+    coverage against the frozen 24 and carries a comment saying so. **Until that runs,
+    "claim-level 0.9917" describes the original 24 only.** The out-of-corpus guard was
+    deliberately not re-run — it is a separate suite that does not change when the eval set
+    grows, and all four arms are recorded at 30/30.
+
 ---
 
 ## 3. What we're going to do (Sprints 2–9)

@@ -22,12 +22,19 @@ import os
 
 import pytest
 
-from medbot.eval.dataset import EVAL_QUESTIONS
+from medbot.eval.dataset import EVAL_QUESTIONS, EVAL_QUESTIONS_V1
 from medbot.eval.refusal_trials import (
     OVERANSWER_QUESTIONS,
     REFUSAL_QUESTIONS,
     is_refusal,
 )
+
+# The 24 questions every pre-2026-08-03 trial file covers. Those files are
+# COMPLETE records of the suite as it stood, so their coverage gates are pinned
+# here rather than to REFUSAL_QUESTIONS — which grew to 46 on 2026-08-03 and would
+# otherwise mark a finished historical dataset as truncated, i.e. fail loudly for
+# a reason that is not a defect.
+FROZEN_V1_QUESTIONS = [c["question"] for c in EVAL_QUESTIONS_V1]
 
 EVAL_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "medbot", "eval")
 
@@ -61,6 +68,17 @@ ABLATION_OVERANSWER = "ablation_t5_overanswer_trials.json"
 ABLATION_ARMS = ("baseline", "instruction-only", "cot", "no-examples")
 ABLATION_GUARD_TRIALS = 3
 
+# The expanded suite: 46 questions x 5 trials, recorded 2026-08-03 (330 calls) by
+# resuming the 24 already-recorded questions and measuring only the 22 new ones.
+#
+# Three arms, not four. `instruction-only` is deliberately not extended: §8 settled
+# what it was there to answer, and it is the arm that substitutes a neighbouring
+# exemplar's question, so 110 calls to carry it forward would buy nothing. It stays
+# at 24 in the ablation file, which is why THAT file keeps its own four-arm gate
+# against the frozen list.
+EXPANDED_REFUSAL = "expanded_t5_refusal_trials.json"
+EXPANDED_ARMS = ("baseline", "cot", "no-examples")
+
 
 def _load(name):
     path = os.path.join(EVAL_DIR, name)
@@ -79,7 +97,50 @@ def _refusal_counts(trials, variant):
     return out
 
 
-# --- the headline result ---------------------------------------------------
+# --- the standing headline, at n=46 ----------------------------------------
+
+def test_neither_shipped_candidate_falsely_refuses_at_n46():
+    """
+    The 2026-08-03 expansion headline: baseline 18/46 questions refusing, cot and
+    no-examples 0/46 each, Fisher p = 0.0000.
+
+    Both arms are gated, not just the shipped one, because `cot` is the documented
+    fallback if this decision is revisited — a fallback nobody is measuring is not
+    a fallback. Every question here has a dedicated encyclopedia entry (screened by
+    verify_entry for the 22 new ones), so a refusal is always a bug.
+    """
+    trials = _load(EXPANDED_REFUSAL)
+    for arm in ("cot", "no-examples"):
+        offenders = {q: c for q, (c, _) in _refusal_counts(trials, arm).items() if c}
+        assert not offenders, f"{arm} refused questions the corpus answers: {offenders}"
+
+
+def test_the_expansion_did_not_weaken_the_baseline_gap():
+    """
+    Direction and magnitude, not just the zero above. The expansion exists because
+    at n=24 the result was fragile: dropping the three questions that refused on
+    exactly one trial took p from 0.0094 to 0.1092, i.e. not significant. At n=46
+    the same subtraction leaves p = 0.0002.
+
+    So this pins the property that made the expansion worth 330 calls — that the
+    effect survives dropping every one-trial refuser — rather than pinning a
+    p-value, which would fail on a harmless re-measure.
+    """
+    trials = _load(EXPANDED_REFUSAL)
+    counts = _refusal_counts(trials, "baseline")
+    refusing = {q: c for q, (c, _) in counts.items() if c}
+    assert len(refusing) >= 12, (
+        f"baseline now refuses only {len(refusing)}/46 questions, was 18. The "
+        "comparison arm got better, so the recorded gap no longer describes this data"
+    )
+    robust = {q: c for q, c in refusing.items() if c >= 2}
+    assert len(robust) >= 12, (
+        f"only {len(robust)} baseline refusals survive dropping one-trial cases; "
+        "the n=46 result has decayed to the fragile n=24 shape"
+    )
+
+
+# --- the same result on the frozen 24, kept as recorded --------------------
 
 def test_cot_never_falsely_refuses():
     """
@@ -206,7 +267,7 @@ def test_recorded_refusal_trials_cover_the_whole_suite():
     holding fewer trials than the run claims is a different measurement.
     """
     trials = _load(REFUSAL_TRIALS)
-    assert set(trials) == set(REFUSAL_QUESTIONS), "refusal trials do not match the suite"
+    assert set(trials) == set(FROZEN_V1_QUESTIONS), "refusal trials do not match the suite"
     for question, by_variant in trials.items():
         for variant in ("baseline", "cot"):
             attempts = by_variant.get(variant)
@@ -267,8 +328,8 @@ def test_ablation_arms_are_completely_recorded():
     not. That is how 72 already-paid-for cells could vanish on a quota failure.
     """
     trials = _load(ABLATION_REFUSAL)
-    assert set(trials) == set(REFUSAL_QUESTIONS), (
-        "ablation refusal trials no longer match the eval set"
+    assert set(trials) == set(FROZEN_V1_QUESTIONS), (
+        "ablation refusal trials no longer match the frozen 24-question set"
     )
     for question, by_variant in trials.items():
         for arm in ABLATION_ARMS:
@@ -289,6 +350,31 @@ def test_ablation_arms_are_completely_recorded():
             assert len(attempts) == ABLATION_GUARD_TRIALS, (
                 f"{question} [{arm}] has {len(attempts)} guard trials, "
                 f"not {ABLATION_GUARD_TRIALS}"
+            )
+
+
+def test_expanded_suite_is_completely_recorded():
+    """
+    The expanded file is the one the live headline is computed from, so a partial
+    run must fail rather than quietly report a statistic over whichever questions
+    happened to finish. That is the F3/§9 failure shape: a gate that goes green on
+    incomplete data is not a gate.
+
+    Checks the question SET, not just the count — 46 rows containing a duplicate
+    and a missing question would otherwise pass.
+    """
+    trials = _load(EXPANDED_REFUSAL)
+    assert set(trials) == set(REFUSAL_QUESTIONS), (
+        f"expanded trials cover {len(trials)} questions, suite has "
+        f"{len(REFUSAL_QUESTIONS)}. Missing: "
+        f"{sorted(set(REFUSAL_QUESTIONS) - set(trials))}"
+    )
+    for question, by_variant in trials.items():
+        for arm in EXPANDED_ARMS:
+            attempts = by_variant.get(arm)
+            assert attempts, f"{question} has no {arm} trials"
+            assert len(attempts) == TRIALS_PER_CELL, (
+                f"{question} [{arm}] has {len(attempts)} trials, not {TRIALS_PER_CELL}"
             )
 
 
@@ -318,12 +404,21 @@ def test_the_shipped_default_has_been_measured_and_does_not_falsely_refuse():
     )
     with open(claims_path, encoding="utf-8") as f:
         scored = [r for r in json.load(f)["results"] if r.get("claim_score") is not None]
-    assert len(scored) == len(EVAL_QUESTIONS), (
-        f"{shipped} has {len(scored)} scored answers, not {len(EVAL_QUESTIONS)} — "
-        "a partial measurement is not a measurement"
+    # Against the FROZEN 24, not the expanded 46, and this is a deliberate
+    # weakening recorded rather than hidden: the 2026-08-03 expansion re-measured
+    # refusals over all 46 but not groundedness, because run_eval has no
+    # question-subset filter and no resume, so re-scoring would have cost 138 calls
+    # to re-derive 24 values already recorded. Claim-level coverage of the 22 new
+    # questions is OPEN WORK -- see results_sprint4.md §12. Tighten this to
+    # EVAL_QUESTIONS once that run happens.
+    assert len(scored) >= len(EVAL_QUESTIONS_V1), (
+        f"{shipped} has {len(scored)} scored answers, fewer than the "
+        f"{len(EVAL_QUESTIONS_V1)} recorded — a partial measurement is not a measurement"
     )
 
-    trials = _load(ABLATION_REFUSAL)
+    # Refusals ARE gated over the full 46: it is the safety-relevant half, and the
+    # expansion measured it.
+    trials = _load(EXPANDED_REFUSAL)
     counts = _refusal_counts(trials, shipped)
     assert any(n for _, n in counts.values()), (
         f"no recorded refusal trials for the shipped variant {shipped!r} in "

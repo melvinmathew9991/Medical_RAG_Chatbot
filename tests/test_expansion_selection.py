@@ -25,7 +25,7 @@ import statistics
 import pytest
 
 from medbot.config import PERSIST_DIR
-from medbot.eval.dataset import EVAL_QUESTIONS, EXPANSION_QUESTIONS
+from medbot.eval.dataset import EVAL_QUESTIONS, EVAL_QUESTIONS_V1, EXPANSION_QUESTIONS
 from medbot.eval.refusal_trials import OVERANSWER_QUESTIONS
 from medbot.eval.retrieval_metrics import precision_at_k
 from medbot.eval.verify_entry import CANDIDATES, check_entry
@@ -156,7 +156,11 @@ def test_the_expansion_set_does_not_overlap_anything(vectordb=None):
 
     new = [c["question"] for c in EXPANSION_QUESTIONS]
     assert len(new) == len(set(new)), "duplicate questions inside EXPANSION_QUESTIONS"
-    assert not set(new) & {c["question"] for c in EVAL_QUESTIONS}
+    # V1, not EVAL_QUESTIONS: since the 2026-08-03 merge the expansion IS part of
+    # EVAL_QUESTIONS, so comparing against it would compare the list with itself
+    # and pass vacuously. The property still worth asserting is that the two
+    # halves are disjoint.
+    assert not set(new) & {c["question"] for c in EVAL_QUESTIONS_V1}
     assert not set(new) & set(OVERANSWER_QUESTIONS)
     assert not set(new) & {ex["question"] for ex in COT_EXAMPLES}
     assert not set(new) & {ex["question"] for ex in lazy_loader.load_medical_examples()}
@@ -177,17 +181,24 @@ def test_the_rejections_are_kept_as_evidence():
     )
 
 
-def test_the_expansion_is_not_merged_into_the_eval_set_yet():
+def test_the_expansion_is_merged_and_the_suite_is_46():
     """
-    Pins the two-step sequencing deliberately. Merging redefines REFUSAL_QUESTIONS
-    from 24 to 46 and invalidates every recorded trial file, so the merge belongs in
-    the same change as the ~336 calls that re-measure the suite — not before it.
-
-    When that run happens, this test is the one to delete.
+    Replaces `test_the_expansion_is_not_merged_into_the_eval_set_yet`, which held
+    the two-step sequencing: merge only in the same change as the calls that
+    re-measure the suite. That happened on 2026-08-03 (330 calls), so the pin now
+    points the other way — the merge must not be silently reverted, which would
+    quietly shrink the denominator behind every refusal statistic.
     """
-    assert len(EVAL_QUESTIONS) == 24, (
-        "EVAL_QUESTIONS changed size: if the expansion was merged, the recorded "
-        "trials no longer cover the suite and the headline must be re-measured"
+    assert len(EVAL_QUESTIONS_V1) == 24
+    assert len(EXPANSION_QUESTIONS) == 22
+    assert len(EVAL_QUESTIONS) == 46, (
+        f"eval set is {len(EVAL_QUESTIONS)} questions, not 46: the expansion "
+        "merge was reverted, and the recorded trials now over-cover the suite"
+    )
+    merged = [c["question"] for c in EVAL_QUESTIONS]
+    assert merged[:24] == [c["question"] for c in EVAL_QUESTIONS_V1], (
+        "the original 24 must stay first and in order — the pre-merge trial files "
+        "are keyed by question text, and reordering breaks nothing loudly"
     )
 
 

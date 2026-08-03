@@ -20,7 +20,16 @@ This is an intentionally simple, disclosed methodology (see
 medbot/eval/retrieval_metrics.py) rather than an embedding-based judge.
 """
 
-EVAL_QUESTIONS = [
+# The original 24, frozen under this name on 2026-08-03 when EXPANSION_QUESTIONS
+# was merged in. `EVAL_QUESTIONS` is now these plus the expansion (see the bottom
+# of this file) and is what everything measures against.
+#
+# This list is kept addressable because the trial files recorded before the merge
+# -- sprint4_t5_* and ablation_t5_* -- cover exactly these 24 questions and always
+# will. Their regression gates are pinned to this list rather than to
+# EVAL_QUESTIONS, so growing the eval set does not retroactively mark a complete
+# historical dataset as truncated. Do not add to it; add to EXPANSION_QUESTIONS.
+EVAL_QUESTIONS_V1 = [
     {"question": "What causes acne?",
      "expected_keywords": ["acne", "hormonal", "family history of acne"]},
     {"question": "What are the symptoms of alcoholism?",
@@ -73,7 +82,10 @@ EVAL_QUESTIONS = [
 
 
 # ---------------------------------------------------------------------------
-# Question-set expansion, screened 2026-07-27 — NOT YET PART OF THE EVAL SET
+# Question-set expansion, screened 2026-07-27 — MERGED INTO THE EVAL SET
+# 2026-08-03, together with the 330 calls that re-measured the refusal suite
+# over all 46 questions. Kept as a named list so the provenance of each half
+# stays legible and so EVAL_QUESTIONS_V1 remains the frozen pre-merge set.
 # ---------------------------------------------------------------------------
 #
 # Why this exists. Sprint 4 established that the binding constraint on the
@@ -83,13 +95,16 @@ EVAL_QUESTIONS = [
 # p at 0.1092. Going 3 -> 5 trials cost 240 calls and moved the raw p-value by
 # 0.0007 (see results_sprint4.md §7). More questions is the fix.
 #
-# Why it is a separate list rather than appended to EVAL_QUESTIONS. Merging would
-# immediately redefine REFUSAL_QUESTIONS from 24 to 46 questions, which:
-#   - invalidates every recorded trial file (they cover 24), and
-#   - fails `test_recorded_refusal_trials_cover_the_whole_suite` by design.
-# The merge is the *second* step, taken together with running the trials — about
-# 336 calls against a 500/day quota. Screening and keyword grounding cost nothing,
-# so they are done and committed first; the numbers follow when quota allows.
+# Why it was held separate until 2026-08-03. Merging redefines REFUSAL_QUESTIONS
+# from 24 to 46 questions, which invalidates every recorded trial file at a stroke
+# — they cover 24 — so the merge had to be the *second* step, taken together with
+# the calls that re-measure the suite. Screening and keyword grounding cost
+# nothing, so they were done and committed first and the numbers followed.
+#
+# What that cost in the end: 330 calls (22 new questions x 5 trials x 3 arms),
+# resumed onto the recorded 24 rather than re-running them, which is only valid
+# because the prompts, index and model were unchanged. The pre-merge files stay
+# frozen at 24 and are gated against EVAL_QUESTIONS_V1.
 #
 # How these were selected — the same discipline as the list above, with a tool:
 #   - 34 candidates screened by `python -m medbot.eval.verify_entry`, which
@@ -165,3 +180,18 @@ EXPANSION_QUESTIONS = [
     {"question": "What causes bruises?",
      "expected_keywords": ["bruises", "ecchymoses", "purpura senilis"]},
 ]
+
+# The eval set everything measures against: the original 24 plus the 22 screened
+# expansion questions, merged 2026-08-03 in the same change as the 330 calls that
+# re-measured the refusal suite over all 46. Merging without that run is what the
+# now-deleted test_the_expansion_is_not_merged_into_the_eval_set_yet prevented,
+# because it silently redefines REFUSAL_QUESTIONS and leaves every recorded trial
+# file covering only half the suite.
+#
+# Why expand at all: the refusal headline was limited by the number of QUESTIONS,
+# not by trials per question. results_sprint4.md §7 established that going 3 -> 5
+# trials does not resolve the fragility warning -- extra trials surface new
+# one-in-N refusers rather than confirming the existing ones -- and §11 hit the
+# same wall from the other side, where cot-vs-no-examples parity was a null result
+# at n=24 that could not distinguish equivalence from an underpowered test.
+EVAL_QUESTIONS = EVAL_QUESTIONS_V1 + EXPANSION_QUESTIONS

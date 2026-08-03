@@ -815,6 +815,11 @@ Renaming it now would orphan every recorded result filed under that name.
 
 ### 22 screened expansion questions
 
+> **MERGED AND MEASURED 2026-08-03 — see §12.** The eval set is now 46 questions.
+> baseline 18/46 vs cot 0/46 vs no-examples 0/46, p = 0.0000, and the fragility warning
+> that qualified every refusal number since Sprint 4 no longer fires: dropping all six
+> one-trial refusers leaves p = 0.0002.
+
 The binding constraint on the refusal headline is the number of questions (§7). Screening
 and keyword grounding are free; only the trials cost quota. So the selection is done now:
 
@@ -893,6 +898,11 @@ than inside `run_query`, so no citation text can reach the scored answer.
 **The same fragility caveat as the shipped result applies, and is not weakened by
 reproducing it.** 3 of baseline's 7 refusing questions do so on exactly one trial; drop
 them and p = 0.1092. The binding constraint remains 24 questions (§7).
+
+> **RESOLVED the same day — §12.** The question set was doubled to 46. baseline refuses
+> 18/46, both candidate arms 0/46, p = 0.0000, and dropping all six one-trial refusers
+> still leaves p = 0.0002. This caveat no longer applies to the standing result; it is
+> kept here because it correctly described the evidence at the time §11 was written.
 
 ### What the parity result does and does not say
 
@@ -1010,3 +1020,111 @@ be revisited — the recorded artefacts for both arms make that a re-read, not a
   `flush=True`** — both fixed in `refusal_trials` by §6's second pass, neither carried
   across. A quota-dead `run_eval` still looks exactly like a slow one, which is the failure
   mode §6 spent a session diagnosing.
+
+---
+
+## 12. The question set doubled, and the fragility warning is gone (2026-08-03)
+
+The 22 candidates screened in §10 were merged into `EVAL_QUESTIONS`, taking the eval set
+from 24 to 46, together with the 330 calls that re-measured the refusal suite over all of
+it. Merging without that run is what the (now replaced) sequencing test prevented.
+
+**Why this and not more trials.** §7 established the binding constraint was the number of
+questions: going 3 → 5 trials cost 240 calls and moved the raw p-value by 0.0007, while
+leaving the fragility warning firing. §11 then hit the same wall from the other direction —
+`cot` vs `no-examples` parity was a null result at n=24 that could not distinguish
+equivalence from an underpowered test, and the shipped default was changed on it.
+
+### Result — 46 questions × 3 arms × 5 trials
+
+| comparison | questions ever refusing | Fisher exact p |
+|---|---|---|
+| baseline vs **no-examples** | 18/46 vs **0/46** | **0.0000** |
+| baseline vs **cot** | 18/46 vs **0/46** | **0.0000** |
+| cot vs **no-examples** | 0/46 vs **0/46** | 1.0000 |
+
+Trial-level: baseline **55/230**, cot **0/230**, no-examples **0/230**.
+
+**The fragility warning is resolved, and that is the headline.** It has qualified every
+refusal number since Sprint 4. At n=24, dropping the three questions that refused on
+exactly one trial took p from 0.0094 to **0.1092 — not significant**. At n=46, six
+questions refuse once; dropping all six leaves **p = 0.0002, still significant**. The
+result no longer depends on its weakest observations. §7 predicted exactly this, and the
+prediction is now tested rather than asserted.
+
+**The n=24 caveat attached to §11's ship decision is substantially discharged.** Doubling
+the question set found more than twice as many baseline refusals (7 → 18) and still zero in
+either candidate arm, across 230 trials each. The parity is now a null on twice the
+evidence. It remains a null — no experiment shows `no-examples` is *better* than `cot` —
+but the specific worry, that n=24 was too small to see a real difference, has been tested
+and did not materialise.
+
+### The new questions are harder, which is why they were worth buying
+
+Four of the 22 refuse **5/5** under baseline: bad breath, bone marrow transplant, barium
+enema, alopecia. Read side by side, these are textbook instances of the bug this project
+exists to measure — the same retrieved context, one arm declining it in 54 characters:
+
+- `baseline`: *"I don't know the answer based on the provided context."* (54 ch)
+- `no-examples`: 717 characters correctly describing stem-cell extraction from a healthy
+  donor and transfer to a recipient.
+
+The original 24 had a baseline refusal rate of 7/24 (29%); the 22 new ones run 11/22 (50%).
+Not because they are unfair — every one was screened by `verify_entry` against the live
+index, and the set's recorded Precision@4 (0.8523) is *higher* than the original's
+(0.8333) — but because the screen selected entries that exist without selecting for the
+paraphrase-friendliness the original set happened to have.
+
+### The instrument was re-validated on all 22 new questions
+
+220 trials with zero refusals across two arms, on questions the instrument had never seen,
+is precisely what a third `is_refusal` failure would look like (§7, §8). So the text was
+read, not the booleans:
+
+- **0 label/instrument disagreements** across all 330 new trials.
+- Candidate gate opened **40/110 baseline, 6/110 no-examples, 0/110 cot**.
+- The short tail is where a missed refusal would hide, so it was inspected directly.
+  `cot`'s shortest new answer is 74 characters — *"Byssinosis is caused by inhaling
+  particles of cotton, flax, hemp, or jute"* — which is correct and complete; the
+  encyclopedia entry is simply terse. `no-examples` has five identical 110-character
+  arteriography answers, same story.
+- The 360 seeded trials are byte-identical to the `ablation_t5_` file they came from.
+
+### The frozen 24 stay addressable, and the pre-merge files are not "truncated"
+
+`EVAL_QUESTIONS_V1` holds the original 24. Every trial file recorded before this merge
+covers exactly those questions and always will — they are complete records of the suite as
+it stood, not partial records of the new one. Their coverage gates are pinned to
+`EVAL_QUESTIONS_V1` rather than to `REFUSAL_QUESTIONS`, so growing the eval set does not
+retroactively fail a finished dataset. The merged list keeps the original 24 first and in
+order, pinned by a test, because trial files are keyed by question text.
+
+### Three arms, not four
+
+`instruction-only` was not extended. §8 settled the question it existed to answer, and it
+is the arm that substitutes a neighbouring exemplar's question, so 110 calls to carry it
+forward buys nothing. It stays at 24 questions in `ablation_t5_refusal_trials.json`, which
+keeps its own four-arm gate against the frozen list.
+
+### What this run did NOT measure, stated rather than implied
+
+- **Claim-level groundedness over the 22 new questions.** `run_eval` iterates all of
+  `EVAL_QUESTIONS` with no subset filter and no resume, so extending it costs **138 calls**
+  (92 + 46) to re-derive 24 values already recorded. The shipped-default gate therefore
+  asserts claim coverage against the frozen 24 and says so in a comment. **This is the open
+  item.** Until it runs, "claim-level 0.9917" describes the original 24 only.
+- **The out-of-corpus guard.** Deliberately not re-run: it is a separate 10-question suite
+  that does not change when the eval set grows, and all four arms are recorded at 30/30
+  (120/120 combined). `refusal_stats` says so explicitly when reporting the expanded
+  prefix, rather than silently falling back.
+
+### Gates
+
+`test_neither_shipped_candidate_falsely_refuses_at_n46` covers both `cot` and
+`no-examples` — a documented fallback nobody measures is not a fallback.
+`test_the_expansion_did_not_weaken_the_baseline_gap` pins the *property* the 330 calls
+bought (the effect survives dropping every one-trial refuser) rather than a p-value, which
+would fail on a harmless re-measure. Both mutation-tested, along with the completeness gate:
+flip a `no-examples` trial to refused, flatten baseline to never refusing, decay every
+baseline refusal to exactly one trial, truncate a cell — each failed exactly the intended
+test, and the data was restored bit-identical.
