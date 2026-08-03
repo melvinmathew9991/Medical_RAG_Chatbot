@@ -776,6 +776,9 @@ nothing shipped changes until they are run.
 
 ### The `no-examples` prompt arm
 
+> **MEASURED 2026-08-03 — see §11.** 0/24 refusals, guard 30/30, Precision@4 0.8333,
+> claim-level 0.9917. Parity with `cot` at 1/14th the tokens. Still not shipped.
+
 §8 concluded that the CoT exemplars buy no measurable refusal improvement over the
 instruction rewrite (p = 1.0000 against `instruction-only` on all 24 questions) but kept
 them anyway, because `instruction-only` substitutes a neighbouring example's question on
@@ -849,3 +852,139 @@ rejected candidates must still be rejected, or the screen has stopped discrimina
 `EVAL_QUESTIONS`. Merging redefines `REFUSAL_QUESTIONS` from 24 to 46, which invalidates
 every recorded trial file at a stroke. The merge belongs in the same change as the ~336
 calls that re-measure the suite, and a test pins that sequencing until then.
+
+---
+
+## 11. The `no-examples` arm, measured (2026-08-03)
+
+§10 prepared this arm and left it inert. This closes it. 225 calls: the 24-question
+refusal suite at 5 trials (120), the 10-question out-of-corpus guard at 3 (30),
+`run_eval` (48), and the claim-level rejudge (24), plus preflights.
+
+Run against the recorded arms rather than alongside a fresh re-run of them, which is only
+legitimate because the other three arms' prompts are byte-identical to when they were
+measured: the sole change to `medbot/prompt.py` since `07e215d` is two import lines
+reordered by ruff, and the rendered-CoT sha256 pin passes. Sprint 6 changed `index.pkl`
+but proved `index.faiss` bit-identical, and `format_sources` is called by `app.py` rather
+than inside `run_query`, so no citation text can reach the scored answer.
+
+### Result
+
+| arm | template | est. tokens | refusals | guard | P@4 | claim-level |
+|---|---|---|---|---|---|---|
+| baseline | 567 ch | ~141 | 7/24 | 10/10 | 0.8333 | 0.8413 |
+| instruction-only | 1,064 ch | ~266 | 1/24 | 10/10 | 0.8333 | not measured |
+| **no-examples** | **865 ch** | **~216** | **0/24** | **10/10** | **0.8333** | **0.9917** |
+| cot (shipped) | 12,151 ch | ~3,037 | 0/24 | 10/10 | 0.8333 | 0.9974 |
+
+- **baseline vs no-examples: 7/24 vs 0/24, Fisher exact p = 0.0094** — the shipped
+  headline reproduced by a prompt costing **1/14th** as much.
+- **cot vs no-examples: 0/24 vs 0/24, p = 1.0000.** instruction-only vs no-examples:
+  1/24 vs 0/24, p = 1.0000.
+- **Guard: 30/30 trials, 0 invented answers**, taking all four arms to 120/120. The
+  refusal-suite zero is not bought by over-answering.
+- **Precision@4 identical at 0.8333**, as it must be — retrieval is untouched by the
+  prompt. The sanity check the harness exists to provide.
+
+**The same fragility caveat as the shipped result applies, and is not weakened by
+reproducing it.** 3 of baseline's 7 refusing questions do so on exactly one trial; drop
+them and p = 0.1092. The binding constraint remains 24 questions (§7).
+
+### What the parity result does and does not say
+
+`p = 1.0000` against `cot` is a **null result on 24 questions**, and a null result cannot
+tell equivalence from an underpowered test. §8 made exactly this point about
+`instruction-only` and kept the exemplars anyway. That reasoning is not repeated here for
+a specific reason: §8's stated ground for keeping them was that `instruction-only`
+substitutes a neighbouring exemplar's question on 5/5 bursitis trials. **That mechanism is
+absent here by construction, and the construction was verified rather than assumed.**
+
+Head-to-head on bursitis — the question that refused 6/6 in Sprint 2 and 5/5 under
+baseline:
+
+- `baseline`: 5/5 flat refusals, 62-181 chars.
+- `instruction-only`: 5/5 open by declining a question about **nosebleeds**, drawn from
+  its own selected exemplar, before addressing bursitis. §8 reproduced exactly.
+- `no-examples`: 5/5 answer about bursitis, 851-1,070 chars. The hedge names the **asked**
+  topic ("does not explicitly define what bursitis is ... but describes").
+- `cot`: 5/5 answer, 3 with no hedge at all.
+
+So the exemplars' remaining justification was contamination-avoidance, and a 216-token
+prompt achieves it by removing the mechanism instead of out-performing it.
+
+### The instrument was re-validated on this arm, not trusted
+
+A wording-keyed instrument has now failed to transfer to a new arm twice (§7, §8), and
+this is a new arm. The stored booleans are not evidence for it; the text is.
+
+- **0 label/instrument disagreements** across all 150 trials.
+- **Only 5 of 120** refusal-suite trials opened the candidate gate — all five the bursitis
+  "does not explicitly define" hedge, 573-712 chars surviving `delivered_content` against
+  a 120 threshold. The case the `REFUSAL_WINDOW_CHARS` note already documents as correctly
+  *not* a refusal.
+- **The shortest answer in the arm is 293 chars** (median 1,026), so no short flat refusal
+  is hiding behind wording the marker list cannot see — the failure mode that would have
+  flattered this arm.
+- **On the guard, the dangerous direction is the opposite** — an invented answer
+  mislabelled as a refusal would make the guard look armed when it is not. Maximum
+  surviving content across all 30 guard trials is **5 characters**. These are flat
+  refusals that name what the corpus covers instead.
+- Those guard refusals are phrased *"there is no information/mention of ..."* — the exact
+  wording that defeated `REFUSAL_MARKERS` on `instruction-only` in §8. The union gate
+  handles it. §8's fix is now validated on an arm it was not calibrated against, which is
+  the test it previously failed.
+
+**A contamination detector was written, rejected, and rewritten.** The first version
+flagged `no-examples` on 27 trials — impossible by construction — because it matched
+incidental word overlap (an allergic-rhinitis answer containing "allergic" and "reaction")
+rather than a declined foreign question. Restricted to gate-open trials, where
+contamination is actually visible, `no-examples` names a foreign topic **zero** times. The
+discarded version is recorded because it is the same error shape as F8: a screen that
+accepts everything is not a screen.
+
+### Verbosity: the obvious way a ratio metric could be gamed
+
+Claim-level groundedness is supported claims / total claims, so a terse arm can score well
+by saying less. It is not what happened. Mean answer length over the 120 refusal-suite
+trials: baseline 752, instruction-only 944, cot 1,053, **no-examples 1,267** — the longest
+of the four. It says more and remains grounded.
+
+### The single sub-1.0 answer is a judge artefact, like cot's
+
+`What is bulimia nervosa?` scored 0.8 (4 of 5 claims supported). The unsupported "claim" is
+the model's own trailing meta-caveat about what the context does not cover — a statement
+about the context, not a medical assertion — and all four substantive claims about bulimia
+are supported. Structurally the same as cot's one sub-1.0 case, where the judge scored the
+misspelling "seizers" as an unsupported claim.
+
+So the 0.9974 vs 0.9917 gap is one meta-caveat, not a difference in medical grounding, and
+both arms are effectively 24/24. **This is further evidence for F6 — blinded human
+calibration of the judge — which remains open and which I still cannot close, being the
+model under audit.**
+
+### Gates added
+
+The ablation files carried the exemplar decision and had **no gate at all**: §9 found every
+gate pointing at the retired dataset and fixed the headline ones, leaving these two
+uncovered. Now gated in `tests/test_eval_regression.py`, and each mutation-tested — flip a
+refusal-suite trial to REFUSED, flip a guard trial to an invented answer, truncate a cell
+5 to 2, drop an arm from a guard question — every mutation failed exactly the intended test
+and the data restored bit-identical afterwards.
+
+### Not shipped
+
+`DEFAULT_PROMPT_VARIANT` is still `cot`. Changing what the app serves is a separate
+decision from measuring it, and it is Melvin's to make. The evidence for making it is
+above; the argument against is that parity rests on a null result at n=24.
+
+### Two harness defects found while running this, not fixed here
+
+- **`refusal_trials.run()` can destroy recorded data on a mid-run failure.** It builds its
+  output dict from scratch and checkpoints after every variant, so a run that dies partway
+  writes back a file containing only the questions it reached — silently dropping the other
+  arms' cells for every question it did not. This run put 72 already-paid-for cells at
+  risk; they were backed up manually first. `--resume` reads the file it can truncate.
+- **`run_eval` has no `preflight()` and its per-question progress `print` lacks
+  `flush=True`** — both fixed in `refusal_trials` by §6's second pass, neither carried
+  across. A quota-dead `run_eval` still looks exactly like a slow one, which is the failure
+  mode §6 spent a session diagnosing.

@@ -48,6 +48,19 @@ MIN_PRECISION_AT_K = 0.83
 REFUSAL_TRIALS = "sprint4_t5_refusal_trials.json"
 TRIALS_PER_CELL = 5
 
+# The four-arm ablation, which carries the cost decision rather than the headline:
+# baseline / instruction-only / cot / no-examples on the same 24 questions at 5
+# trials, plus the 10-question out-of-corpus guard at 3.
+#
+# `no-examples` was added to both files on 2026-08-03. Until then these two files
+# had NO gate of any kind -- the 2026-07-27 audit found every gate pointing at the
+# retired 3-trial dataset and fixed the headline ones, but the ablation files were
+# left uncovered, and the exemplar decision rests on them.
+ABLATION_REFUSAL = "ablation_t5_refusal_trials.json"
+ABLATION_OVERANSWER = "ablation_t5_overanswer_trials.json"
+ABLATION_ARMS = ("baseline", "instruction-only", "cot", "no-examples")
+ABLATION_GUARD_TRIALS = 3
+
 
 def _load(name):
     path = os.path.join(EVAL_DIR, name)
@@ -200,6 +213,82 @@ def test_recorded_refusal_trials_cover_the_whole_suite():
             assert attempts, f"{question} has no {variant} trials"
             assert len(attempts) == TRIALS_PER_CELL, (
                 f"{question} [{variant}] has {len(attempts)} trials, not {TRIALS_PER_CELL}"
+            )
+
+
+# --- the no-examples arm, and the ablation files generally ------------------
+
+def test_no_examples_never_falsely_refuses():
+    """
+    The result that makes the cheap prompt viable: 0/120 trials on the 24
+    questions the corpus answers, matching `cot` exactly at ~1/14th the tokens.
+
+    Gated on the ablation file rather than the headline one because that is where
+    the arm was measured. Same standard as `test_cot_never_falsely_refuses`: every
+    question here has a dedicated encyclopedia entry, so there is no correct
+    refusal in this file.
+    """
+    trials = _load(ABLATION_REFUSAL)
+    counts = _refusal_counts(trials, "no-examples")
+    offenders = {q: c for q, (c, _) in counts.items() if c}
+    assert not offenders, (
+        f"no-examples refused questions the corpus answers: {offenders}. "
+        "The shipped prompt decision rests on this being zero."
+    )
+
+
+def test_no_examples_refuses_out_of_corpus_questions():
+    """
+    The other half, and the one that could sink the arm: a prompt that never
+    refuses scores a perfect zero above by inventing medical answers.
+
+    `no-examples` phrases these refusals as "there is no information/mention of
+    ...", which is the exact wording that defeated `is_refusal`'s marker list on
+    the `instruction-only` arm in 2026-07-27's ablation (results_sprint4.md 8).
+    The union gate handles it, and this test is what keeps that true.
+    """
+    trials = _load(ABLATION_OVERANSWER)
+    counts = _refusal_counts(trials, "no-examples")
+    answered = {q: (n - c) for q, (c, n) in counts.items() if c < n and n > 0}
+    assert not answered, (
+        f"no-examples invented answers on out-of-corpus questions: {answered}. "
+        "Read the stored text by hand before adjusting anything -- either the "
+        "model invented content, or the question is not out-of-corpus (audit F8)."
+    )
+
+
+def test_ablation_arms_are_completely_recorded():
+    """
+    A truncated arm would make both gates above vacuous, and truncation is a live
+    risk here rather than a hypothetical: `refusal_trials.run()` rebuilds its
+    output dict from scratch and checkpoints after every variant, so a run that
+    dies partway writes back a file containing only the questions it reached --
+    silently dropping the other arms' recorded cells for every question it did
+    not. That is how 72 already-paid-for cells could vanish on a quota failure.
+    """
+    trials = _load(ABLATION_REFUSAL)
+    assert set(trials) == set(REFUSAL_QUESTIONS), (
+        "ablation refusal trials no longer match the eval set"
+    )
+    for question, by_variant in trials.items():
+        for arm in ABLATION_ARMS:
+            attempts = by_variant.get(arm)
+            assert attempts, f"{question} has no {arm} trials"
+            assert len(attempts) == TRIALS_PER_CELL, (
+                f"{question} [{arm}] has {len(attempts)} trials, not {TRIALS_PER_CELL}"
+            )
+
+    guard = _load(ABLATION_OVERANSWER)
+    assert set(guard) == set(OVERANSWER_QUESTIONS), (
+        "ablation guard no longer matches the out-of-corpus suite"
+    )
+    for question, by_variant in guard.items():
+        for arm in ABLATION_ARMS:
+            attempts = by_variant.get(arm)
+            assert attempts, f"{question} has no {arm} guard trials"
+            assert len(attempts) == ABLATION_GUARD_TRIALS, (
+                f"{question} [{arm}] has {len(attempts)} guard trials, "
+                f"not {ABLATION_GUARD_TRIALS}"
             )
 
 
